@@ -67,3 +67,7 @@ Route::get('payments/project/{project}/create', [PaymentController::class, 'crea
 
 Route::get('payments/search', [PaymentController::class, 'search'])->name('payments.search');
 Route::post('payments/storeForProject', [PaymentController::class, 'storeForProject'])->name('payments.storeForProject');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
