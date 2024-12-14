@@ -1,0 +1,77 @@
+<ExportedAccDocData xmlns="http://www.taxservice.am/tp3/invoice/definitions">
+  <SignedAccDocData>
+    <Data>
+      <SignableData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1.0" xsi:type="AccountingDocument">
+        <User>smartsec1</User>
+        <Type>3</Type>
+        <GeneralInfo>
+          <InvoiceNumber>
+            <Number>3789263818</Number>
+            <Series>B</Series>
+          </InvoiceNumber>
+          <DeliveryDate>2024-10-31+04:00</DeliveryDate>
+          <Procedure>1</Procedure>
+        </GeneralInfo>
+        <SupplierInfo>
+          <Taxpayer>
+            <TIN>06973829</TIN>
+            <Name>«ՍՄԱՌԹ» Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)</Name>
+            <Address>ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ԱՂԱՅԱՆ Փ. 78/1 ԲՆ.7</Address>
+            <BankAccount>
+              <BankName>ԱՄԵՐԻԱԲԱՆԿ  ՓԲԸ</BankName>
+              <BankAccountNumber>1570007469564600</BankAccountNumber>
+            </BankAccount>
+          </Taxpayer>
+        </SupplierInfo>
+        <OnBehalfOfSupplierInfo>
+          <Taxpayer>
+            <PrincipalTinNotRequired>false</PrincipalTinNotRequired>
+          </Taxpayer>
+        </OnBehalfOfSupplierInfo>
+        <BuyerInfo>
+          <VATNumber>06805261/1</VATNumber>
+          <Taxpayer>
+            <TIN>06805261</TIN>
+            <Name>«ՍՊԻՏԱԿԻ ԲԺՇԿԱԿԱՆ ԿԵՆՏՐՈՆ» Փակ բաժնետիրական ընկերություն (ՓԲԸ)</Name>
+            <Address>ԼՈՌԻ ՍՊԻՏԱԿ ԵՐԵՎԱՆՅԱՆ 1</Address>
+            <TinNotRequired>false</TinNotRequired>
+            <IsNatural>false</IsNatural>
+          </Taxpayer>
+          <IsCitizenArmenia>false</IsCitizenArmenia>
+        </BuyerInfo>
+        <GoodsInfo>
+          <Good>
+            <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
+            <Unit>հատ</Unit>
+            <Amount>1</Amount>
+            <PricePerUnit>1240</PricePerUnit>
+            <Price>1240</Price>
+            <TotalPrice>1240</TotalPrice>
+          </Good>
+          <Good>
+            <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
+            <Unit>հատ</Unit>
+            <Amount>1</Amount>
+            <PricePerUnit>1240</PricePerUnit>
+            <Price>1240</Price>
+            <TotalPrice>1240</TotalPrice>
+          </Good>
+          <Total>
+            <TotalPrice>2480</TotalPrice>
+          </Total>
+        </GoodsInfo>
+      </SignableData>
+    </Data>
+    <Signature>
+      <SignatureType>PKCS7</SignatureType>
+    </Signature>
+    <Signature>
+      <SignatureType>PKCS7</SignatureType>
+    </Signature>
+    <AccDocMetadata>
+      <SubmissionDate>2024-11-06T13:40:39.906743+04:00</SubmissionDate>
+      <CoSignDate>2024-11-06T16:12:57.463773+04:00</CoSignDate>
+    </AccDocMetadata>
+  </SignedAccDocData>
+
+</ExportedAccDocData>
