@@ -176,13 +176,20 @@ class ProjectController extends Controller
     }
     public function generatePaymanagirIdMarz(Request $request, Project $project)
     {
+
+        if ($project->paymanagir_start == null) {
+            return redirect()->back()->withErrors(['error' => 'Paymanagir start not found ']);
+        } else{
         try {
             // Получить w_marz_id проекта
             $wMarzId = $project->w_marz_id;
 
+
             // Проверить, существует ли state
             $state = State::find($wMarzId);
-            if (!$state) {
+
+            if (!$state ) {
+
                 return redirect()->back()->withErrors(['error' => 'State not found for w_marz_id']);
             }
 
@@ -222,6 +229,7 @@ class ProjectController extends Controller
             return redirect()->back()->with('success', "Paymanagir ID Marz {$newPaymanagirIdMarz} успешно сгенерирован.");
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => 'Ошибка при генерации ID: ' . $e->getMessage()]);
+        }
         }
     }
 
