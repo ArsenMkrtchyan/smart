@@ -71,7 +71,7 @@
 
                         <!-- Section 1 -->
                         <div class="section" id="section-1">
-                            <h3>Firm Details</h3>
+                            <h3>ֆիրմայի տվյալներ</h3>
                             <p><strong>Firm Type:</strong> {{ $project->firm_type == 0 ? 'Legal' : 'Physical' }}</p>
                             <p><strong>Firm Name:</strong> {{ $project->firm_name }}</p>
                             <p><strong>Brand Name:</strong> {{ $project->brand_name }}</p>

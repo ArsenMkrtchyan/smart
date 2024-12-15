@@ -95,8 +95,8 @@
                                 <div class="form-group mb-3">
                                     <label for="firm_type" class="form-label" >Firm Type</label>
                                     <select class="form-control @error('firm_type') is-invalid @enderror" name="firm_type" id="firm_type">
-                                        <option value="0" {{ old('firm_type') == '0' ? 'selected' : '' }}>Legal</option>
-                                        <option value="1" {{ old('firm_type') == '1' ? 'selected' : '' }}>Physical</option>
+                                        <option value="0" {{ old('firm_type') == '0' ? 'selected' : '' }}>Իրավաբանական</option>
+                                        <option value="1" {{ old('firm_type') == '1' ? 'selected' : '' }}>Ֆիզիկական</option>
                                     </select>
                                     @error('firm_type')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -110,21 +110,21 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="firm_name" class="form-label">firm_name</label>
+                                    <label for="firm_name" class="form-label">Ֆիրմայի անվանում</label>
                                     <input class="form-control @error('firm_name') is-invalid @enderror" type="text" name="firm_name" value="{{ old('firm_name') }}">
                                     @error('firm_name')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div id="hvhh_group" class="form-group mb-3">
-                                    <label for="hvhh" class="form-label">hvhh</label>
+                                    <label for="hvhh" class="form-label">ՀՎՀՀ</label>
                                     <input class="form-control @error('hvhh') is-invalid @enderror" type="text" name="hvhh" value="{{ old('hvhh') }}">
                                     @error('hvhh')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="i_marz_id" class="form-label">i_marz_id</label>
+                                    <label for="i_marz_id" class="form-label">Իրավաբանական հասցեի մարզը</label>
                                     <select class="form-control @error('i_marz_id') is-invalid @enderror" name="i_marz_id">
                                         <option value="">Select Marz</option>
 
@@ -140,14 +140,14 @@
                                     @enderror
                                 </div>
                                 <div id="i_address_group" class="form-group mb-3">
-                                    <label for="i_address" class="form-label">i_address</label>
+                                    <label for="i_address" class="form-label">իրավաբանական հասցե</label>
                                     <input class="form-control @error('i_address') is-invalid @enderror" type="text" name="i_address" value="{{ old('i_address') }}">
                                     @error('i_address')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="w_marz_id" class="form-label">w_marz_id</label>
+                                    <label for="w_marz_id" class="form-label">գործունեության հասցեի մարզ</label>
                                     <select class="form-control @error('w_marz') is-invalid @enderror" name="w_marz_id">
                                         <option value="">Select Marz</option>
 
@@ -164,28 +164,35 @@
                                 </div>
 
                                 <div id="W_address_group" class="form-group mb-3">
-                                    <label for="w_address" class="form-label">w_address</label>
+                                    <label for="w_address" class="form-label">գործունեության Հասցե</label>
                                     <input class="form-control @error('w_address') is-invalid @enderror" type="text" name="w_address" value="{{ old('w_address') }}">
                                     @error('w_address')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="ceo_name" class="form-label">CEO Name</label>
+                                    <label for="ceo_name" class="form-label">տնօրենի անուն, ազգանուն</label>
                                     <input class="form-control @error('ceo_name') is-invalid @enderror" type="text" name="ceo_name" value="{{ old('ceo_name') }}">
                                     @error('ceo_name')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="ceo_phone" class="form-label">CEO Phone</label>
+                                    <label for="ceo_phone" class="form-label">տնօրենի համար</label>
                                     <input class="form-control @error('ceo_phone') is-invalid @enderror" type="text" name="ceo_phone" value="{{ old('ceo_phone') }}">
                                     @error('ceo_phone')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="firm_email" class="form-label">Firm Email</label>
+                                    <label for="fin_contact" class="form-label">ֆինանսական պատասխանատու- համար</label>
+                                    <input class="form-control @error('fin_contact') is-invalid @enderror" type="text" name="fin_contact" value="{{ old('fin_contact') }}">
+                                    @error('fin_contact')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="firm_email" class="form-label">E-mail հասցե</label>
                                     <input class="form-control @error('firm_email') is-invalid @enderror" type="email" name="firm_email" value="{{ old('firm_email') }}">
                                     @error('firm_email')
                                     <span class="invalid-feedback">{{ $message }}</span>
