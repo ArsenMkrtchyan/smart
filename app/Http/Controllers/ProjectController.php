@@ -180,56 +180,56 @@ class ProjectController extends Controller
         if ($project->paymanagir_start == null) {
             return redirect()->back()->withErrors(['error' => 'Paymanagir start not found ']);
         } else{
-        try {
-            // Получить w_marz_id проекта
-            $wMarzId = $project->w_marz_id;
+            try {
+                // Получить w_marz_id проекта
+                $wMarzId = $project->w_marz_id;
 
 
-            // Проверить, существует ли state
-            $state = State::find($wMarzId);
+                // Проверить, существует ли state
+                $state = State::find($wMarzId);
 
-            if (!$state ) {
+                if (!$state ) {
 
-                return redirect()->back()->withErrors(['error' => 'State not found for w_marz_id']);
-            }
+                    return redirect()->back()->withErrors(['error' => 'State not found for w_marz_id']);
+                }
 
-            // Базовый ID из таблицы states
-            $basePaymanagirId = $state->paymanagir_id;
+                // Базовый ID из таблицы states
+                $basePaymanagirId = $state->paymanagir_id;
 
-            // Получить все paymanagir_id_marz для этого w_marz_id
-            $existingIds = Project::where('w_marz_id', $wMarzId)
-                ->whereNotNull('paymanagir_id_marz')
-                ->orderBy('paymanagir_id_marz')
-                ->pluck('paymanagir_id_marz')
-                ->toArray();
+                // Получить все paymanagir_id_marz для этого w_marz_id
+                $existingIds = Project::where('w_marz_id', $wMarzId)
+                    ->whereNotNull('paymanagir_id_marz')
+                    ->orderBy('paymanagir_id_marz')
+                    ->pluck('paymanagir_id_marz')
+                    ->toArray();
 
-            // Если нет существующих ID
-            if (empty($existingIds)) {
-                $newPaymanagirIdMarz = $basePaymanagirId * 1000;
-            } else {
-                // Ищем минимальное недостающее значение
-                $newPaymanagirIdMarz = null;
-                for ($i = 0; $i < 1000; $i++) {
-                    $candidateId = $basePaymanagirId * 1000 + $i;
-                    if (!in_array($candidateId, $existingIds)) {
-                        $newPaymanagirIdMarz = $candidateId;
-                        break;
+                // Если нет существующих ID
+                if (empty($existingIds)) {
+                    $newPaymanagirIdMarz = $basePaymanagirId * 1000;
+                } else {
+                    // Ищем минимальное недостающее значение
+                    $newPaymanagirIdMarz = null;
+                    for ($i = 0; $i < 1000; $i++) {
+                        $candidateId = $basePaymanagirId * 1000 + $i;
+                        if (!in_array($candidateId, $existingIds)) {
+                            $newPaymanagirIdMarz = $candidateId;
+                            break;
+                        }
+                    }
+
+                    if ($newPaymanagirIdMarz === null) {
+                        return redirect()->back()->withErrors(['error' => 'No available paymanagir_id_marz for this state']);
                     }
                 }
 
-                if ($newPaymanagirIdMarz === null) {
-                    return redirect()->back()->withErrors(['error' => 'No available paymanagir_id_marz for this state']);
-                }
+                // Сохранение нового ID в поле paymanagir_id_marz
+                $project->paymanagir_id_marz = $newPaymanagirIdMarz;
+                $project->save();
+
+                return redirect()->back()->with('success', "Paymanagir ID Marz {$newPaymanagirIdMarz} успешно сгенерирован.");
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['error' => 'Ошибка при генерации ID: ' . $e->getMessage()]);
             }
-
-            // Сохранение нового ID в поле paymanagir_id_marz
-            $project->paymanagir_id_marz = $newPaymanagirIdMarz;
-            $project->save();
-
-            return redirect()->back()->with('success', "Paymanagir ID Marz {$newPaymanagirIdMarz} успешно сгенерирован.");
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Ошибка при генерации ID: ' . $e->getMessage()]);
-        }
         }
     }
 
