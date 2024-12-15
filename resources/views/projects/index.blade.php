@@ -108,15 +108,19 @@
 
                                                 <form action="{{ route('projects.generatePaymanagirIdMarz', $project->id) }}" method="POST">
                                                     @csrf
+                                                   @if($project->paymanagir_start == null)
+                                                        <button class="btn btn-secondary" disabled>ստորագրել</button>
 
-                                                    @if($project->paymanagir_start == null || $project->paymanagir_id_marz)
+
+                                                    @elseif($project->paymanagir_id_marz)
                                                         <a href="{{ route('projects.show', $project->id) }}">
                                                             <button class="btn btn-success" disabled>{{ $project->paymanagir_id_marz }}</button>
 
                                                         </a>
                                                     @else
                                                         <button class="btn btn-primary">ստորագրել</button>
-                                                    @endif
+                                                   @endif
+
 
 
 
