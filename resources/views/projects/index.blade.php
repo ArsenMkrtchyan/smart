@@ -105,16 +105,31 @@
                                     @foreach($projects as $project)
                                         <tr>
                                             <td>
+
                                                 <form action="{{ route('projects.generatePaymanagirIdMarz', $project->id) }}" method="POST">
                                                     @csrf
-                                                    @if ($project->paymanagir_id_marz)
-                                                         <a href="{{ route('projects.show', $project->id) }}">
-                                                             <button class="btn btn-success" disabled>{{ $project->paymanagir_id_marz }}</button>
 
-                                                         </a>
+                                                    @if($project->paymanagir_start == null || $project->paymanagir_id_marz)
+                                                        <a href="{{ route('projects.show', $project->id) }}">
+                                                            <button class="btn btn-success" disabled>{{ $project->paymanagir_id_marz }}</button>
+
+                                                        </a>
                                                     @else
                                                         <button class="btn btn-primary">ստորագրել</button>
                                                     @endif
+
+
+
+
+
+{{--                                                    @if ($project->paymanagir_id_marz)--}}
+{{--                                                         <a href="{{ route('projects.show', $project->id) }}">--}}
+{{--                                                             <button class="btn btn-success" disabled>{{ $project->paymanagir_id_marz }}</button>--}}
+
+{{--                                                         </a>--}}
+{{--                                                    @else--}}
+{{--                                                        <button class="btn btn-primary">ստորագրել</button>--}}
+{{--                                                    @endif--}}
                                                 </form>
                                             </td>
                                             <td>{{ $project->paymanagir_start }} </td>
