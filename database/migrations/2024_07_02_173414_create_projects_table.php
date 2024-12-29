@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('check_time')->nullable();
             $table->string('brand_name')->nullable();
+
             $table->string('firm_name')->nullable();
             $table->boolean('firm_type')->nullable(); // 0=iravabanakan 1= fizikakan ete fizikakan a chuni i_address ev hvhh
             $table->string('hvhh')->nullable();
@@ -23,7 +25,14 @@ return new class extends Migration
             $table->string('w_address')->nullable();
             $table->string('ceo_name')->nullable();
             $table->string('ceo_phone')->nullable();
+            $table->string('ceo_role')->nullable();
             $table->string('fin_contact')->nullable();
+
+            $table->string('andznagir')->nullable(); // fizikakan firm_type = 1
+            $table->string('soc')->nullable(); // fizikakan firm_type = 1
+            $table->string('id_card')->nullable(); // fizikakan firm_type = 1
+
+
             $table->string('firm_email')->nullable();
             $table->string('firm_bank')->nullable();
             $table->string('firm_bank_hh')->nullable();
@@ -31,17 +40,18 @@ return new class extends Migration
             $table->timestamp('paymanagir_time')->useCurrent();
             $table->date('paymanagir_start')->nullable();
             $table->boolean('signed')->nullable();
-            $table->boolean('status')->default(true);
+            $table->string('status');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
-           $table->double('paymanagir_id_marz')->nullable();
+            $table->foreignId('worker_id')->nullable()->references('id')->on('users')->onDelete('cascade');
+
+            //          $table->double('paymanagir_id_marz')->nullable();
             $table->string('x_gps')->nullable();
             $table->string('y_gps')->nullable();
             $table->string('nkar')->nullable();
             $table->string('their_hardware')->nullable();
-            $table->string('patasxanatu')->nullable();
-            $table->string('patasxanatu_phone')->nullable();
-            $table->date('patasxanatu_date')->nullable();
-            $table->string('building_type')->nullable();
+            $table->string('connection_type')->nullable();
+            $table->string('indent_number')->nullable();
+            $table->date('end_dimum')->nullable();
             $table->date('paymanagir_end')->nullable();
             $table->boolean('paymanagir_received')->nullable();
             $table->boolean('status_edit')->default(0);

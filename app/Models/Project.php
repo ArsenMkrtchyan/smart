@@ -11,7 +11,10 @@ class   Project extends Model
 
     protected $fillable = [
 
-    'brand_name',
+         'building_id',
+        'check_time',
+        'brand_name',
+        'firm_name',
         'firm_type',
         'hvhh',
         'i_marz_id',
@@ -20,6 +23,11 @@ class   Project extends Model
         'w_address',
         'ceo_name',
         'ceo_phone',
+        'ceo_role',
+        'fin_contact',
+        'andznagir',
+        'soc',
+        'id',
         'firm_email',
         'firm_bank',
         'firm_bank_hh',
@@ -29,19 +37,18 @@ class   Project extends Model
         'signed',
         'status',
         'user_id',
-        'paymanagir_id_marz',
+        'worker_id',
         'x_gps',
         'y_gps',
         'nkar',
         'their_hardware',
-        'patasxanatu',
-        'patasxanatu_phone',
-        'patasxanatu_date',
-        'building_type',
+        'patasxanatu_id',
+        'connection_type',
+        'indent_number',
+        'end_dimum',
         'paymanagir_end',
         'paymanagir_received',
-        'status_edit',
-        'firm_name'
+        'status_edit'
 
     ];
 

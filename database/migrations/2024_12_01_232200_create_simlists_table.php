@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('simlists', function (Blueprint $table) {
             $table->id();
-            $table->string('sim_info');
+            $table->string('sim_operator');
             $table->string('number');
             $table->string('sim_id');
             $table->string('price');

@@ -11,15 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hardwares', function (Blueprint $table) {
+        Schema::create('patasxanatus', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('serial');
-            $table->string('ident_number');
-            $table->integer('kargavichak');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('worker_id')->constrained('users')->onDelete('cascade');
-
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');
 
             $table->timestamps();
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hardwares');
+        Schema::dropIfExists('patasxanatus');
     }
 };

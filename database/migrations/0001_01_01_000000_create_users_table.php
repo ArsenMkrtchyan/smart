@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('female');
+            $table->string('firm_name')->nullable();
+            $table->string('address')->nullable();
+            $table->string('balance')->nullable();
+$table->integer('role_id')->nullable();
 
             $table->string('number')->nullable();
             $table->string('email')->unique();
-            $table->integer('role_id')->default(1);
+        //    $table->foreignId('role_id')->references('id')->on('roles')->onDelete('cascade'); // role_id
             $table->boolean('is_admin')->default(0);
+            $table->boolean('havayrole')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
