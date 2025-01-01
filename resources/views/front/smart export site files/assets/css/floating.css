@@ -1,0 +1,57 @@
+/* Общие стили для контейнера */
+
+.floating-label {
+  position: relative;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Общие стили для input и select */
+
+.floating-label input, .floating-label select {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 16px;
+  outline: none;
+  appearance: none;
+  background: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-label input:focus, .floating-label select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Стили для метки */
+
+.floating-label label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  color: #6c757d;
+  font-size: 16px;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Метка при фокусе или наличии значения */
+
+.floating-label input:focus + label, .floating-label input:not(:placeholder-shown) + label, .floating-label select:focus + label, .floating-label select:not([value=""]) + label {
+  top: -10px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+/* Метка для select при невалидности */
+
+.floating-label select:invalid + label {
+  color: #dc3545;
+}
+
