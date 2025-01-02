@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('i_address')->nullable();
             $table->foreignId('w_marz_id')->nullable()->references('id')->on('states')->onDelete('cascade');
             $table->string('w_address')->nullable();
+
+
+            $table->foreignId('ceorole_id')->nullable()->references('id')->on('seoroles')->onDelete('cascade');
             $table->string('ceo_name')->nullable();
             $table->string('ceo_phone')->nullable();
             $table->string('ceo_role')->nullable();
@@ -31,7 +34,6 @@ return new class extends Migration
             $table->string('andznagir')->nullable(); // fizikakan firm_type = 1
             $table->string('soc')->nullable(); // fizikakan firm_type = 1
             $table->string('id_card')->nullable(); // fizikakan firm_type = 1
-
 
             $table->string('firm_email')->nullable();
             $table->string('firm_bank')->nullable();
