@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('seoroles', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }

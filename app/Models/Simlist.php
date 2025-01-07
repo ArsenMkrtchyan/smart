@@ -16,7 +16,7 @@ class Simlist extends Model
         'price',
         'mb',
         'project_id',
-'user_id',
+        'user_id',
 
 
 

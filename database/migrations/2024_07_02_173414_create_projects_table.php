@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('check_time')->nullable();
             $table->string('brand_name')->nullable();
-
+            $table->string('tech_check')->nullable();
+            $table->string('object_check')->nullable();
             $table->string('firm_name')->nullable();
             $table->boolean('firm_type')->nullable(); // 0=iravabanakan 1= fizikakan ete fizikakan a chuni i_address ev hvhh
             $table->string('hvhh')->nullable();
@@ -26,13 +27,15 @@ return new class extends Migration
 
 
             $table->foreignId('ceorole_id')->nullable()->references('id')->on('seoroles')->onDelete('cascade');
+           $table->foreignId('type_id')->nullable()->references('id')->on('object_types')->onDelete('cascade');
+
             $table->string('ceo_name')->nullable();
             $table->string('ceo_phone')->nullable();
             $table->string('ceo_role')->nullable();
             $table->string('fin_contact')->nullable();
 
             $table->string('andznagir')->nullable(); // fizikakan firm_type = 1
-            $table->string('soc')->nullable(); // fizikakan firm_type = 1
+                   $table->string('soc')->nullable(); // fizikakan firm_type = 1
             $table->string('id_card')->nullable(); // fizikakan firm_type = 1
 
             $table->string('firm_email')->nullable();
@@ -42,7 +45,8 @@ return new class extends Migration
             $table->timestamp('paymanagir_time')->useCurrent();
             $table->date('paymanagir_start')->nullable();
             $table->boolean('signed')->nullable();
-            $table->string('status');
+            $table->string('status')->nullable();
+
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('worker_id')->nullable()->references('id')->on('users')->onDelete('cascade');
 
@@ -55,8 +59,10 @@ return new class extends Migration
             $table->string('indent_number')->nullable();
             $table->date('end_dimum')->nullable();
             $table->date('paymanagir_end')->nullable();
+
             $table->boolean('paymanagir_received')->nullable();
             $table->boolean('status_edit')->default(0);
+            $table->string('ident_id', 4)->unique()->nullable();
             /**
              * obshi mitq
              * mi hat el knopka aktivacnel

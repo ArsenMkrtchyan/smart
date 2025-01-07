@@ -33,8 +33,17 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('projects', \App\Http\Controllers\ProjectController::class);
+    Route::get('/projects/fetch-data', [ProjectController::class, 'fetchData'])->name('projects.fetchData');
+    Route::get('/get-districts/{name}', [ProjectController::class, 'getDistricts'])
+        ->name('getDistricts');
+    Route::post('/projects/main_store_phy', [ProjectController::class, 'main_store_phy'])
+        ->name('projects.main_store_phy');
+    Route::post('/projects/main_store_jur', [ProjectController::class, 'main_store_jur'])
+        ->name('projects.main_store_jur');
+    Route::post('/projects/store-all', [ProjectController::class, 'storeAll'])->name('projects.storeAll');
 
-
+    Route::get('/projects/create/search-simlists', [ProjectController::class, 'searchSimlists'])->name('projects.searchSimlists');
+    Route::get('/projects/create/get-next-ident-id', [ProjectController::class, 'getNextIdentId'])->name('projects.getNextIdentId');
 });
 Route::resource('hardwares', \App\Http\Controllers\HardwareController::class);
 Route::post('/projects/{id}/export', [ProjectController::class, 'export'])->name('projects.export');

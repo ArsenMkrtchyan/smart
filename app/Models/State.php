@@ -11,8 +11,12 @@ class State extends Model
 
     protected $fillable = [
         'name',
-        'paymanagir_id'
+        'district'
 
 
     ];
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

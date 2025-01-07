@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('patasxanatus', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('number');
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');
 
             $table->timestamps();

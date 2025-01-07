@@ -16,6 +16,7 @@ class   Project extends Model
         'brand_name',
         'firm_name',
         'firm_type',
+        'type_id',
         'hvhh',
         'i_marz_id',
         'i_address',
@@ -45,6 +46,7 @@ class   Project extends Model
         'patasxanatu_id',
         'connection_type',
         'indent_number',
+        'ident_id',
         'end_dimum',
         'paymanagir_end',
         'paymanagir_received',
@@ -76,5 +78,13 @@ class   Project extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+    public function simlists()
+    {
+        return $this->hasMany(Simlist::class);
+    }
+    public function patasxanatus()
+    {
+        return $this->hasMany(Patasxanatu::class);
     }
 }
