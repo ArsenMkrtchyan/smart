@@ -33,8 +33,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('projects', \App\Http\Controllers\ProjectController::class);
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index
-    ');
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
     Route::get('/projects/fetch-data', [ProjectController::class, 'fetchData'])->name('projects.fetchData');
     Route::get('/get-districts/{name}', [ProjectController::class, 'getDistricts'])
