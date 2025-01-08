@@ -534,109 +534,113 @@ $hardwares = Hardware::all();
 
     public function edit($id)
     {
-        $user = Auth::user();
-        $project = Project::findOrFail($id);
-$states = State::all();
-$prices = Price::all();
-        if ($user->role_id == 2 && $project->active == 1) {
-            return redirect()->route('projects.index')->with('error', 'You do not have permission to edit this project.');
-        }
+        $project = Project::with(['simlists', 'patasxanatus'])->findOrFail($id);
 
-        return view('projects.edit', compact('project' ,'states' , 'prices'));
+        // Определяем текущий раздел (main, technical, adminTechnical)
+        // Можно передать через запрос или определить по данным проекта
+        $currentSection = 'main'; // По умолчанию
+
+        // Получаем необходимые данные для формы
+        $simlists = Simlist::all();
+        $states = State::all();
+        $prices = Price::all();
+        $types = DB::table('object_types')->get();
+        $names = State::select('name')->distinct()->get();
+        $seoroles = Seorole::all();
+        $workers = User::all();
+        $hardwares = Hardware::all();
+
+        return view('projects.edit', compact(
+            'project',
+            'currentSection',
+            'simlists',
+            'states',
+            'prices',
+            'types',
+            'names',
+            'seoroles',
+            'workers',
+            'hardwares'
+        ));
     }
-
-
-
 
     public function update(Request $request, $id)
     {
         $project = Project::findOrFail($id);
 
-        $request->validate([
-            'brand_name' => [
-                'nullable',
-                'string',
-                'max:255',
-                Rule::unique('projects')->ignore($project->id),
-            ],
-            'firm_bank' => 'nullable|string|max:255',
-            'firm_bank_hh' => 'nullable|string|max:255',
-            'ceo_name' => 'nullable|string|max:255',
-            'ceo_phone' => [
-                'nullable',
-                'numeric',
-                Rule::unique('projects')->ignore($project->id),
-            ],
-            'firm_type' => 'required|boolean', // 0 = юридическое, 1 = физическое лицо
-            'hvhh' => 'nullable|string|max:255',
-            'firm_name' => 'nullable|string',
-            'i_marz_id' => 'nullable|string|max:255',
-            'i_address' => 'nullable|string|max:255',
-            'w_marz_id' => 'nullable|string|max:255',
-            'w_address' => 'nullable|string|max:255',
-            'firm_email' => 'nullable|string|email|max:255',
-            'price_id' => 'nullable|string|max:255',
-            'paymanagir_time' => 'nullable|date',
+        $validated = $request->validate([
+            // Ваши правила валидации
+            'type_id'       => 'nullable|integer',
+            'brand_name'    => 'nullable|string',
+            'firm_bank'     => 'nullable|string',
+            'firm_bank_hh'  => 'nullable|string',
+            'firm_email'    => 'nullable|string|email',
+
+            // Физ. лицо
+            'ceo_name'      => 'nullable|string',
+            'andznagir'     => 'nullable|string',
+            'soc'           => 'nullable|string',
+            'id_card'       => 'nullable|string',
+            'ceo_phone'     => 'nullable|string',
+
+            // Юр. лицо
+            'firm_name'     => 'nullable|string',
+            'hvhh'          => 'nullable|string',
+            'fin_contact'   => 'nullable|string',
+
+            // Адреса
+            'i_marz_id'     => 'nullable|integer',
+            'i_address'     => 'nullable|string',
+            'w_marz_id'     => 'nullable|integer',
+            'w_address'     => 'nullable|string',
+            'x_gps'         => 'nullable|string',
+
+            // Техническая секция
+            'identification' => 'nullable|in:manual,auto',
+            'ident_id' => 'nullable|digits:4|unique:projects,ident_id,'.$project->id,
+
+            // Админ-техническая секция
             'paymanagir_start' => 'nullable|date',
-            'signed' => 'boolean',
-            'status' => 'boolean',
-            'x_gps' => 'nullable|string|max:255',
-            'y_gps' => 'nullable|string|max:255',
-            'nkar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'their_hardware' => 'nullable|string|max:255',
-            'patasxanatu' => 'nullable|string|max:255',
-            'patasxanatu_phone' => 'nullable|numeric',
-            'patasxanatu_date' => 'nullable|date',
-            'building_type' => 'nullable|string|max:255',
-            'paymanagir_received' => 'boolean',
             'paymanagir_end' => 'nullable|date',
-            'status_edit' => 'boolean',
+            'end_dimum' => 'nullable|date',
+            'tech_check' => 'nullable|string',
+            'object_check' => 'nullable|string',
+            'price_id' => 'nullable|integer',
+            'status_edit' => 'nullable|boolean',
+
+            // Связанные SIM-карты и Pатասxanatu
+            'sim_ids'         => 'array',
+            'sim_ids.*'       => 'integer',
+            'patasxanatus'    => 'nullable|array',
+            'patasxanatus.*'  => 'nullable|string|max:255',
+            'numbers'         => 'nullable|array',
+            'numbers.*'       => 'nullable|string|max:255',
         ]);
-        $userId = Auth::id();
-        $validatedData['user_id'] =  $userId;
-        $projectData = $request->except(['_token', '_method', 'nkar']);
 
-        if ($request->hasFile('nkar')) {
+        // Обновление данных проекта
+        $project->update($validated);
 
-            if ($project->nkar && Storage::exists('public/images/' . $project->nkar)) {
-                Storage::delete('public/images/' . $project->nkar);
-            }
-            $imageName = time() . '.' . $request->nkar->extension();
-            $request->nkar->storeAs('public/images', $imageName);
-            $projectData['nkar'] = $imageName;
+        // Обновляем связанные SIM-карты
+        Simlist::where('project_id', $project->id)->update(['project_id' => null]);
+        if (!empty($validated['sim_ids'])) {
+            Simlist::whereIn('id', $validated['sim_ids'])->update(['project_id' => $project->id]);
         }
 
-        try {
-            $project->update($projectData);
-
-
-            $contractNew = $request->ceo_name . '_' . $project->id;
-            $url = "http://178.219.56.252:1000/api.html?login=Admin&pwd=&action=updateObject";
-            $url .= "&Name=" . urlencode($request->brand_name);
-            $url .= "&Contract=" . urlencode($request->ceo_name);
-            $url .= "&MobilePhone1=+" . urlencode($request->ceo_phone);
-            $url .= "&Address=" . urlencode($request->i_address);
-            $url .= "&SIMCardPhone=+" . urlencode($request->patasxanatu_phone);
-
-            $client = new Client();
-            $response = $client->get($url);
-            $responseBody = (string)$response->getBody();
-
-            if (trim($responseBody) == 'OK') {
-                $project->status_edit = 1;
-                $message = 'Project updated successfully and server responded with OK.';
-            } else {
-                $project->status_edit = 0;
-                $message = 'Project updated successfully but server did not respond with OK.';
+        // Обработка Pатասxanatu
+        $project->patasxanatus()->delete();
+        if (!empty($validated['patasxanatus']) && !empty($validated['numbers'])) {
+            foreach ($validated['patasxanatus'] as $key => $name) {
+                if (!empty($name) || !empty($validated['numbers'][$key])) {
+                    $project->patasxanatus()->create([
+                        'name' => $name,
+                        'number' => $validated['numbers'][$key],
+                    ]);
+                }
             }
-        } catch (\Exception $e) {
-            Log::error('Error updating project: ' . $e->getMessage());
-            $project->status_edit = 0;
         }
 
-        $project->save();
-
-        return redirect()->route('projects.index')->with('success', $message ?? 'There was an error updating the project.');
+        return redirect()->route('projects.edit', $project->id)
+            ->with('success', 'Проект успешно обновлен.');
     }
 
 

@@ -1,280 +1,1191 @@
+@extends('projects.layout')
+@section('content')
 
+    <div class="container-fluid">
+        <h3 class="text-dark mb-4">Edit Project</h3>
 
+        <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-<!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Create Project - Brand</title>
-    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome-all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/Data-Table-styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/Data-Table.css') }}">
-</head>
-<body id="page-top">
-<div id="wrapper">
-    <!-- Sidebar -->
-    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-        <div class="container-fluid d-flex flex-column p-0">
-            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            <div class="text-center d-none d-md-inline">
-                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+            {{-- Группа радиокнопок (Գլխավոր / Տեխնիկական / ադմին տեխնիկական) --}}
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" autocomplete="off" class="btn-check" id="btnradio1" name="btnradio" {{ $currentSection === 'main' ? 'checked' : '' }}>
+                <label class="form-label btn btn-outline-primary" for="btnradio1">Գլխավոր</label>
+
+                <input type="radio" autocomplete="off" class="btn-check" id="btnradio2" name="btnradio" {{ $currentSection === 'technical' ? 'checked' : '' }}>
+                <label class="form-label btn btn-outline-primary" for="btnradio2">Տեխնիկական</label>
+
+                <input type="radio" autocomplete="off" class="btn-check" id="btnradio2-1" name="btnradio" {{ $currentSection === 'adminTechnical' ? 'checked' : '' }}>
+                <label class="form-label btn btn-outline-primary" for="btnradio2-1">ադմին տեխնիկական</label>
             </div>
-        </div>
-    </nav>
 
-    <!-- Content Wrapper -->
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content">
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
-                <div class="container-fluid">
-                    <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <ul class="navbar-nav flex-nowrap ms-auto">
-                        <div class="d-none d-sm-block topbar-divider"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow">
-                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                                    <span class="d-none d-lg-inline me-2 text-gray-600 small">Hello</span>
-                                </a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>{{ __('Logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+            {{-- Форма --}}
+
+            {{-- --------------------- Գլխավոր --------------------- --}}
+            <input type="hidden" name="phy_jur" id="phy_jur" value="{{ $project->hvhh ? '1' : '0' }}">
+            <div id="physicalMain" style="display: {{ $project->hvhh ? 'none' : 'block' }};">
+                <div class="col-lg-8 col-xxl-11">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow mb-3">
+                                <div class="card-body">
+                                    {{-- Селекты и поля для физ. лица --}}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="entity-select-4" name="entity_type_main">
+                                                    <optgroup label="Իրավաբանական/Ֆիզիկական">
+                                                        <option value="1" {{ $project->hvhh ? 'selected' : '' }}>Իրավաբանական</option>
+                                                        <option value="0" {{ !$project->hvhh ? 'selected' : '' }}>Ֆիզիկական</option>
+                                                    </optgroup>
+                                                </select>
+                                                <label for="entity-select-4">Իրավաբանական/Ֆիզիկական</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="entity-select-5" name="type_id">
+                                                    <option value="" selected>Ընտրեք</option>
+                                                    <optgroup label="Օբեկտի տիպ">
+                                                        @foreach($types as $type)
+                                                            <option value="{{ $type->id }}" {{ $project->type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
+                                                <label for="entity-select-5">Օբեկտի տիպ</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="first_name-1" name="ceo_name" placeholder=" " value="{{ old('ceo_name', $project->ceo_name) }}">
+                                                <label for="first_name-1">անուն ազգանուն</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-1" name="andznagir" placeholder=" " value="{{ old('andznagir', $project->andznagir) }}">
+                                                <label for="last_name-1">Անձնագիր</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-3" name="soc" placeholder=" " value="{{ old('soc', $project->soc) }}">
+                                                <label for="last_name-3">Սոց քարտ</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-2" name="id_card" placeholder=" " value="{{ old('id_card', $project->id_card) }}">
+                                                <label for="last_name-2">ID քարտ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-7" name="ceo_phone" placeholder=" " value="{{ old('ceo_phone', $project->ceo_phone) }}">
+                                                <label for="last_name-7">հեռախոսահամար</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="email" id="last_name-4" name="firm_email" placeholder=" " value="{{ old('firm_email', $project->firm_email) }}">
+                                                <label for="last_name-4"><strong>email</strong></label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select name="firm_bank" class="form-select" id="bank-select-1">
+                                                    <optgroup label="Ընտրել">
+                                                        <option value="konvers" {{ $project->firm_bank == 'konvers' ? 'selected' : '' }}>Կոնվերս բանկ ԲԲԸ</option>
+                                                        <option value="ameria" {{ $project->firm_bank == 'ameria' ? 'selected' : '' }}>Ամերիաբանկ ԲԲԸ</option>
+                                                    </optgroup>
+                                                </select>
+                                                <label for="bank-select-1">բանկ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-5" name="brand_name" placeholder=" " value="{{ old('brand_name', $project->brand_name) }}">
+                                                <label for="last_name-5">Բրենդի անվանում</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <!-- Пусто -->
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-5" name="firm_bank_hh" placeholder=" " value="{{ old('firm_bank_hh', $project->firm_bank_hh) }}">
+                                                <label for="last_name-5">հաշվեհամար</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- /card-body -->
+                            </div> <!-- /card -->
+                        </div> <!-- /col -->
+                    </div> <!-- /row -->
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card">
+                                <!-- Первый набор: i_ -->
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="i_region_select_phy" name="i_region">
+                                                <option value="" selected>Ընտրեք</option>
+                                                <optgroup label="ՀՀ Մարզ">
+                                                    @foreach($names as $row)
+                                                        <option value="{{ $row->name }}" {{ $project->iMarz && $project->iMarz->name == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            </select>
+                                            <label for="i_region_select_phy">i մարզ (name)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="i_district_select_phy" name="i_marz_id">
+                                                <option value="" selected>Ընտրեք</option>
+                                                @if($project->iMarz)
+                                                    <option value="{{ $project->i_marz_id }}" selected>{{ $project->iMarz->district }}</option>
+                                                @endif
+                                            </select>
+                                            <label for="i_district_select_phy">i Համայնք (district)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input type="text" class="form-control" id="i_address_phy" name="i_address" placeholder=" " value="{{ old('i_address', $project->i_address) }}">
+                                            <label for="i_address_phy"><strong>i հասցե</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                {{-- ========== Блок w_  ========== --}}
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="w_region_select_phy" name="w_region">
+                                                <option value="" selected>Ընտրեք</option>
+                                                <optgroup label="ՀՀ Մարզ">
+                                                    @foreach($names as $row)
+                                                        <option value="{{ $row->name }}" {{ $project->wMarz && $project->wMarz->name == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            </select>
+                                            <label for="w_region_select_phy">w մարզ (name)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="w_district_select_phy" name="w_marz_id">
+                                                <option value="" selected>Ընտրեք</option>
+                                                @if($project->wMarz)
+                                                    <option value="{{ $project->w_marz_id }}" selected>{{ $project->wMarz->district }}</option>
+                                                @endif
+                                            </select>
+                                            <label for="w_district_select_phy">w Համայնք (district)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input type="text" class="form-control" id="w_address_phy" name="w_address" placeholder=" " value="{{ old('w_address', $project->w_address) }}">
+                                            <label for="w_address_phy"><strong>w հասցե</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- JS-скрипт тот же, только дублируем логику для i_ и w_ -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            </div>
+                        </div>
+                    </div> <!-- /row -->
+                </div> <!-- /col-lg-8 -->
+            </div> <!-- /#physicalMain -->
+
+            {{-- --------------------- Գլխավոր (Իրավաբանական лицо) --------------------- --}}
+            <div id="juridicalMain" style="display: {{ $project->hvhh ? 'block' : 'none' }};">
+                <div class="col-lg-8 col-xxl-11">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow mb-3">
+                                <div class="card-body">
+                                    {{-- Селекты и поля для юр. лица --}}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="entity-select-4-j" name="entity_type_jur">
+                                                    <optgroup label="Իրավաբանական/Ֆիզիկական">
+                                                        <option value="1" {{ $project->hvhh ? 'selected' : '' }}>Իրավաբանական</option>
+                                                        <option value="0" {{ !$project->hvhh ? 'selected' : '' }}>Ֆիզիկական</option>
+                                                    </optgroup>
+                                                </select>
+                                                <label for="entity-select-4-j">Իրավաբանական/Ֆիզիկական</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="entity-select-5-j" name="type_id_jur">
+                                                    <option value="" selected>Ընտրեք</option>
+                                                    <optgroup label="Օբեկտի տիպ">
+                                                        @foreach($types as $type)
+                                                            <option value="{{ $type->id }}" {{ $project->type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
+                                                <label for="entity-select-5-j">Օբեկտի տիպ</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="first_name-1-j" name="firm_name" placeholder=" " value="{{ old('firm_name', $project->firm_name) }}">
+                                                <label for="first_name-1-j">Ֆիրմայի անվանումը</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="entity-select-5-j" name="role_id">
+                                                    <optgroup label="Roles">
+                                                        @foreach($seoroles as $seorole)
+                                                            <option value="{{ $seorole->id }}" {{ $project->role_id == $seorole->id ? 'selected' : '' }}>{{ $seorole->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                </select>
+                                                <label for="entity-select-5-j">Role</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-11-j" name="ceo_name_jur" placeholder=" " value="{{ old('ceo_name_jur', $project->ceo_name) }}">
+                                                <label for="last_name-11-j">տնօրեն</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-3-j" name="hvhh" placeholder=" " value="{{ old('hvhh', $project->hvhh) }}">
+                                                <label for="last_name-3-j">հարկային կոդ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-2-j" name="brand_name_jur" placeholder=" " value="{{ old('brand_name_jur', $project->brand_name) }}">
+                                                <label for="last_name-2-j">Բրենդի անվանում</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-4-j" name="ceo_phone_jur" placeholder=" " value="{{ old('ceo_phone_jur', $project->ceo_phone) }}">
+                                                <label for="last_name-4-j">տնօրենի հեռ․</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <select class="form-select form-select" id="bank-select-1-j" name="firm_bank_jur">
+                                                    <optgroup label="Ընտրել">
+                                                        <option value="Կոնվերս" {{ $project->firm_bank == 'Կոնվերս' ? 'selected' : '' }}>Կոնվերս բանկ ԲԲԸ</option>
+                                                        <option value="Ամերիաբանկ" {{ $project->firm_bank == 'Ամերիաբանկ' ? 'selected' : '' }}>Ամերիաբանկ ԲԲԸ</option>
+                                                    </optgroup>
+                                                </select>
+                                                <label for="bank-select-1-j">բանկ</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-5-j" name="fin_contact" placeholder=" " value="{{ old('fin_contact', $project->fin_contact) }}">
+                                                <label for="last_name-5-j">ֆին պատասխանատու հեռ․</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="email" id="last_name-6-j" name="firm_email_jur" placeholder=" " value="{{ old('firm_email_jur', $project->firm_email) }}">
+                                                <label for="last_name-6-j">e-mail</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-3 floating-label">
+                                                <input class="form-control" type="text" id="last_name-5-j2" name="firm_bank_hh_jur" placeholder=" " value="{{ old('firm_bank_hh_jur', $project->firm_bank_hh) }}">
+                                                <label for="last_name-5-j2">հաշվեհամար</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- /card-body -->
+                            </div> <!-- /card -->
+                        </div> <!-- /col -->
+                    </div> <!-- /row -->
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="i_region_select_jur" name="i_region_jur">
+                                                <option value="" selected>Ընտրեք</option>
+                                                <optgroup label="ՀՀ Մարզ">
+                                                    @foreach($names as $row)
+                                                        <option value="{{ $row->name }}" {{ $project->iMarz && $project->iMarz->name == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            </select>
+                                            <label for="i_region_select_jur">i մարզ (name)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="i_district_select_jur" name="i_marz_id_jur">
+                                                <option value="" selected>Ընտրեք</option>
+                                                @if($project->iMarz)
+                                                    <option value="{{ $project->i_marz_id }}" selected>{{ $project->iMarz->district }}</option>
+                                                @endif
+                                            </select>
+                                            <label for="i_district_select_jur">i Համայնք (district)</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input type="text" class="form-control" id="i_address_jur" name="i_address_jur" placeholder=" " value="{{ old('i_address_jur', $project->i_address) }}">
+                                            <label for="i_address_jur"><strong>i հասցե</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                {{-- ========== Блок w_  ========== --}}
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="w_region_select_jur" name="w_region_jur">
+                                                <option value="" selected>Ընտրեք</option>
+                                                <optgroup label="ՀՀ Մարզ">
+                                                    @foreach($names as $row)
+                                                        <option value="{{ $row->name }}" {{ $project->wMarz && $project->wMarz->name == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            </select>
+                                            <label for="w_region_select_jur">w մարզ (name)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="w_district_select_jur" name="w_marz_id_jur">
+                                                <option value="" selected>Ընտրեք</option>
+                                                @if($project->wMarz)
+                                                    <option value="{{ $project->w_marz_id }}" selected>{{ $project->wMarz->district }}</option>
+                                                @endif
+                                            </select>
+                                            <label for="w_district_select_jur">w Համայնք (district)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input type="text" class="form-control" id="w_address_jur" name="w_address_jur" placeholder=" " value="{{ old('w_address_jur', $project->w_address) }}">
+                                            <label for="w_address_jur"><strong>w հասցե</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /card -->
+                        </div>
+                    </div> <!-- /row -->
+                </div> <!-- /col-lg-8 -->
+            </div> <!-- /#juridicalMain -->
+
+            {{-- --------------------- ՏԵԽՆԻԿԱԿԱՆ --------------------- --}}
+            <div id="technicalSection" style="display: none;">
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <div class="card mb-3">
+                            <div class="card-body text-center shadow">
+                                <div class="col">
+                                    <div class="mb-3 floating-label">
+                                        <label>Метод идентификации:</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="identification" id="manual_ident" value="manual" {{ $project->identification == 'manual' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="manual_ident">Ввести вручную</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="identification" id="auto_ident" value="auto" {{ $project->identification == 'auto' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="auto_ident">Автоматически</label>
+                                        </div>
+                                    </div>
+
+                                    {{-- Контейнер для ввода ident_id --}}
+                                    <div id="ident_id_container" class="mb-3">
+                                        <label for="ident_id" class="form-label">Идентификатор:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="ident_id" name="ident_id" placeholder="Введите идентификатор" value="{{ old('ident_id', $project->ident_id) }}" {{ $project->identification == 'auto' ? 'readonly' : '' }}>
+                                            <button type="button" class="btn btn-outline-secondary" id="auto_ident_btn" {{ $project->identification == 'auto' ? 'disabled' : '' }}>Идентифицировать</button>
+                                        </div>
+                                        @error('ident_id')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3 floating-label">
+                                        <label for="last_name-3"><strong>Սարքի ID</strong></label>
+                                    </div>
+                                    <div class="mb-3 floating-label">
+                                        <select class="form-select" id="hardware-select" name="hardware_id">
+                                            <optgroup label="Hardwares">
+                                                @foreach($hardwares as $hardware)
+                                                    <option value="{{ $hardware->id }}" {{ $project->hardware_id == $hardware->id ? 'selected' : '' }}>{{ $hardware->name }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3 floating-label">
+                                        <button type="button" class="btn btn-secondary" id="openSimModal">
+                                            Выбрать SIM-карты
+                                        </button>
+
+                                        {{-- Контейнер для отображения выбранных SIM-карт --}}
+                                        <div id="selectedSimContainer" class="mt-3">
+                                            @foreach($project->simlists as $simlist)
+                                                <span data-sim-id="{{ $simlist->id }}">
+                                                {{ $simlist->number }}
+                                                <span class="remove-sim">&times;</span>
+                                                <input type="hidden" name="sim_ids[]" value="{{ $simlist->id }}">
+                                            </span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3 floating-label">
+                                        <select class="form-select" id="worker-select" name="worker_id">
+                                            <optgroup label="Workers">
+                                                @foreach($workers as $worker)
+                                                    <option value="{{ $worker->id }}" {{ $project->worker_id == $worker->id ? 'selected' : '' }}>{{ $worker->name }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <img class="rounded-circle mb-3 mt-4" src="{{ asset('assets/img/dogs/image2.jpeg') }}" width="160" height="160">
+                                <div class="mb-3">
+                                    <button class="btn btn-primary btn-sm" type="button">ավելացնել նկար</button>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <h3 class="text-dark mb-4">Create Project</h3>
-                <div class="card shadow">
-                    <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Project Details</p>
+                        </div>
+                        <div class="card shadow mb-4"></div>
                     </div>
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                    <div class="col-lg-8">
+                        <div class="row mb-3 d-none">
+                            <!-- Оставьте этот блок как есть, если он вам нужен -->
+                        </div>
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 fw-bold">User Settings</p>
                             </div>
-                        @endif
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control" type="text" id="last_name-1" name="x_gps" placeholder=" " value="{{ old('x_gps', $project->x_gps) }}">
+                                            <label for="last_name-1">GPS X</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control" type="text" id="last_name-2" name="y_gps" placeholder=" " value="{{ old('y_gps', $project->y_gps) }}">
+                                            <label for="last_name-2">GPS Y</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xxl-6">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control" type="text" id="last_name-5" name="their_hardware" placeholder=" " value="{{ old('their_hardware', $project->their_hardware) }}">
+                                            <label for="last_name-5">օբեկտի սարքի անվանում</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select" id="entity-select-5" name="connection_type">
+                                                <option value="" selected>Ընտրեք</option>
+                                                <optgroup label="Տեխնիկական կարգավիճակ">
+                                                    <option value="GSM, Dialer" {{ $project->connection_type == 'GSM, Dialer' ? 'selected' : '' }}>GSM, Dialer</option>
+                                                    <option value="GPRS, Internet" {{ $project->connection_type == 'GPRS, Internet' ? 'selected' : '' }}>GPRS, Internet</option>
+                                                    <option value="wifi" {{ $project->connection_type == 'wifi' ? 'selected' : '' }}>wifi</option>
+                                                </optgroup>
+                                            </select>
+                                            <label for="entity-select-5">Միացման ձև</label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
+                                <div id="patasxanatus-container">
+                                    {{-- Выводим существующих Պատասխանատու --}}
+                                    @if($project->patasxanatus)
+                                        @foreach($project->patasxanatus as $index => $patasxanatu)
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3 floating-label patasxanatu-input" data-field="{{ $index + 1 }}">
+                                                        <input type="text" class="form-control" name="patasxanatus[]" placeholder="Պատասխանատու {{ $index + 1 }}" value="{{ old('patasxanatus.'.$index, $patasxanatu->name) }}">
+                                                        <button type="button" class="remove-patasxanatu-btn btn btn-danger btn-sm">&times;</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-3 floating-label patasxanatu-input" data-field="{{ $index + 1 }}">
+                                                        <input type="text" class="form-control" name="numbers[]" placeholder="Номер {{ $index + 1 }}" value="{{ old('numbers.'.$index, $patasxanatu->number) }}">
+                                                        <button type="button" class="remove-patasxanatu-btn btn btn-danger btn-sm">&times;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Кнопка "ավելացնել Պատասխանատու" -->
+                                        <button class="btn btn-outline-primary text-truncate float-none float-sm-none add-another-btn" data-bss-hover-animate="pulse" type="button" style="text-align: center;">
+                                            ավելացնել Պատասխանատու <i class="fas fa-plus-circle edit-icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div> <!-- /card-body -->
+                        </div> <!-- /card shadow -->
+
+                        <div class="card shadow">
+                            <div class="mb-3"></div>
+                            <div class="card-body">
+                                <div class="col">
+                                    <div class="mb-3 floating-label"></div>
+                                    <div class="mb-3 floating-label"></div>
+                                    <div class="form-check">
+                                        <input type="hidden" name="activepaymnanagir_received" value="0">
+                                        <input class="form-check-input" type="checkbox" name="activepaymnanagir_received" value="1" id="formCheck-2" {{ old('activepaymnanagir_received', $project->activepaymnanagir_received) ? 'checked' : '' }}>
+
+                                        <label class="form-check-label" for="formCheck-2">Պայմանագիրը ստացել ենք</label>
+                                    </div>
+                                </div>
+
                             </div>
-                        @endif
-                            <form action="{{ route('projects.update', $project->id) }}" method="POST" enctype="multipart/form-data" style="width: 964px; margin: 34px;">
-                                @csrf
-                                @method('PUT')
-                                <h2 class="text-center">Edit Project Details</h2>
+                        </div> <!-- /card shadow -->
+                    </div> <!-- /col-lg-8 -->
+                </div> <!-- /row -->
+            </div> <!-- /#technicalSection -->
 
-                                <!-- Section Navigation -->
-                                <div class="mb-4 text-center">
-                                    <button type="button" class="btn btn-secondary section-btn" data-section="1">Ֆիրմայի տվյալներ</button>
-                                    <button type="button" class="btn btn-secondary section-btn" data-section="2">տեխնիկական տվյալներ</button>
-                                    <button type="button" class="btn btn-secondary section-btn" data-section="3">Section 3</button>
-                                </div>
-
-                                <!-- Section 1 -->
-                                <div class="section" id="section-1">
-                                    <h3>Section 1</h3>
-                                    <div class="form-group mb-3">
-                                        <label for="firm_type" class="form-label">Firm Type</label>
-                                        <select class="form-control" name="firm_type" id="firm_type">
-                                            <option value="0" {{ $project->firm_type == '0' ? 'selected' : '' }}>Իրավաբանական</option>
-                                            <option value="1" {{ $project->firm_type == '1' ? 'selected' : '' }}>Ֆիզիկական</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="brand_name" class="form-label">Բրենդի անվանում(եթե ունի)</label>
-                                        <input class="form-control" type="text" name="brand_name" value="{{ $project->brand_name }}">
-                                    </div>
-                                    <div id="hvhh_group" class="form-group mb-3">
-                                        <label for="hvhh" class="form-label">ՀՎՀՀ</label>
-                                        <input class="form-control" type="text" name="hvhh" value="{{ $project->hvhh }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="i_marz_id" class="form-label">Մարզի անվանում</label>
-                                        <select class="form-control" name="i_marz_id">
-                                            <option value="">Ընտրել Մարզը</option>
-                                            @foreach ($states as $state)
-                                                <option value="{{ $state->id }}" {{ $project->i_marz_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div id="i_address_group" class="form-group mb-3">
-                                        <label for="i_address" class="form-label">Իրավաբանական հասցե</label>
-                                        <input class="form-control" type="text" name="i_address" value="{{ $project->i_address }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="w_marz_id" class="form-label">Գործունեության հասցեի Մարզ</label>
-                                        <select class="form-control" name="w_marz_id">
-                                            <option value="">ընտրել մարզը</option>
-                                            @foreach ($states as $state)
-                                                <option value="{{ $state->id }}" {{ $project->w_marz_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div id="W_address_group" class="form-group mb-3">
-                                        <label for="w_address" class="form-label">Գործունեության հասցե</label>
-                                        <input class="form-control" type="text" name="w_address" value="{{ $project->w_address }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="ceo_name" class="form-label">Տնօենի անուն ազգանուն</label>
-                                        <input class="form-control" type="text" name="ceo_name" value="{{ $project->ceo_name }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="ceo_phone" class="form-label">տնօրենի հառախոսահամար</label>
-                                        <input class="form-control" type="text" name="ceo_phone" value="{{ $project->ceo_phone }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="firm_email" class="form-label">E-mail հասցե </label>
-                                        <input class="form-control" type="email" name="firm_email" value="{{ $project->firm_email }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="firm_bank" class="form-label">բանկի անվանում</label>
-                                        <input class="form-control" type="text" name="firm_bank" value="{{ $project->firm_bank }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="firm_bank_hh" class="form-label">բանկային հաշվի համար</label>
-                                        <input class="form-control" type="text" name="firm_bank_hh" value="{{ $project->firm_bank_hh }}">
-                                    </div>
-                                </div>
-
-                                <!-- Section 2 -->
-                                <div class="section" id="section-2" style="display: none;">
-                                    <h3>Section 2</h3>
-                                    <div class="form-group mb-3">
-                                        <label for="x_gps" class="form-label">X GPS</label>
-                                        <input class="form-control" type="text" name="x_gps" value="{{ $project->x_gps }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="y_gps" class="form-label">Y GPS</label>
-                                        <input class="form-control" type="text" name="y_gps" value="{{ $project->y_gps }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="nkar" class="form-label">Նկար (Image)</label>
-                                        <input class="form-control" type="file" name="nkar">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="their_hardware" class="form-label">Their Hardware</label>
-                                        <input class="form-control" type="text" name="their_hardware" value="{{ $project->their_hardware }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="patasxanatu" class="form-label">Patasxanatu</label>
-                                        <input class="form-control" type="text" name="patasxanatu" value="{{ $project->patasxanatu }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="patasxanatu_phone" class="form-label">Patasxanatu Phone</label>
-                                        <input class="form-control" type="text" name="patasxanatu_phone" value="{{ $project->patasxanatu_phone }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="patasxanatu_date" class="form-label">Patasxanatu Date</label>
-                                        <input class="form-control" type="date" name="patasxanatu_date" value="{{ $project->patasxanatu_date }}">
-                                    </div>
-                                </div>
-
-                                <!-- Section 3 -->
-                                <div class="section" id="section-3" style="display: none;">
-                                    <h3>Section 3</h3>
-                                    <div class="form-group mb-3">
-                                        <label for="building_type" class="form-label">Օբեկտի տեսակ</label>
-                                        <input class="form-control" type="text" name="building_type" value="{{ $project->building_type }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="paymanagir_start" class="form-label">Paymanagir Start</label>
-                                        <input class="form-control" type="date" name="paymanagir_start" value="{{ $project->paymanagir_start }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="paymanagir_end" class="form-label">Paymanagir End</label>
-                                        <input class="form-control" type="date" name="paymanagir_end" value="{{ $project->paymanagir_end }}">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="price_id" class="form-label">Price ID</label>
-                                        <select class="form-control" name="price_id">
-                                            @foreach ($prices as $price)
-                                                <option value="{{ $price->id }}" {{ $project->price_id == $price->id ? 'selected' : '' }}>
-                                                    {{ $price->detail }} - {{ $price->amount }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="signed" class="form-label">Signed</label>
-                                        <input class="form-check-input" type="checkbox" name="signed" value="1" {{ $project->signed ? 'checked' : '' }}>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="status" class="form-label">Status</label>
-                                        <input class="form-check-input" type="checkbox" name="status" value="1" {{ $project->status ? 'checked' : '' }}>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-3 text-center">
-                                    <button class="btn btn-primary" type="submit">Update</button>
-                                </div>
-                            </form>
-
-
+            {{-- --------------------- ադմին տեխնիկական --------------------- --}}
+            <div id="adminTechnicalSection" style="display: none;">
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <div class="card mb-3"></div>
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="text-primary fw-bold m-0">Լուծարել պայմանագիրը</h6>
+                            </div>
+                            <div class="card-body">
+                                <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}"><small>Դիմումի օր</small>
+                                <div></div>
+                                <input type="date" name="paymanagir_end" value="{{ old('paymanagir_end', $project->paymanagir_end) }}">
+                                <div></div>
+                                <input type="date" name="end_dimum" value="{{ old('end_dimum', $project->end_dimum) }}">
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-lg-8">
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="card shadow mb-3">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 fw-bold">Settings</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3 floating-label">
+                                                    <select class="form-select form-select" id="entity-select-1" name="tech_check">
+                                                        <option value="" selected>Ընտրեք</option>
+                                                        <optgroup label="Տեխնիկական կարգավիճակ">
+                                                            <option value="12" {{ $project->tech_check == '12' ? 'selected' : '' }}>Հսկման տակ</option>
+                                                            <option value="13" {{ $project->tech_check == '13' ? 'selected' : '' }}>Հսկողությունից հանված</option>
+                                                            <option value="14" {{ $project->tech_check == '14' ? 'selected' : '' }}>Կապ չկա</option>
+                                                            <option value="15" {{ $project->tech_check == '15' ? 'selected' : '' }}>Անջատված է</option>
+                                                            <option value="16" {{ $project->tech_check == '16' ? 'selected' : '' }}>Չի աշխատում</option>
+                                                        </optgroup>
+                                                    </select>
+                                                    <label for="entity-select-1">Տեխնիկական կարգավիճակ</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="hidden" name="status_edit" value="0">
+                                                    <input class="form-check-input" type="checkbox" name="status_edit" value="1" id="formCheck-1" {{ old('status_edit', $project->status_edit) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="formCheck-1">թույլատրել փոխել ձեռքով</label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3 floating-label">
+                                                    <input class="form-control" type="text" id="last_name-3" name="check_time" placeholder=" " value="{{ old('check_time', $project->check_time) }}">
+                                                    <label for="last_name-3">կապի ստուգման ժամանակ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card shadow">
+                                    <div class="mb-3"></div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3 floating-label">
+                                                    <select class="form-select form-select" name="object_check" id="entity-select-2">
+                                                        <option value="" selected>Ընտրեք</option>
+                                                        <optgroup label="Object կարգավիճակ">
+                                                            <option value="12" {{ $project->object_check == '12' ? 'selected' : '' }}>սպասվող</option>
+                                                            <option value="13" {{ $project->object_check == '13' ? 'selected' : '' }}>Հրաժարված</option>
+                                                            <option value="14" {{ $project->object_check == '14' ? 'selected' : '' }}>Պայմանագիրը լուծարված</option>
+                                                            <option value="15" {{ $project->object_check == '15' ? 'selected' : '' }}>Պայմանագրի ընդացք</option>
+                                                            <option value="16" {{ $project->object_check == '16' ? 'selected' : '' }}>կարգավորման ընդացք</option>
+                                                            <option value="17" {{ $project->object_check == '17' ? 'selected' : '' }}>911-ին միացված</option>
+                                                        </optgroup>
+                                                    </select>
+                                                    <label for="entity-select-2">Object կարգավիճակ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-3 floating-label">
+                                                    <select class="form-select form-select" name="price_id" id="entity-select-2">
+                                                        <option value="" selected>Ընտրեք</option>
+                                                        <optgroup label="Price">
+                                                            @foreach($prices as $price)
+                                                                <option value="{{ $price->id }}" {{ $project->price_id == $price->id ? 'selected' : '' }}>{{ $price->name }}</option>
+                                                            @endforeach
+                                                        </optgroup>
+                                                    </select>
+                                                    <label for="entity-select-2">Price</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- /col -->
+                        </div> <!-- /row -->
+                    </div> <!-- /col-lg-8 -->
+                </div> <!-- /row -->
+            </div> <!-- /#adminTechnicalSection -->
+
+            <div class="mb-3">
+                <button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button>
             </div>
-        </div>
-        <footer class="bg-white sticky-footer">
-            <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2024</span></div>
-            </div>
-        </footer>
+
+        </form>
     </div>
-    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-</div>
 
-<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sectionButtons = document.querySelectorAll('.section-btn');
-        const sections = document.querySelectorAll('.section');
+    {{-- Модальное окно для выбора SIM-карт --}}
+    <div id="simModal" class="w3-modal" style="display: none;">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+            <div class="w3-center">
+                <span onclick="closeSimModal()" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+                <h3>Выбрать SIM-карты для проекта</h3>
+            </div>
+            <form id="simSearchForm" method="POST">
+                @csrf
+                <div class="w3-container">
+                    <label for="simSearch">Поиск по номеру:</label>
+                    <input type="text" id="simSearch" name="simSearch" class="w3-input" placeholder="Введите номер" oninput="performSearch()">
 
-        sectionButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const sectionId = this.getAttribute('data-section');
-                sections.forEach(section => section.style.display = 'none');
-                document.getElementById('section-' + sectionId).style.display = 'block';
+                    <div id="simSearchResults" class="w3-margin-top">
+                        <p>Введите номер для поиска...</p>
+                    </div>
+
+                    <button type="button" onclick="saveSimSelection()" class="w3-button w3-green w3-margin-top">Сохранить выбор</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- Добавляем дополнительные стили при необходимости -->
+    <style>
+        /* Стилизация выбранных SIM-карт */
+        #selectedSimContainer {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 50px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        #selectedSimContainer span {
+            display: inline-block;
+            background-color: #e7f3fe;
+            border: 1px solid #2196F3;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 4px;
+            position: relative;
+        }
+        #selectedSimContainer span .remove-sim {
+            margin-left: 10px;
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .patasxanatu-input {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .remove-patasxanatu-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: red;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
+    {{-- Подключаем jQuery --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const phySection = document.querySelector("#physicalMain");
+            const jurSection = document.querySelector("#juridicalMain");
+            const phyJurSelect = document.querySelector("#entity-select-4");
+            const technicalSection = document.querySelector("#technicalSection");
+            const adminTechnicalSection = document.querySelector("#adminTechnicalSection");
+
+            function toggleSections() {
+                const selectedValue = phyJurSelect.value;
+
+                if (selectedValue === "0") {
+                    // Физическое лицо выбрано
+                    enableInputs(phySection);
+                    disableInputs(jurSection);
+                } else if (selectedValue === "1") {
+                    // Юридическое лицо выбрано
+                    enableInputs(jurSection);
+                    disableInputs(phySection);
+                }
+
+                // Технические секции остаются скрытыми
+                technicalSection.style.display = "none";
+                adminTechnicalSection.style.display = "none";
+            }
+
+            function disableInputs(section) {
+                const inputs = section.querySelectorAll("input, select, textarea");
+                inputs.forEach((input) => {
+                    input.disabled = true;
+                });
+            }
+
+            function enableInputs(section) {
+                const inputs = section.querySelectorAll("input, select, textarea");
+                inputs.forEach((input) => {
+                    input.disabled = false;
+                });
+            }
+
+            // Событие при изменении селектора физ/юр
+            phyJurSelect.addEventListener("change", toggleSections);
+
+            // Событие перед отправкой формы
+            form.addEventListener("submit", function (event) {
+                const selectedValue = phyJurSelect.value;
+
+                // Отключить неактивную секцию перед отправкой формы
+                if (selectedValue === "0") {
+                    disableInputs(jurSection); // Отключить юридическую секцию
+                } else if (selectedValue === "1") {
+                    disableInputs(phySection); // Отключить физическую секцию
+                }
+            });
+
+            // Инициализация
+            toggleSections();
+        });
+
+        $(function(){
+            // 1) По умолчанию phy_jur = 0 или 1 в зависимости от проекта.
+            $('#phy_jur').val('{{ $project->hvhh ? '1' : '0' }}');
+
+            // 2) При переключении "Գլխավոր/Տեխնիկական/ադմին տեխնիկական" (radio)
+            //    показываем/скрываем нужные блоки
+            $('#btnradio1').on('change', function(){
+                if ($(this).is(':checked')) {
+                    // Смотрим, какой сейчас phy_jur
+                    let curVal = $('#phy_jur').val(); // "0" или "1"
+                    if (curVal === '1') {
+                        // юр
+                        $('#physicalMain').hide();
+                        $('#juridicalMain').show();
+                    } else {
+                        // физ
+                        $('#physicalMain').show();
+                        $('#juridicalMain').hide();
+                    }
+                    $('#technicalSection').hide();
+                    $('#adminTechnicalSection').hide();
+                }
+            });
+            $('#btnradio2').on('change', function(){
+                if ($(this).is(':checked')) {
+                    $('#physicalMain').hide();
+                    $('#juridicalMain').hide();
+                    $('#technicalSection').show();
+                    $('#adminTechnicalSection').hide();
+                }
+            });
+            $('#btnradio2-1').on('change', function(){
+                if ($(this).is(':checked')) {
+                    $('#physicalMain').hide();
+                    $('#juridicalMain').hide();
+                    $('#technicalSection').hide();
+                    $('#adminTechnicalSection').show();
+                }
+            });
+
+            // 3) При смене #entity-select-4 (физ/юр) в главном блоке
+            $('#entity-select-4').on('change', function(){
+                let val = $(this).val(); // "0" или "1"
+                $('#phy_jur').val(val);
+                if ($('#btnradio1').is(':checked')) {
+                    if (val === '1') {
+                        // юр
+                        $('#physicalMain').hide();
+                        $('#juridicalMain').show();
+                    } else {
+                        // физ
+                        $('#physicalMain').show();
+                        $('#juridicalMain').hide();
+                    }
+                }
+            });
+
+            // 4) При смене #entity-select-4-j (физ/юр) в юридическом блоке
+            $('#entity-select-4-j').on('change', function(){
+                let val = $(this).val(); // "0" или "1"
+                $('#phy_jur').val(val);
+                if ($('#btnradio1').is(':checked')) {
+                    if (val === '1') {
+                        $('#physicalMain').hide();
+                        $('#juridicalMain').show();
+                    } else {
+                        $('#physicalMain').show();
+                        $('#juridicalMain').hide();
+                    }
+                }
+            });
+
+            // Остальные скрипты (AJAX для i_/w_) — те же
+        });
+
+        $(function(){
+            // i_ (Physical)
+            $('#i_region_select_phy').on('change', function(){
+                let name = $(this).val();
+                if(!name) {
+                    $('#i_district_select_phy').html('<option value="">Ընտրեք</option>');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/get-districts/' + encodeURIComponent(name),
+                    method: 'GET',
+                    success: function(data) {
+                        let sel = $('#i_district_select_phy');
+                        sel.empty();
+                        sel.append('<option value="">Ընտրեք</option>');
+                        $.each(data, function(stateId, districtName){
+                            sel.append('<option value="'+stateId+'">'+districtName+'</option>');
+                        });
+                    }
+                });
+            });
+
+            // w_ (Physical)
+            $('#w_region_select_phy').on('change', function(){
+                let name = $(this).val();
+                if(!name) {
+                    $('#w_district_select_phy').html('<option value="">Ընտրեք</option>');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/get-districts/' + encodeURIComponent(name),
+                    method: 'GET',
+                    success: function(data) {
+                        let sel = $('#w_district_select_phy');
+                        sel.empty();
+                        sel.append('<option value="">Ընտրեք</option>');
+                        $.each(data, function(stateId, districtName){
+                            sel.append('<option value="'+stateId+'">'+districtName+'</option>');
+                        });
+                    }
+                });
             });
         });
 
-        const firmType = document.getElementById('firm_type');
-        const hvhhGroup = document.getElementById('hvhh_group');
-        const iAddressGroup = document.getElementById('i_address_group');
+        $(function(){
+            // i_ (Juridical)
+            $('#i_region_select_jur').on('change', function(){
+                let name = $(this).val();
+                if(!name) {
+                    $('#i_district_select_jur').html('<option value="">Ընտրեք</option>');
+                    return;
+                }
 
-        function toggleFields() {
-            if (firmType.value == '1') {
-                hvhhGroup.style.display = 'none';
-                iAddressGroup.style.display = 'none';
-            } else {
-                hvhhGroup.style.display = 'block';
-                iAddressGroup.style.display = 'block';
-            }
+                $.ajax({
+                    url: '/get-districts/' + encodeURIComponent(name),
+                    method: 'GET',
+                    success: function(data) {
+                        let sel = $('#i_district_select_jur');
+                        sel.empty();
+                        sel.append('<option value="">Ընտրեք</option>');
+                        $.each(data, function(stateId, districtName){
+                            sel.append('<option value="'+stateId+'">'+districtName+'</option>');
+                        });
+                    }
+                });
+            });
+
+            // w_ (Juridical)
+            $('#w_region_select_jur').on('change', function(){
+                let name = $(this).val();
+                if(!name) {
+                    $('#w_district_select_jur').html('<option value="">Ընտրեք</option>');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/get-districts/' + encodeURIComponent(name),
+                    method: 'GET',
+                    success: function(data) {
+                        let sel = $('#w_district_select_jur');
+                        sel.empty();
+                        sel.append('<option value="">Ընտրեք</option>');
+                        $.each(data, function(stateId, districtName){
+                            sel.append('<option value="'+stateId+'">'+districtName+'</option>');
+                        });
+                    }
+                });
+            });
+        });
+
+        // Функции для открытия и закрытия модального окна
+        function openSimModal() {
+            document.getElementById('simModal').style.display = 'block';
         }
-        firmType.addEventListener('change', toggleFields);
-        toggleFields();
-    });
-</script>
-</body>
-</html>
+
+        function closeSimModal() {
+            document.getElementById('simModal').style.display = 'none';
+        }
+
+        // Добавляем обработчики для кнопок открытия модалки
+        $(document).ready(function(){
+            $('#openSimModal').on('click', function(){
+                openSimModal();
+            });
+
+            // Удаление выбранной SIM-карты из контейнера
+            $(document).on('click', '.remove-sim', function(){
+                const simId = $(this).parent().data('sim-id');
+                // Удаляем скрытый input
+                $(`input[name="sim_ids[]"][value="${simId}"]`).remove();
+                // Удаляем визуальный элемент
+                $(this).parent().remove();
+                // Также, если SIM-карта была отмечена в модалке, снимаем отметку
+                $(`.sim-checkbox[value="${simId}"]`).prop('checked', false);
+            });
+
+            // Добавление нового поля "Պատասխանատու"
+            $('.add-another-btn').on('click', function(){
+                addPatasxanatuField();
+            });
+        });
+
+        // Функция для добавления нового поля "Պատասխանատու"
+        function addPatasxanatuField() {
+            const container = $('#patasxanatus-container');
+            const fieldCount = container.children().length + 1;
+            const fieldHtml = `
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3 floating-label patasxanatu-input" data-field="${fieldCount}">
+                        <input type="text" class="form-control" name="patasxanatus[]" placeholder="Պատասխանատու ${fieldCount}">
+                        <button type="button" class="remove-patasxanatu-btn btn btn-danger btn-sm">&times;</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3 floating-label patasxanatu-input" data-field="${fieldCount}">
+                        <input type="text" class="form-control" name="numbers[]" placeholder="Номер ${fieldCount}">
+                        <button type="button" class="remove-patasxanatu-btn btn btn-danger btn-sm">&times;</button>
+                    </div>
+                </div>
+            </div>
+        `;
+            container.append(fieldHtml);
+        }
+
+        // Обработчик удаления блока "Պատասխանատու"
+        $(document).on('click', '.remove-patasxanatu-btn', function(){
+            $(this).closest('.row').remove();
+            // Опционально: обновить placeholder или нумерацию полей
+            updateFieldPlaceholders();
+        });
+
+        // Функция для обновления нумерации placeholder после удаления
+        function updateFieldPlaceholders(){
+            $('#patasxanatus-container .row').each(function(index){
+                $(this).find('input[name="patasxanatus[]"]').attr('placeholder', `Պատասխանատու ${index + 1}`);
+                $(this).find('input[name="numbers[]"]').attr('placeholder', `Номер ${index + 1}`);
+            });
+        }
+
+        // Функция для выполнения живого поиска
+        function performSearch() {
+            const query = $('#simSearch').val().trim();
+
+            if (query.length < 1) {
+                $('#simSearchResults').html('<p>Введите номер для поиска...</p>');
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route("projects.searchSimlists") }}',
+                method: 'GET',
+                data: { query: query },
+                success: function(data) {
+                    let html = '';
+                    if(data.simlists.length === 0){
+                        html = '<p>Ничего не найдено.</p>';
+                    } else {
+                        data.simlists.forEach(function(sim){
+                            // Проверяем, выбрана ли уже эта SIM-карта
+                            const isSelected = $(`input[name="sim_ids[]"][value="${sim.id}"]`).length > 0;
+                            html += `
+                            <div class="w3-padding">
+                                <input type="checkbox" class="sim-checkbox" value="${sim.id}" id="sim_${sim.id}" ${isSelected ? 'checked' : ''}>
+                                <label for="sim_${sim.id}">${sim.number} ${isSelected ? '(выбрано)' : ''}</label>
+                            </div>
+                        `;
+                        });
+                    }
+                    $('#simSearchResults').html(html);
+                },
+                error: function(xhr, status, error){
+                    console.error('Ошибка при поиске SIM-карт:', error);
+                    $('#simSearchResults').html('<p>Произошла ошибка при поиске.</p>');
+                }
+            });
+        }
+
+        // Функция для сохранения выбранных SIM-карт
+        function saveSimSelection() {
+            $('.sim-checkbox:checked').each(function(){
+                const simId = $(this).val();
+                const simNumber = $(this).next('label').text().replace(' (выбрано)', '');
+
+                // Проверяем, есть ли уже скрытый input с этим simId
+                if($(`input[name="sim_ids[]"][value="${simId}"]`).length === 0){
+                    // Добавляем скрытый input в основную форму
+                    const hiddenInput = `<input type="hidden" name="sim_ids[]" value="${simId}">`;
+                    $('#selectedSimContainer').append(hiddenInput);
+
+                    // Визуально отображаем выбранную SIM-карту с возможностью удаления
+                    const simTag = `<span data-sim-id="${simId}">${simNumber} <span class="remove-sim">&times;</span></span>`;
+                    $('#selectedSimContainer').append(simTag);
+                }
+            });
+
+            // Закрываем модалку после сохранения
+            closeSimModal();
+            // Очистим результаты и поле поиска
+            $('#simSearch').val('');
+            $('#simSearchResults').html('<p>Введите номер для поиска...</p>');
+        }
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            // Переключение методов идентификации
+            $('input[name="identification"]').on('change', function(){
+                if ($(this).val() === 'manual') {
+                    $('#ident_id').prop('readonly', false);
+                    $('#auto_ident_btn').show();
+                } else {
+                    $('#ident_id').prop('readonly', true);
+                    // Автоматически генерируем ident_id при выборе "Автоматически"
+                    generateAutoIdentId();
+                    $('#auto_ident_btn').hide();
+                }
+            });
+
+            // Автоматическое форматирование ident_id при ручном вводе
+            $('#ident_id').on('blur', function(){
+                let val = $(this).val().trim();
+                if(val.length > 0){
+                    let num = parseInt(val, 10);
+                    if(!isNaN(num) && num >=1 && num <=9999){
+                        let padded = String(num).padStart(4, '0');
+                        $(this).val(padded);
+                    } else {
+                        alert('Идентификатор должен быть числом от 1 до 9999');
+                        $(this).val('');
+                    }
+                }
+            });
+
+            // Обработчик кнопки автоматической генерации ident_id
+            $('#auto_ident_btn').on('click', function(){
+                generateAutoIdentId();
+            });
+
+            function generateAutoIdentId() {
+                $.ajax({
+                    url: '{{ route("projects.getNextIdentId", $project->id) }}',
+                    method: 'GET',
+                    success: function(data){
+                        if(data.ident_id){
+                            $('#ident_id').val(data.ident_id);
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Ошибка при генерации ident_id:', error);
+                        alert('Произошла ошибка при генерации идентификатора.');
+                    }
+                });
+            }
+        });
+    </script>
+
+@endsection
