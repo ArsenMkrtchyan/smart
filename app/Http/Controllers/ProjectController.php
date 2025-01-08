@@ -225,7 +225,7 @@ $hardwares = Hardware::all();
             'x_gps'     => 'nullable|string',
             // Техническая секция
             'identification' => 'required|in:manual,auto',
-            'ident_id' => 'required|digits:4|unique:projects,ident_id',
+            'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
 'paymanagir_start' => 'nullable|date',
 
 
