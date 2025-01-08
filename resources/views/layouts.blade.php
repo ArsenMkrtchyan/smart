@@ -51,7 +51,7 @@
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
                 <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('projects.index')}}"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/add_ipages1.html"><i class="fas fa-user"></i><span>Ֆինանսական</span></a></li>
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Սարքավորումներ</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
