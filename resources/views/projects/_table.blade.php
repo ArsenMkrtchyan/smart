@@ -3,7 +3,7 @@
     <tr>
         <th><strong>Օբ․ ID</strong></th>
         <th><strong>Ident</strong></th>
-        <th><strong>Ident</strong></th>
+        <th><strong>phy/jur</strong></th>
         <th><strong>Անվանում</strong></th>
         <th><strong>օբ.Հասցե</strong></th>
         <th><strong>Տնօրեն</strong></th>
