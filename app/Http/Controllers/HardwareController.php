@@ -11,12 +11,38 @@ class HardwareController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $hardwares = Hardware::all();
 
+    public function index(Request $request)
+    {
+        // Инициализируем строителя запросов
+        $query = Hardware::query();
+
+        // Поиск по имени, если параметр 'search' присутствует
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Определяем количество записей на странице, по умолчанию 10
+        $perPage = $request->input('per_page', 10);
+
+        // Получаем данные с пагинацией
+        $hardwares = $query->paginate($perPage);
+
+        // Проверяем, AJAX запрос или нет
+        if ($request->ajax()) {
+            // Рендерим частичный вид таблицы
+            $html = view('hardwares._table', compact('hardwares'))->render();
+
+            // Возвращаем JSON ответ
+            return response()->json(['html' => $html]);
+        }
+
+        // Возвращаем основной вид с данными
         return view('hardwares.index', compact('hardwares'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.

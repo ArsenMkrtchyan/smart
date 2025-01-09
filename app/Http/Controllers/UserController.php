@@ -38,22 +38,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'number' => 'required',
-            'password' => 'required',
-            'role_id' => 'required|integer',
-            'is_admin' => 'required|boolean'
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'female' => 'required|string|max:255',
+            'firm_name' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'balance' => 'nullable|numeric',
+            'number' => 'nullable|string|max:15',
+            'email' => 'required|string|email|max:255|unique:users',
+            'role_id' => 'required|exists:roles,id',
+            'is_admin' => 'nullable|boolean',
+            'havayrole' => 'nullable|boolean',
+            'password' => 'required|string|min:8',
         ]);
 
-        $input = $request->all();
-        $input['password'] = Hash::make($request['password']);
+        $user = new User();
+        $user->fill($validated);
+        $user->password = Hash::make($validated['password']);
+        $user->is_admin = $request->has('is_admin') ? $validated['is_admin'] : null;
+        $user->havayrole = $request->has('havayrole') ? $validated['havayrole'] : null;
+        $user->save();
 
-        User::create($input);
-
-        return redirect()->route('users.index')
-            ->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
 
     /**

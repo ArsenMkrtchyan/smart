@@ -11,95 +11,78 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 text-nowrap">
-                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                                    <option value="10" selected="">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>&nbsp;</label></div>
+                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                            <label class="form-label">Show
+                                <select class="form-select form-select-sm d-inline-block" id="perPage">
+                                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                            </label>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                    <div class="col-md-6 text-md-end">
+                        <input
+                            type="search"
+                            class="form-control form-control-sm"
+                            id="search"
+                            placeholder="Search brand name..."
+                            value="{{ request('search') ?? '' }}"
+                        >
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table my-0" id="dataTable">
-                        <thead>
-                        <tr>
-                            <th><strong>Անվանում</strong></th>
-                            <th><strong>Serial</strong></th>
-                            <th>Պահեստ</th>
-                            <th>Իդենտ․ համար</th>
-                            <th>Ամսաթիվ</th>
-                            <th>Կարգավիճակ</th>
-                            <th>Գործողություն</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>NAVIGARD</td>
-                            <td>0931778545</td>
-                            <td>Գարիկ Ղուբաթյան</td>
-                            <td>-</td>
-                            <td>18,12,2024</td>
-                            <td>Վաճառված</td>
-                            <td>edit,</td>
-                        </tr>
-                        <tr>
-                            <td>NAVIGARD 206</td>
-                            <td>654546556</td>
-                            <td>Վարդուհի Փաշոյան</td>
-                            <td>1002</td>
-                            <td>18,12,2024</td>
-                            <td>տեղադրված</td>
-                            <td>edit</td>
-                        </tr>
-                        <tr>
-                            <td>Satel xz</td>
-                            <td>1348844555</td>
-                            <td>Արսեն Մկրտչյան</td>
-                            <td></td>
-                            <td>18,12,2024</td>
-                            <td>պահեստում</td>
-                            <td>edit</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td><strong>Անվանում</strong></td>
-                            <td><strong>Serial</strong></td>
-                            <td><strong>Պահեստ</strong></td>
-                            <td><strong>Իդենտ․ համար</strong></td>
-                            <td><strong>Ամսաթիվ</strong></td>
-                            <td><strong>Կարգավիճակ</strong></td>
-                            <td><strong>Գործողություն</strong></td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 align-self-center">
-                        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                    </div>
-                    <div class="col-md-6">
-                        <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                            <ul class="pagination">
-                                <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                            </ul>
-                        </nav>
+                    <div id="tableData">
+                        {{-- Подключаем часть разметки из _table.blade.php --}}
+                        @include('hardwares._table', ['hardwares' => $hardwares])
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(function(){
+            // При изменении "сколько записей показывать"
+            $('#perPage').on('change', function() {
+                fetchData();
+            });
+
+            // При вводе в поле поиска
+            $('#search').on('keyup', function() {
+                // Сделаем небольшую задержку, чтобы не дергать сервер на каждый символ
+                // Можно использовать setTimeout, debounce... Но для примера хватит и так
+                fetchData();
+            });
+
+            function fetchData() {
+                // Получаем текущее значение полей
+                let perPageVal = $('#perPage').val();
+                let searchVal  = $('#search').val();
+
+                $.ajax({
+                    url: '{{ route('hardwares.index') }}',
+                    type: 'GET',
+                    data: {
+                        per_page: perPageVal,
+                        search: searchVal,
+                        // доп. параметр ajax не обязателен, но можно
+                    },
+                    success: function(response) {
+                        // В ответе придёт JSON вида { html: '...таблица...'}
+                        $('#tableData').html(response.html);
+                    },
+                    error: function(err) {
+                        console.log('Ошибка:', err);
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
 
 

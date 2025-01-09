@@ -50,24 +50,24 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('projects.index')}}"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/add_ipages1.html"><i class="fas fa-user"></i><span>Ֆինանսական</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('payments.index')}}"><i class="fas fa-user"></i><span>Ֆինանսական</span></a></li>
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Սարքավորումներ</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
                         <li><a class="dropdown-item" href="{{route('hardwares.index')}}">Hardware</a></li>
-                        <li><a class="dropdown-item" href="hardware-sim.html">Sim Cards</a></li>
+                        <li><a class="dropdown-item" href="{{route('simlists.index')}}">Sim Cards</a></li>
                     </ul>
                 </li>
 {{--                <li class="nav-item"><a class="nav-link nav-link" href="users.html"><i class="fas fa-user-circle"></i><span>Օգտագործողներ</span></a></li>--}}
-                <li class="nav-item"><a class="nav-link" href="/add_ipage2.html"><i class="fas fa-user-circle"></i><span>Տեխնիկ․ համ․ ստուգում</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user-circle"></i><span>Տեխնիկ․ համ․ ստուգում</span></a></li>
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">nastroyka</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
-                        <li><a class="dropdown-item" href="hardware.html">xekavari pashton</a></li>
-                        <li><a class="dropdown-item" href="hardware-sim.html">Օգտագործողներ</a></li>
+                        <li><a class="dropdown-item" href="#">xekavari pashton</a></li>
+                        <li><a class="dropdown-item" href="#">Օգտագործողներ</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link nav-link" href="/monitoring.html"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>
+                <li class="nav-item"><a class="nav-link nav-link" href="#"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>
             </ul>
             <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
         </div>

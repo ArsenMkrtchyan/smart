@@ -1,4 +1,4 @@
-@extends('finances.app')
+@extends('layouts')
 
 @section('content')
     <div class="container">
@@ -22,4 +22,5 @@
             <a href="{{ route('payments.index') }}" class="btn btn-secondary">Back</a>
         </form>
     </div>
+   
 @endsection
