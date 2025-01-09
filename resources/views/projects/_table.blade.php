@@ -10,6 +10,7 @@
         <th>Հեռախոս</th>
         <th>Տեսակ</th>
         <th>Կարգավիճակ</th>
+        <th>edit</th>
     </tr>
     </thead>
     <tbody>
