@@ -13,12 +13,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('object_types')->insert([
-            'name' => 'benzalcakayan',
+
+        DB::table('seoroles')->insert([
+            'name' => 'տնօրեն',
 
         ]);
         DB::table('seoroles')->insert([
-            'name' => 'tnoren',
+            'name' => 'փոխտնօրեն',
 
         ]);
 
@@ -49,17 +50,17 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('12341234'),
         ]);
         DB::table('users')->insert([
-            'name' => 'Role1',
-            'female' => 'Mkrtchyan',
+            'name' => 'Varduhi',
+            'female' => 'Pashoyan',
             'email' => 'role1@admin.com',
-            'number'=> '+37494756057',
+            'number'=> '+37494777041',
             'is_admin' => 1,
             'role_id' => 1,
             'password' => bcrypt('12341234'),
         ]);
         DB::table('users')->insert([
-            'name' => 'Role2',
-            'female' => 'Mkrtchyan',
+            'name' => 'Artur',
+            'female' => 'Mkrtchayn',
             'email' => 'Role2@admin.com',
             'number'=> '+37494756057',
             'is_admin' => 1,
@@ -67,8 +68,8 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('12341234'),
         ]);
         DB::table('users')->insert([
-            'name' => 'Role3',
-            'female' => 'Mkrtchyan',
+            'name' => 'Armen',
+            'female' => 'Ardaryan',
             'email' => 'Role3@admin.com',
             'number'=> '+37494756057',
             'is_admin' => 1,

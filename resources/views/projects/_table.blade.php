@@ -53,7 +53,7 @@
                             @elseif($project->object_check == 5)
                                 <td>կարգավորման ընդացք</td>
                                 @elseif($project->object_check == 6)
-                                    <td>911-ին միացված<</td>
+                                    <td>911-ին միացված</td>
             @endif
 
 
