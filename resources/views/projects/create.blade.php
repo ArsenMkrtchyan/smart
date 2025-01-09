@@ -725,12 +725,12 @@
                                                     <select class="form-select form-select"  name="object_check"  id="entity-select-2" >
 
                                                         <optgroup label="object կարգավիճակ">
-                                                            <option value="12">սպասվող</option>
-                                                            <option value="13">Հրաժարված</option>
-                                                            <option value="13">Պայմանագիրը լուծարված</option>
-                                                            <option value="13">Պայմանագրի ընդացք</option>
-                                                            <option value="13">կարգավորման ընդացք</option>
-                                                            <option value="13">911-ին միացված</option>
+                                                            <option value="1">սպասվող</option>
+                                                            <option value="2">Հրաժարված</option>
+                                                            <option value="3">Պայմանագիրը լուծարված</option>
+                                                            <option value="4">Պայմանագրի ընդացք</option>
+                                                            <option value="5">կարգավորման ընդացք</option>
+                                                            <option value="6">911-ին միացված</option>
                                                         </optgroup>
                                                     </select>
                                                     <label for="entity-select-1">object կարգավիճակ</label>
