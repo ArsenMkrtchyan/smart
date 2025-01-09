@@ -43,15 +43,15 @@
             <td>{{ $project->i_address }}</td>
             @if($project->object_check == 1)
                 <td>սպասվող</td>
-                @if($project->object_check == 2)
+                @elseif($project->object_check == 2)
                     <td>Հրաժարված</td>
-                    @if($project->object_check == 3)
+                    @elseif($project->object_check == 3)
                         <td>այմանագիրը լուծարված<</td>
-                        @if($project->object_check == 4)
+                        @elseif($project->object_check == 4)
                             <td>Պայմանագրի ընդացք</td>
-                            @if($project->object_check == 5)
+                            @elseif($project->object_check == 5)
                                 <td>կարգավորման ընդացք</td>
-                                @if($project->object_check == 6)
+                                @elseif($project->object_check == 6)
                                     <td>911-ին միացված<</td>
             @endif
 
