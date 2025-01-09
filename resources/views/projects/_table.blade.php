@@ -2,6 +2,8 @@
     <thead>
     <tr>
         <th><strong>Օբ․ ID</strong></th>
+        <th><strong>Ident</strong></th>
+        <th><strong>Ident</strong></th>
         <th><strong>Անվանում</strong></th>
         <th><strong>օբ.Հասցե</strong></th>
         <th><strong>Տնօրեն</strong></th>
@@ -20,7 +22,12 @@
                 >
                 &nbsp;{{ $project->id }}
             </td>
-            <td>{{ $project->brand_name }}</td>
+            <td>{{$project->ident_id}}</td>
+            @if($project->hvhh == null)
+                <td>phy</td>
+            @else
+                <td>jur</td>
+            @endif
 
             {{-- $project->state->name - $project->state->district - $project->w_address --}}
             <td>

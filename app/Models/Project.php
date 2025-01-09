@@ -50,8 +50,10 @@ class   Project extends Model
         'end_dimum',
         'paymanagir_end',
         'paymanagir_received',
-        'status_edit'
-
+        'status_edit',
+        'object_check',
+'ceorole_id',
+        'tech_check'
     ];
 
     public function price()

@@ -52,7 +52,7 @@ class ProjectController extends Controller
             $html = view('projects._table', compact('projects'))->render();
 
             // Возвращаем в формате JSON
-            return response()->json(['html' => $html]);
+            return response()-> json(['html' => $html]);
         }
 
         // Если это НЕ AJAX, то грузим всю страницу (projects.index)
@@ -204,6 +204,7 @@ $hardwares = Hardware::all();
             'firm_bank'     => 'nullable|string',
             'firm_bank_hh'  => 'nullable|string',
             'firm_email'    => 'nullable|string',
+            'object_check'    => 'nullable|string',
 
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
@@ -280,7 +281,7 @@ $hardwares = Hardware::all();
             }
 
             // Редирект с сообщением об успехе
-            return redirect()->route('projects.create')
+            return redirect()->route('projects.edit' , $project->id)
                 ->with('success', 'Проект создан, выбранные SIM-карты и Պատասխանատու сохранены.');
         } catch (\Exception $e) {
             // Логирование ошибки

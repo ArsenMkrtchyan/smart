@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table->string('ceo_name')->nullable();
             $table->string('ceo_phone')->nullable();
-            $table->string('ceo_role')->nullable();
+
             $table->string('fin_contact')->nullable();
 
             $table->string('andznagir')->nullable(); // fizikakan firm_type = 1
@@ -56,7 +56,6 @@ return new class extends Migration
             $table->string('nkar')->nullable();
             $table->string('their_hardware')->nullable();
             $table->string('connection_type')->nullable();
-            $table->string('indent_number')->nullable();
             $table->date('end_dimum')->nullable();
             $table->date('paymanagir_end')->nullable();
 

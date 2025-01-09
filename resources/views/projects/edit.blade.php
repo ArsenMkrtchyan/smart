@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="text" id="first_name-1" name="ceo_name" placeholder=" " value="{{ old('ceo_name', $project->ceo_name) }}">
+                                                <input class="form-control" type="text" id="first_name-1" name="firm_name" placeholder=" " value="{{ old('firm_name', $project->firm_name) }}">
                                                 <label for="first_name-1">անուն ազգանուն</label>
                                             </div>
                                         </div>
@@ -228,7 +228,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="entity-select-4-j" name="entity_type_jur">
+                                                <select class="form-select form-select" id="entity-select-4-j" name="entity_type">
                                                     <optgroup label="Իրավաբանական/Ֆիզիկական">
                                                         <option value="1" {{ $project->hvhh ? 'selected' : '' }}>Իրավաբանական</option>
                                                         <option value="0" {{ !$project->hvhh ? 'selected' : '' }}>Ֆիզիկական</option>
@@ -239,7 +239,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="entity-select-5-j" name="type_id_jur">
+                                                <select class="form-select form-select" id="entity-select-5-j" name="type_id">
                                                     <option value="" selected>Ընտրեք</option>
                                                     <optgroup label="Օբեկտի տիպ">
                                                         @foreach($types as $type)
@@ -272,7 +272,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="text" id="last_name-11-j" name="ceo_name_jur" placeholder=" " value="{{ old('ceo_name_jur', $project->ceo_name) }}">
+                                                <input class="form-control" type="text" id="last_name-11-j" name="ceo_name" placeholder=" " value="{{ old('ceo_name', $project->ceo_name) }}">
                                                 <label for="last_name-11-j">տնօրեն</label>
                                             </div>
                                         </div>
@@ -286,19 +286,19 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="text" id="last_name-2-j" name="brand_name_jur" placeholder=" " value="{{ old('brand_name_jur', $project->brand_name) }}">
+                                                <input class="form-control" type="text" id="last_name-2-j" name="brand_name" placeholder=" " value="{{ old('brand_name', $project->brand_name) }}">
                                                 <label for="last_name-2-j">Բրենդի անվանում</label>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="text" id="last_name-4-j" name="ceo_phone_jur" placeholder=" " value="{{ old('ceo_phone_jur', $project->ceo_phone) }}">
+                                                <input class="form-control" type="text" id="last_name-4-j" name="ceo_phone" placeholder=" " value="{{ old('ceo_phone', $project->ceo_phone) }}">
                                                 <label for="last_name-4-j">տնօրենի հեռ․</label>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="bank-select-1-j" name="firm_bank_jur">
+                                                <select class="form-select form-select" id="bank-select-1-j" name="firm_bank">
                                                     <optgroup label="Ընտրել">
                                                         <option value="Կոնվերս" {{ $project->firm_bank == 'Կոնվերս' ? 'selected' : '' }}>Կոնվերս բանկ ԲԲԸ</option>
                                                         <option value="Ամերիաբանկ" {{ $project->firm_bank == 'Ամերիաբանկ' ? 'selected' : '' }}>Ամերիաբանկ ԲԲԸ</option>
@@ -323,7 +323,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="text" id="last_name-5-j2" name="firm_bank_hh_jur" placeholder=" " value="{{ old('firm_bank_hh_jur', $project->firm_bank_hh) }}">
+                                                <input class="form-control" type="text" id="last_name-5-j2" name="firm_bank_hh" placeholder=" " value="{{ old('firm_bank_hh_jur', $project->firm_bank_hh) }}">
                                                 <label for="last_name-5-j2">հաշվեհամար</label>
                                             </div>
                                         </div>
@@ -340,7 +340,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <select class="form-select" id="i_region_select_jur" name="i_region_jur">
+                                            <select class="form-select" id="i_region_select_jur" name="i_region">
                                                 <option value="" selected>Ընտրեք</option>
                                                 <optgroup label="ՀՀ Մարզ">
                                                     @foreach($names as $row)
@@ -354,7 +354,7 @@
 
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <select class="form-select" id="i_district_select_jur" name="i_marz_id_jur">
+                                            <select class="form-select" id="i_district_select_jur" name="i_marz_id">
                                                 <option value="" selected>Ընտրեք</option>
                                                 @if($project->iMarz)
                                                     <option value="{{ $project->i_marz_id }}" selected>{{ $project->iMarz->district }}</option>
@@ -367,7 +367,7 @@
 
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <input type="text" class="form-control" id="i_address_jur" name="i_address_jur" placeholder=" " value="{{ old('i_address_jur', $project->i_address) }}">
+                                            <input type="text" class="form-control" id="i_address_jur" name="i_address" placeholder=" " value="{{ old('i_address', $project->i_address) }}">
                                             <label for="i_address_jur"><strong>i հասցե</strong></label>
                                         </div>
                                     </div>
@@ -379,7 +379,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <select class="form-select" id="w_region_select_jur" name="w_region_jur">
+                                            <select class="form-select" id="w_region_select_jur" name="w_region">
                                                 <option value="" selected>Ընտրեք</option>
                                                 <optgroup label="ՀՀ Մարզ">
                                                     @foreach($names as $row)
@@ -393,7 +393,7 @@
 
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <select class="form-select" id="w_district_select_jur" name="w_marz_id_jur">
+                                            <select class="form-select" id="w_district_select_jur" name="w_marz_id">
                                                 <option value="" selected>Ընտրեք</option>
                                                 @if($project->wMarz)
                                                     <option value="{{ $project->w_marz_id }}" selected>{{ $project->wMarz->district }}</option>
@@ -405,7 +405,7 @@
 
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <input type="text" class="form-control" id="w_address_jur" name="w_address_jur" placeholder=" " value="{{ old('w_address_jur', $project->w_address) }}">
+                                            <input type="text" class="form-control" id="w_address_jur" name="w_address" placeholder=" " value="{{ old('w_address', $project->w_address) }}">
                                             <label for="w_address_jur"><strong>w հասցե</strong></label>
                                         </div>
                                     </div>
@@ -424,20 +424,20 @@
                             <div class="card-body text-center shadow">
                                 <div class="col">
                                     <div class="mb-3 floating-label">
-                                        <label>Метод идентификации:</label><br>
+
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="identification" id="manual_ident" value="manual" {{ $project->identification == 'manual' ? 'checked' : '' }}>
+                                            <input class="form-check-input" type="hidden" name="identification" id="manual_ident" value="manual" {{ $project->identification == 'manual' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="manual_ident">Ввести вручную</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="identification" id="auto_ident" value="auto" {{ $project->identification == 'auto' ? 'checked' : '' }}>
+                                            <input class="form-check-input" type="hidden" name="identification" id="auto_ident" value="auto" {{ $project->identification == 'auto' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="auto_ident">Автоматически</label>
                                         </div>
                                     </div>
 
                                     {{-- Контейнер для ввода ident_id --}}
                                     <div id="ident_id_container" class="mb-3">
-                                        <label for="ident_id" class="form-label">Идентификатор:</label>
+
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="ident_id" name="ident_id" placeholder="Введите идентификатор" value="{{ old('ident_id', $project->ident_id) }}" {{ $project->identification == 'auto' ? 'readonly' : '' }}>
                                             <button type="button" class="btn btn-outline-secondary" id="auto_ident_btn" {{ $project->identification == 'auto' ? 'disabled' : '' }}>Идентифицировать</button>
@@ -661,15 +661,15 @@
                                         <div class="row">
                                             <div class="col">
                                                 <div class="mb-3 floating-label">
-                                                    <select class="form-select form-select" name="object_check" id="entity-select-2">
-                                                        <option value="" selected>Ընտրեք</option>
+                                                    <select class=" form-select" name="object_check" >
+
                                                         <optgroup label="Object կարգավիճակ">
-                                                            <option value="12" {{ $project->object_check == '12' ? 'selected' : '' }}>սպասվող</option>
-                                                            <option value="13" {{ $project->object_check == '13' ? 'selected' : '' }}>Հրաժարված</option>
-                                                            <option value="14" {{ $project->object_check == '14' ? 'selected' : '' }}>Պայմանագիրը լուծարված</option>
-                                                            <option value="15" {{ $project->object_check == '15' ? 'selected' : '' }}>Պայմանագրի ընդացք</option>
-                                                            <option value="16" {{ $project->object_check == '16' ? 'selected' : '' }}>կարգավորման ընդացք</option>
-                                                            <option value="17" {{ $project->object_check == '17' ? 'selected' : '' }}>911-ին միացված</option>
+                                                            <option value="1" {{ $project->object_check == '1' ? 'selected' : '' }}>սպասվող</option>
+                                                            <option value="2" {{ $project->object_check == '2' ? 'selected' : '' }}>Հրաժարված</option>
+                                                            <option value="3" {{ $project->object_check == '3' ? 'selected' : '' }}>Պայմանագիրը լուծարված</option>
+                                                            <option value="4" {{ $project->object_check == '4' ? 'selected' : '' }}>Պայմանագրի ընդացք</option>
+                                                            <option value="5" {{ $project->object_check == '5' ? 'selected' : '' }}>կարգավորման ընդացք</option>
+                                                            <option value="6" {{ $project->object_check == '6' ? 'selected' : '' }}>911-ին միացված</option>
                                                         </optgroup>
                                                     </select>
                                                     <label for="entity-select-2">Object կարգավիճակ</label>

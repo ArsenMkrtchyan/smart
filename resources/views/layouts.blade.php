@@ -65,6 +65,7 @@
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
                         <li><a class="dropdown-item" href="#">xekavari pashton</a></li>
                         <li><a class="dropdown-item" href="#">Օգտագործողներ</a></li>
+                        <li><a class="dropdown-item" href="#">object type</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link nav-link" href="#"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>

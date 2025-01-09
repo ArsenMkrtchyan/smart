@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control form-control" type="text" id="first_name-1" name="ceo_name" placeholder=" ">
+                                                <input class="form-control form-control" type="text" id="first_name-1" name="firm_name" placeholder=" ">
                                                 <label for="first_name-3">անուն ազգանուն</label>
                                             </div>
                                         </div>
@@ -723,7 +723,7 @@
                                             <div class="col">
                                                 <div class="mb-3 floating-label">
                                                     <select class="form-select form-select"  name="object_check"  id="entity-select-2" >
-                                                        <option value="" selected="">Ընտրեք</option>
+
                                                         <optgroup label="object կարգավիճակ">
                                                             <option value="12">սպասվող</option>
                                                             <option value="13">Հրաժարված</option>
