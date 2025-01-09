@@ -317,7 +317,7 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <input class="form-control" type="email" id="last_name-6-j" name="firm_email_jur" placeholder=" " value="{{ old('firm_email_jur', $project->firm_email) }}">
+                                                <input class="form-control" type="email" id="last_name-6-j" name="firm_email" placeholder=" " value="{{ old('firm_email', $project->firm_email) }}">
                                                 <label for="last_name-6-j">e-mail</label>
                                             </div>
                                         </div>

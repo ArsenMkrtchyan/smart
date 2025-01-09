@@ -574,7 +574,7 @@ $hardwares = Hardware::all();
             'brand_name'    => 'nullable|string',
             'firm_bank'     => 'nullable|string',
             'firm_bank_hh'  => 'nullable|string',
-            'firm_email'    => 'nullable|string|email',
+            'firm_email'    => 'nullable|string',
 
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
