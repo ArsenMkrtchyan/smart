@@ -631,11 +631,11 @@
                                                     <select class="form-select form-select" id="entity-select-1" name="tech_check">
                                                         <option value="" selected>Ընտրեք</option>
                                                         <optgroup label="Տեխնիկական կարգավիճակ">
-                                                            <option value="12" {{ $project->tech_check == '12' ? 'selected' : '' }}>Հսկման տակ</option>
-                                                            <option value="13" {{ $project->tech_check == '13' ? 'selected' : '' }}>Հսկողությունից հանված</option>
-                                                            <option value="14" {{ $project->tech_check == '14' ? 'selected' : '' }}>Կապ չկա</option>
-                                                            <option value="15" {{ $project->tech_check == '15' ? 'selected' : '' }}>Անջատված է</option>
-                                                            <option value="16" {{ $project->tech_check == '16' ? 'selected' : '' }}>Չի աշխատում</option>
+                                                            <option value="1" {{ $project->tech_check == '1' ? 'selected' : '' }}>Հսկման տակ</option>
+                                                            <option value="2" {{ $project->tech_check == '2' ? 'selected' : '' }}>Հսկողությունից հանված</option>
+                                                            <option value="3" {{ $project->tech_check == '3' ? 'selected' : '' }}>Կապ չկա</option>
+                                                            <option value="4" {{ $project->tech_check == '4' ? 'selected' : '' }}>Անջատված է</option>
+                                                            <option value="5" {{ $project->tech_check == '5' ? 'selected' : '' }}>Չի աշխատում</option>
                                                         </optgroup>
                                                     </select>
                                                     <label for="entity-select-1">Տեխնիկական կարգավիճակ</label>

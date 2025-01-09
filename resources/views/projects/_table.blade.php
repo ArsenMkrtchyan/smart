@@ -3,7 +3,7 @@
     <tr>
         <th><strong>Օբ․ ID</strong></th>
         <th><strong>Ident</strong></th>
-        <th><strong>phy/jur</strong></th>
+        <th><strong>ֆիզ/իրավ</strong></th>
         <th><strong>Անվանում</strong></th>
         <th><strong>օբ.Հասցե</strong></th>
         <th><strong>Տնօրեն</strong></th>
@@ -24,11 +24,11 @@
             </td>
             <td>{{$project->ident_id}}</td>
             @if($project->hvhh == null)
-                <td>phy</td>
+                <td>ֆիզ</td>
             @else
-                <td>jur</td>
+                <td>իրավ</td>
             @endif
-
+            <td>{{$project->firm_name}}</td>
             {{-- $project->state->name - $project->state->district - $project->w_address --}}
             <td>
                 @if($project->w_marz_id)
@@ -41,7 +41,7 @@
             <td>{{ $project->ceo_name }}</td>
             <td>{{ $project->ceo_phone }}</td>
             <td>{{ $project->i_address }}</td>
-            <td>{{ $project->status }}</td>
+            <td>{{ $project->object_check }}</td>
             <td>   <a href="{{ route('projects.edit', $project->id) }}">
                     <button class="btn btn-warning">Edit</button>
                 </a></td>
