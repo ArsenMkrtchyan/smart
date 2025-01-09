@@ -41,7 +41,10 @@
 
             <td>{{ $project->ceo_name }}</td>
             <td>{{ $project->ceo_phone }}</td>
-            <td>{{ $project->i_address }}</td>
+            <td>{{ $project->type_id }}</td>
+
+
+
             @if($project->object_check == 1)
                 <td>սպասվող</td>
                 @elseif($project->object_check == 2)
@@ -55,8 +58,6 @@
                                 @elseif($project->object_check == 6)
                                     <td>911-ին միացված</td>
             @endif
-
-
 
 
             <td>   <a href="{{ route('projects.edit', $project->id) }}">
