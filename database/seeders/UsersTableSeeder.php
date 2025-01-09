@@ -14,17 +14,15 @@ class UsersTableSeeder extends Seeder
     public function run(): void
     {
         DB::table('object_types')->insert([
-            'name' => 'Type1',
+            'name' => 'benzalcakayan',
 
         ]);
-        DB::table('states')->insert([
-            'name' => 'Lori',
-            'district' => 'Kirovakan',
+        DB::table('seoroles')->insert([
+            'name' => 'tnoren',
+
         ]);
-        DB::table('states')->insert([
-            'name' => 'Lori',
-            'district' => 'Alaverdi',
-        ]);
+
+
         DB::table('roles')->insert([
             'name' => 'Admin',
 
