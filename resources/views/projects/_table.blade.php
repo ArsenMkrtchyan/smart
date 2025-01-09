@@ -41,7 +41,12 @@
 
             <td>{{ $project->ceo_name }}</td>
             <td>{{ $project->ceo_phone }}</td>
-            <td>{{ $project->type_id }}</td>
+            @if($project->type_id == null)
+              <td>-</td>
+            @else
+                <td>{{ $project->object_type->name }}</td>
+
+            @endif
 
 
 

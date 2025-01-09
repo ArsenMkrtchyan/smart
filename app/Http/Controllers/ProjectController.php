@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hardware;
-use App\Models\Objectype;
-use App\Models\Objectypes;
+use App\Models\Object_type;
+
 use App\Models\Price;
 use App\Models\Project;
 use App\Models\Seorole;
@@ -30,7 +30,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         // Заготовка запроса
-        $query = Project::with('wMarz');
+        $query = Project::with('wMarz','object_type');
 
         // Поиск по brand_name, если есть что искать
         if ($request->filled('search')) {
