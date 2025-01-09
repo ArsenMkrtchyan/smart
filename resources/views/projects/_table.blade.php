@@ -41,7 +41,23 @@
             <td>{{ $project->ceo_name }}</td>
             <td>{{ $project->ceo_phone }}</td>
             <td>{{ $project->i_address }}</td>
-            <td>{{ $project->object_check }}</td>
+            @if($project->object_check == 1)
+                <td>սպասվող</td>
+                @if($project->object_check == 2)
+                    <td>Հրաժարված</td>
+                    @if($project->object_check == 3)
+                        <td>այմանագիրը լուծարված<</td>
+                        @if($project->object_check == 4)
+                            <td>Պայմանագրի ընդացք</td>
+                            @if($project->object_check == 5)
+                                <td>կարգավորման ընդացք</td>
+                                @if($project->object_check == 6)
+                                    <td>911-ին միացված<</td>
+            @endif
+
+
+
+
             <td>   <a href="{{ route('projects.edit', $project->id) }}">
                     <button class="btn btn-warning">Edit</button>
                 </a></td>
