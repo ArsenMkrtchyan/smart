@@ -15,13 +15,15 @@
                         <table class="table my-0" id="dataTable">
                             <thead>
                             <tr>
-                                <th style="width: 190.078px;">SIM Համար</th>
-                                <th style="width: 70.688px;">SIM Կոդ</th>
-                                <th style="padding-top: 0px;padding-left: 169px;">Օպերատոր</th>
-                                <th style="width: 190.078px;">Պահեստ</th>
-                                <th style="width: 70.688px;">Իդենտ համարը</th>
-                                <th style="padding-top: 0px;padding-left: 169px;">ամսաթիվ</th>
-                                <th style="padding-top: 0px;padding-left: 169px;">Գործողություն</th>
+                                <th><strong>SIM Համար</strong></th>
+                                <th><strong>SIM Կոդ</strong></th>
+                                <th><strong>Օպերատոր</strong></th>
+                                <th><strong>Պահեստ</strong></th>
+                                <th><strong>Իդենտ համարը</strong></th>
+                                <th><strong>ամսաթիվ</strong></th>
+                                <th><strong>Գործողություն</strong></th>
+
+
                             </tr>
                             </thead>
                             <tbody>
