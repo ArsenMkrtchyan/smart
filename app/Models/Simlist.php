@@ -15,8 +15,10 @@ class Simlist extends Model
         'sim_id',
         'price',
         'mb',
+        'worker_id',
         'project_id',
         'user_id',
+        'ident_id'
 
 
 

@@ -16,6 +16,7 @@ class Hardware extends Model
         'ident_number',
         'kargavichak',
         'user_id',
+
         'worker_id',
         'project_id',
     ];
@@ -23,5 +24,8 @@ class Hardware extends Model
     {
         return $this->belongsTo(User::class); // Указывает, что hardware принадлежит пользователю
     }
-
+    public function worker()
+    {
+        return $this->belongsTo(User::class,'worker_id');
+    }
 }

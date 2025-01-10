@@ -15,7 +15,7 @@
         <tr>
             <td>{{$hardware->name}}</td>
             <td>{{$hardware->serial}}</td>
-            <td>Գարիկ Ղուբաթյան</td>
+            <td>{{$hardware->worker->name}} {{$hardware->worker->female}}</td>
             <td>-</td>
             <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
             <td>Վաճառված</td>

@@ -15,7 +15,7 @@ class HardwareController extends Controller
     public function index(Request $request)
     {
         // Инициализируем строителя запросов
-        $query = Hardware::query();
+        $query = Hardware::query()->with('worker');
 
         // Поиск по имени, если параметр 'search' присутствует
         if ($request->filled('search')) {

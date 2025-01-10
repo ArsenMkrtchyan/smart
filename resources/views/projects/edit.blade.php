@@ -300,8 +300,25 @@
                                             <div class="mb-3 floating-label">
                                                 <select class="form-select form-select" id="bank-select-1-j" name="firm_bank">
                                                     <optgroup label="Ընտրել">
-                                                        <option value="Կոնվերս" {{ $project->firm_bank == 'Կոնվերս' ? 'selected' : '' }}>Կոնվերս բանկ ԲԲԸ</option>
-                                                        <option value="Ամերիաբանկ" {{ $project->firm_bank == 'Ամերիաբանկ' ? 'selected' : '' }}>Ամերիաբանկ ԲԲԸ</option>
+                                                        <option value="Ամերիաբանկ ՓԲԸ" {{ $project->firm_bank == 'Ամերիաբանկ ՓԲԸ' ? 'selected' : '' }}>Ամերիաբանկ ՓԲԸ</option>
+                                                        <option value="Ինեկոբանկ ՓԲԸ" {{ $project->firm_bank == 'Ինեկոբանկ ՓԲԸ' ? 'selected' : '' }}>Ինեկոբանկ ՓԲԸ</option>
+                                                        <option value="Այդի բանկ ՓԲԸ" {{ $project->firm_bank == 'Այդի բանկ ՓԲԸ' ? 'selected' : '' }}>Այդի բանկ ՓԲԸ</option>
+                                                        <option value="Ակբա բանկ ՓԲԸ" {{ $project->firm_bank == 'Ակբա բանկ ՓԲԸ' ? 'selected' : '' }}>Ակբա բանկ ՓԲԸ</option>
+                                                        <option value="Կոնվերս բանկ ՓԲԸ" {{ $project->firm_bank == 'Կոնվերս բանկ ՓԲԸ' ? 'selected' : '' }}>Կոնվերս բանկ ՓԲԸ</option>
+                                                        <option value="Յունիբանկ ԲԲԸ" {{ $project->firm_bank == 'Յունիբանկ ԲԲԸ' ? 'selected' : '' }}>Յունիբանկ ԲԲԸ</option>
+                                                        <option value="Արարատբանկ ԲԲԸ" {{ $project->firm_bank == 'Արարատբանկ ԲԲԸ' ? 'selected' : '' }}>Արարատբանկ ԲԲԸ</option>
+                                                        <option value="Արդշինբանկ ՓԲԸ" {{ $project->firm_bank == 'Արդշինբանկ ՓԲԸ' ? 'selected' : '' }}>Արդշինբանկ ՓԲԸ</option>
+                                                        <option value="Ամիօ բանկ ՓԲԸ" {{ $project->firm_bank == 'Ամիօ բանկ ՓԲԸ' ? 'selected' : '' }}>Ամիօ բանկ ՓԲԸ</option>
+                                                        <option value="Ֆասթ բանկ ՓԲԸ" {{ $project->firm_bank == 'Ֆասթ բանկ ՓԲԸ' ? 'selected' : '' }}>Ֆասթ բանկ ՓԲԸ</option>
+                                                        <option value="Հայէկոնոմբանկ ԲԲԸ" {{ $project->firm_bank == 'Հայէկոնոմբանկ ԲԲԸ' ? 'selected' : '' }}>Հայէկոնոմբանկ ԲԲԸ</option>
+                                                        <option value="Էվոկաբանկ ՓԲԸ" {{ $project->firm_bank == 'Էվոկաբանկ ՓԲԸ' ? 'selected' : '' }}>Էվոկաբանկ ՓԲԸ</option>
+                                                        <option value="ՎՏԲ-Հայաստան բանկ ՓԲԸ" {{ $project->firm_bank == 'ՎՏԲ-Հայաստան բանկ ՓԲԸ' ? 'selected' : '' }}>ՎՏԲ-Հայաստան բանկ ՓԲԸ</option>
+                                                        <option value="Բիբլոս բանկ արմենիա ՓԲԸ" {{ $project->firm_bank == 'Բիբլոս բանկ արմենիա ՓԲԸ' ? 'selected' : '' }}>Բիբլոս բանկ արմենիա ՓԲԸ</option>
+                                                        <option value="Արցախբանկ ՓԲԸ" {{ $project->firm_bank == 'Արցախբանկ ՓԲԸ' ? 'selected' : '' }}>Արցախբանկ ՓԲԸ</option>
+                                                        <option value="Արմսվիսբանկ ՓԲԸ" {{ $project->firm_bank == 'Արմսվիսբանկ ՓԲԸ' ? 'selected' : '' }}>Արմսվիսբանկ ՓԲԸ</option>
+                                                        <option value="ՀՀ ֆին․ նախ" {{ $project->firm_bank == 'ՀՀ ֆին․ նախ' ? 'selected' : '' }}>ՀՀ ֆին․ նախ</option>
+
+
                                                     </optgroup>
                                                 </select>
                                                 <label for="bank-select-1-j">բանկ</label>
@@ -448,38 +465,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col">
-                                    <div class="mb-3 floating-label">
-                                        <label for="last_name-3"><strong>Սարքի ID</strong></label>
-                                    </div>
-                                    <div class="mb-3 floating-label">
-                                        <select class="form-select" id="hardware-select" name="hardware_id">
-                                            <optgroup label="Hardwares">
-                                                @foreach($hardwares as $hardware)
-                                                    <option value="{{ $hardware->id }}" {{ $project->hardware_id == $hardware->id ? 'selected' : '' }}>{{ $hardware->name }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3 floating-label">
-                                        <button type="button" class="btn btn-secondary" id="openSimModal">
-                                            Выбрать SIM-карты
-                                        </button>
 
-                                        {{-- Контейнер для отображения выбранных SIM-карт --}}
-                                        <div id="selectedSimContainer" class="mt-3">
-                                            @foreach($project->simlists as $simlist)
-                                                <span data-sim-id="{{ $simlist->id }}">
-                                                {{ $simlist->number }}
-                                                <span class="remove-sim">&times;</span>
-                                                <input type="hidden" name="sim_ids[]" value="{{ $simlist->id }}">
-                                            </span>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col">
                                     <div class="mb-3 floating-label">
@@ -509,6 +495,26 @@
                                 <p class="text-primary m-0 fw-bold">User Settings</p>
                             </div>
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <button type="button" class="btn btn-secondary" id="openSimModal">
+                                                Выбрать SIM-карты
+                                            </button>
+
+                                            {{-- Контейнер для отображения выбранных SIM-карт --}}
+                                            <div id="selectedSimContainer" class="mt-3">
+                                                @foreach($project->simlists as $simlist)
+                                                    <span data-sim-id="{{ $simlist->id }}">
+                                                {{ $simlist->number }}
+                                                <span class="remove-sim">&times;</span>
+                                                <input type="hidden" name="sim_ids[]" value="{{ $simlist->id }}">
+                                            </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3 floating-label">

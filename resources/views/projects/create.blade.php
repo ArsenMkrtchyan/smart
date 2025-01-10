@@ -452,10 +452,10 @@
 
                                 <div class="col">
                                     <div class="mb-3 floating-label">
-                                        <label>Метод идентификации:</label><br>
+
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="hidden" name="identification" id="manual_ident" value="manual" checked >
-                                            <label class="form-check-label" for="manual_ident">Ввести вручную</label>
+
                                         </div>
                                         <div class="form-check form-check-inline">
 {{--                                            <input class="form-check-input" type="radio" name="identification" id="auto_ident" value="auto">--}}
@@ -465,10 +465,10 @@
 
                                     {{-- Контейнер для ввода ident_id --}}
                                     <div id="ident_id_container" class="mb-3">
-                                        <label for="ident_id" class="form-label">Идентификатор:</label>
+
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="ident_id" name="ident_id" placeholder="Введите идентификатор">
-                                            <button type="button" class="btn btn-outline-secondary" id="auto_ident_btn">Идентифицировать</button>
+                                            <input type="text" class="form-control" id="ident_id" name="ident_id" placeholder="identifikacnel">
+                                            <button type="button" class="btn btn-outline-secondary" id="auto_ident_btn">identifikacnel</button>
                                         </div>
                                         @error('ident_id')
                                         <small class="text-danger">{{ $message }}</small>
@@ -479,35 +479,8 @@
 
 
 
-                                <div class="col">
-                                    <div class="mb-3 floating-label">
-                                        <label for="last_name-3"><strong>Սարքի ID</strong></label>
-                                    </div>
-                                    <div class="mb-3 floating-label">
-{{--                                        <input type="text" class="form-control" id="last_name-3" name="last_name" placeholder=" ">--}}
-{{--                                        <label for="last_name-3"><strong>Select Hardware</strong></label>--}}
-                                        <select class="form-select" id="entity-select-4-j">
-                                            <optgroup label="hardwares">
-                                                @foreach($hardwares as $hardware)
-                                                    <option value="{{$hardware->id}}" >{{$hardware->name}}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        </select>
 
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3 floating-label">
-                                        <button type="button" class="btn btn-secondary" id="openSimModal">
-                                            Выбрать SIM-карты
-                                        </button>
 
-                                        {{-- Контейнер для отображения выбранных SIM-карт --}}
-                                        <div id="selectedSimContainer" class="mt-3">
-                                            {{-- Выбранные SIM-карты будут добавлены здесь --}}
-                                        </div>
-                                    </div>
-                                </div>
 
 
 
@@ -577,6 +550,34 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <button type="button" class="btn btn-secondary" id="openSimModal">
+                                                Выбрать SIM-карты
+                                            </button>
+
+                                            {{-- Контейнер для отображения выбранных SIM-карт --}}
+                                            <div id="selectedSimContainer" class="mt-3">
+                                                {{-- Выбранные SIM-карты будут добавлены здесь --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <button type="button" class="btn btn-secondary" id="openSimModal">
+                                                Выбрать SIM-карты
+                                            </button>
+
+                                            {{-- Контейнер для отображения выбранных SIM-карт --}}
+                                            <div id="selectedSimContainer" class="mt-3">
+                                                {{-- Выбранные SIM-карты будут добавлены здесь --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
                                     <div class="col">
                                         <div class="mb-3 floating-label">
                                             <input class="form-control form-control" type="text" id="last_name-1" name="x_gps" placeholder=" ">
