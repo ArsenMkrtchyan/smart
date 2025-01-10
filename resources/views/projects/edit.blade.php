@@ -465,8 +465,30 @@
                                     </div>
                                 </div>
 
+                                <div class="col">
+                                    <div class="card mb-3"></div>
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="text-primary fw-bold m-0">start պայմանագիր</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+                                            <div></div>
 
-
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3 floating-label">
+                                        <select class="form-select" id="worker-select" name="price_id">
+                                            <optgroup label="Prices">
+                                                @foreach($prices as $price)
+                                                    <option value="{{ $price->id }}" {{ $project->$price == $price->id ? 'selected' : '' }}>{{ $price->price_name }} - {{$price->amount}}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select" id="worker-select" name="worker_id">

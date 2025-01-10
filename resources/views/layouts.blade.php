@@ -61,11 +61,11 @@
                 </li>
 {{--                <li class="nav-item"><a class="nav-link nav-link" href="users.html"><i class="fas fa-user-circle"></i><span>Օգտագործողներ</span></a></li>--}}
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user-circle"></i><span>Տեխնիկ․ համ․ ստուգում</span></a></li>
-                <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">nastroyka</span></span></a>
+                <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Կարգավորում</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
-                        <li><a class="dropdown-item" href="#">xekavari pashton</a></li>
+                        <li><a class="dropdown-item" href="#">Ղեկավարի պաշտոներ</a></li>
                         <li><a class="dropdown-item" href="{{route('users.index')}}">Օգտագործողներ</a></li>
-                        <li><a class="dropdown-item" href="#">object type</a></li>
+                        <li><a class="dropdown-item" href="#">Օբեկտի տիպեր</a></li>
                         <li><a class="dropdown-item" href="{{route('prices.index')}}">Գնացուցակ</a></li>
 
 

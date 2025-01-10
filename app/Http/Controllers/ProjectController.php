@@ -217,7 +217,7 @@ $hardwares = Hardware::all();
             'firm_name'     => 'nullable|string',  // (пример)
             'hvhh'          => 'nullable|string',
             'fin_contact'   => 'nullable|string',
-
+            'price_id' => 'nullable|integer',
             // Адреса
             'i_marz_id'     => 'nullable|integer',
             'i_address'     => 'nullable|string',
