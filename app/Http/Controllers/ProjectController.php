@@ -30,7 +30,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         // Заготовка запроса
-        $query = Project::with('wMarz','object_type');
+        $query = Project::with('wMarz','object_type')->orderBy('ident_id','DESC');
 
         // Поиск по brand_name, если есть что искать
         if ($request->filled('search')) {
@@ -230,10 +230,7 @@ $hardwares = Hardware::all();
 'paymanagir_start' => 'nullable|date',
 
 
-            // ... дальше любые поля ...
-            'last_name'     => 'nullable|string', // пример
-            // и т. д...
-
+        'worker_id' => 'nullable|integer',
             // Админ-техническая
             'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
             'sim_ids'         => 'array',     // ожидаем массив
@@ -608,7 +605,7 @@ $hardwares = Hardware::all();
             'object_check' => 'nullable|string',
             'price_id' => 'nullable|integer',
             'status_edit' => 'nullable|boolean',
-
+            'worker_id' => 'nullable|integer',
             // Связанные SIM-карты и Pатասxanatu
             'sim_ids'         => 'array',
             'sim_ids.*'       => 'integer',

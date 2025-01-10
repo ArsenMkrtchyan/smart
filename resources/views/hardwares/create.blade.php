@@ -1,53 +1,44 @@
 @extends('layouts')
+
 @section('content')
+    <div class="container card">
+        <h1 class="text-center mb-4">Добавить новое оборудование</h1>
+        <form action="{{ route('hardwares.store') }}" method="POST" class="card-body">
+            @csrf
 
-    <div class="container-fluid">
-        <h3 class="text-dark mb-4">Create Hardware</h3>
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold">New Hardware</p>
+            <div class="mb-3">
+                <label for="name" class="form-label">Название оборудования</label>
+                <input type="text" name="name" class="form-control" required>
             </div>
-            <div class="card-body">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <form action="{{ route('hardwares.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group mb-3">
-                        <label for="name" class="form-label">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" required>
-                        @error('name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="serial" class="form-label">Serial:</label>
-                        <input type="text" id="serial" name="serial" class="form-control @error('serial') is-invalid @enderror" required>
-                        @error('serial')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary">Add Hardware</button>
-                    </div>
-                </form>
+            <div class="mb-3">
+                <label for="serial" class="form-label">Серийный номер</label>
+                <input type="text" name="serial" class="form-control" required>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label for="ident_number" class="form-label">Идентификационный номер</label>
+                <input type="text" name="ident_number" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="kargavichak" class="form-label">Количество</label>
+                <input type="number" name="kargavichak" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="worker_id" class="form-label">Ответственный работник</label>
+                <select name="worker_id" class="form-select" required>
+                    <option value="">Выберите работника</option>
+                    @foreach($workers as $worker)
+                        <option value="{{ $worker->id }}">{{ $worker->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Поле project_id не отображается, поскольку оно всегда будет null -->
+
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
 @endsection

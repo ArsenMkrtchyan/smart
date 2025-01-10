@@ -13,9 +13,11 @@ class Hardware extends Model
     protected $fillable = [
         'name',
         'serial',
+        'ident_number',
+        'kargavichak',
         'user_id',
+        'worker_id',
         'project_id',
-
     ];
     public function user()
     {

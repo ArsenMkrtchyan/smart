@@ -50,10 +50,9 @@
                     <label for="role_id" class="form-label">Роль</label>
                     <select name="role_id" class="form-select" required>
                         <!-- Эти данные нужно будет передать из контроллера -->
-                        <option value="1">User</option>
-                        <option value="2">Moderator</option>
-                        <option value="3">Editor</option>
-                        <option value="4">Admin</option>
+                       @foreach($roles as $role)
+                           <option value="{{$role->id}}">{{$role->name}}</option>
+                       @endforeach
                     </select>
                 </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +31,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+       $roles = Role::all();
+        return view('users.create',compact('roles'));
     }
 
     /**
@@ -73,43 +75,56 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
-        return view('users.edit', compact('user'));
+        // Проверка прав доступа
+        $currentUser = auth()->user();
+        if ($currentUser->role_id !== 4 || !$currentUser->is_admin) {
+            abort(403, 'Access denied');
+        }
+
+        // Получение всех ролей
+        $roles = \App\Models\Role::all();
+
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'female' => 'required|string|max:255',
-            'number' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'role_id' => 'required|integer',
-            'is_admin' => 'required|boolean'
+            'firm_name' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'balance' => 'nullable|numeric',
+            'number' => 'nullable|string|max:15',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role_id' => 'required|exists:roles,id',
+            'is_admin' => 'nullable|boolean',
+            'havayrole' => 'nullable|boolean',
+            'password' => 'nullable|string|min:8', // пароль теперь может быть null
         ]);
 
-        $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->female = $request->female;
-        $user->number = $request->number;
-        $user->email = $request->email;
-        $user->role_id = $request->role_id;
-        $user->is_admin = $request->is_admin;
+        // Заполнение данных пользователя
+        $user->fill($validated);
 
+        // Если поле password заполнено, обновить его
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
+        // Обработка полей is_admin и havayrole
+        $user->is_admin = $request->has('is_admin') ? $request->is_admin : null;
+        $user->havayrole = $request->has('havayrole') ? $request->havayrole : null;
+
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.

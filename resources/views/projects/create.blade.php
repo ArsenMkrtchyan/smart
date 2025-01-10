@@ -522,7 +522,7 @@
 
                                 <div class="col">
                                     <div class="mb-3 floating-label">
-                                        <select class="form-select" id="entity-select-4-j">
+                                        <select class="form-select" id="entity-select-4-j" name="worker_id">
                                             <optgroup label="Իրավաբանական/Ֆիզիկական">
                                                 @foreach($workers as $worker)
                                                     <option value="{{$worker->id}}" >{{$worker->name}}</option>

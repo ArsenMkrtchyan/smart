@@ -49,9 +49,12 @@ class HardwareController extends Controller
      */
     public function create()
     {
-        $projects = Project::all();
-        return view('hardwares.create' , compact('projects'));
+        // Получение всех пользователей (работников)
+        $workers = \App\Models\User::all();
+
+        return view('hardwares.create', compact('workers'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -61,15 +64,23 @@ class HardwareController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'serial' => 'required|string|max:255',
-            'project_id' => 'exists:projects,id',
+            'ident_number' => 'required|string|max:255',
+            'kargavichak' => 'required|integer',
+            'worker_id' => 'required|exists:users,id',
         ]);
-        $userId = auth()->id();
-        $validated['user_id'] = $userId;
-        Hardware::create($validated);
 
-        return redirect()->route('hardwares.index')->with('success', 'Hardware added successfully.');
+        \App\Models\Hardware::create([
+            'name' => $validated['name'],
+            'serial' => $validated['serial'],
+            'ident_number' => $validated['ident_number'],
+            'kargavichak' => $validated['kargavichak'],
+            'user_id' => auth()->id(), // Автоматически устанавливаем ID текущего пользователя
+            'worker_id' => $validated['worker_id'],
+            'project_id' => null, // Устанавливаем project_id в null
+        ]);
+
+        return redirect()->route('hardwares.index')->with('success', 'Оборудование успешно добавлено!');
     }
-
 
     /**
      * Display the specified resource.
@@ -84,26 +95,38 @@ class HardwareController extends Controller
      */
     public function edit($id)
     {
-        $hardware = Hardware::findOrFail($id);
-        return view('hardwares.edit',compact('hardware'));
+        $hardware = \App\Models\Hardware::findOrFail($id);
+        $workers = \App\Models\User::all(); // Получение списка всех пользователей
+
+        return view('hardwares.edit', compact('hardware', 'workers'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $hardware = \App\Models\Hardware::findOrFail($id);
 
-        'name' => 'required|string|max:255',
-        'serial' => 'required|string|max:255',
-    ]);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'serial' => 'required|string|max:255',
+            'ident_number' => 'required|string|max:255',
+            'kargavichak' => 'required|integer',
+            'worker_id' => 'required|exists:users,id',
+        ]);
 
-        $simlist = Hardware::findOrFail($id);
-        $simlist->update($request->all());
+        // Обновление данных оборудования
+        $hardware->update([
+            'name' => $validated['name'],
+            'serial' => $validated['serial'],
+            'ident_number' => $validated['ident_number'],
+            'kargavichak' => $validated['kargavichak'],
+            'worker_id' => $validated['worker_id'],
+            'project_id' => null, // Убедимся, что project_id остаётся null
+        ]);
 
-        return redirect()->route('hardwares.index')
-            ->with('success', 'Hardware updated successfully.');
+        return redirect()->route('hardwares.index')->with('success', 'Оборудование успешно обновлено!');
     }
 
     /**

@@ -5,7 +5,7 @@
         <h3 class="text-dark mb-4">Սարքավորումներ</h3>
         <div class="card shadow">
             <div class="card-header py-3">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="i_page-1.html"><strong>ավելացնել Սարք</strong></a><a class="btn btn-outline-primary" role="button" href="i_page-1.html"><strong>Տեղափոխել</strong></a></div>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('hardwares.create')}}"><strong>ավելացնել Սարք</strong></a><a class="btn btn-outline-primary" role="button" href="i_page-1.html"><strong>Տեղափոխել</strong></a></div>
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="hardware-sim.html"><strong>Վաճառել</strong></a></div>
             </div>
             <div class="card-body">
