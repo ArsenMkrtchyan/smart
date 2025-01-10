@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('serial');
             $table->string('store');
-            $table->string('ident_number');
+            $table->string('ident_id')->nullable();
             $table->integer('kargavichak');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('worker_id')->constrained('users')->onDelete('cascade');

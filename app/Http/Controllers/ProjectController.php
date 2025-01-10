@@ -212,7 +212,7 @@ $hardwares = Hardware::all();
             'soc'           => 'nullable|string',
             'id_card'       => 'nullable|string',
             'ceo_phone'     => 'nullable|string',
-
+            'ceorole_id'     => 'nullable|integer',
             // Юр. лицо
             'firm_name'     => 'nullable|string',  // (пример)
             'hvhh'          => 'nullable|string',
@@ -235,8 +235,8 @@ $hardwares = Hardware::all();
             'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
             'sim_ids'         => 'array',     // ожидаем массив
             'sim_ids.*'       => 'integer',
-            'hard_ids'         => 'array',     // ожидаем массив
-            'hard_ids.*'       => 'integer',
+            'hardware_ids'         => 'array',     // ожидаем массив
+            'hardware_ids.*'       => 'integer',
             'patasxanatus'    => 'nullable|array',
             'patasxanatus.*'  => 'nullable|string|max:255',
             'numbers'         => 'nullable|array',
@@ -255,10 +255,10 @@ $hardwares = Hardware::all();
             Simlist::whereIn('id', $validated['sim_ids'])
                 ->update(['project_id' => $project->id ,'ident_id' => $project->ident_id] );
         }
-//            if (!empty($validated['hard_ids'])) {
-//                Hardware::whereIn('id', $validated['hard_ids'])
-//                    ->update(['project_id' => $project->id]);
-//            }
+            if (!empty($validated['hardware_ids'])) {
+                Hardware::whereIn('id', $validated['hardware_ids'])
+                    ->update(['project_id' => $project->id]);
+            }
 
 
             // Обработка Патасханату
@@ -313,7 +313,8 @@ $hardwares = Hardware::all();
             'simlists' => $simlists
         ]);
     }
-    public function searchHardlists(Request $request)
+
+    public function searchHardwares(Request $request)
     {
         $query = $request->input('query');
 
@@ -321,18 +322,16 @@ $hardwares = Hardware::all();
             return response()->json([]);
         }
 
-        // Поиск SIM-карт по номеру, начинающемуся с введённой строки
-        // Так как number не уникален, возвращаем id и number
+        // Поиск оборудования по серийному номеру, начинающемуся с введённой строки
         $hardwares = Hardware::where('serial', 'like', "{$query}%")
-            ->whereNull('project_id') // Ищем только свободные SIM-карты
+            ->whereNull('project_id') // Ищем только свободное оборудование, если применимо
             ->limit(20)
-            ->get(['id', 'serial']);
+            ->get(['id', 'serial', 'name']);
 
         return response()->json([
             'hardwares' => $hardwares
         ]);
     }
-
 
 
     public function generatePaymanagirIdMarz(Request $request, Project $project)
@@ -445,6 +444,7 @@ $hardwares = Hardware::all();
             'soc'           => 'nullable|string',
             'id_card'       => 'nullable|string',
             'ceo_phone'     => 'nullable|string',
+            'ceorole_id'     => 'nullable|string',
 
             // Юр. лицо
             'firm_name'     => 'nullable|string',
@@ -478,6 +478,8 @@ $hardwares = Hardware::all();
             'patasxanatus.*'  => 'nullable|string|max:255',
             'numbers'         => 'nullable|array',
             'numbers.*'       => 'nullable|string|max:255',
+            'hardware_ids' => 'nullable|array',
+            'hardware_ids.*' => 'integer|exists:hardwares,id',
         ]);
 
         // Обновление данных проекта
@@ -487,6 +489,11 @@ $hardwares = Hardware::all();
         Simlist::where('project_id', $project->id)->update(['project_id' => null]);
         if (!empty($validated['sim_ids'])) {
             Simlist::whereIn('id', $validated['sim_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
+        }
+
+        Hardware::where('project_id', $project->id)->update(['project_id' => null]);
+        if (!empty($validated['hardware_ids'])) {
+            Hardware::whereIn('id', $validated['hardware_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
         }
 
         // Обработка Pатասxanatu

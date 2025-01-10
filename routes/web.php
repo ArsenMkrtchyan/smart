@@ -45,7 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/projects/store-all', [ProjectController::class, 'storeAll'])->name('projects.storeAll');
 
     Route::get('/projects/create/search-simlists', [ProjectController::class, 'searchSimlists'])->name('projects.searchSimlists');
-    Route::get('/projects/create/search-hardwares', [ProjectController::class, 'searchHardwares'])->name('projects.searchHardwares');
+    Route::get('/projects/create/search-hardwares', [ProjectController::class, 'searchHardwares'])->name('hardwares.searchHardwares');
+
 
     Route::get('/projects/create/get-next-ident-id', [ProjectController::class, 'getNextIdentId'])->name('projects.getNextIdentId');
 });

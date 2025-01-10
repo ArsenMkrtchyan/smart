@@ -13,7 +13,7 @@ class Hardware extends Model
     protected $fillable = [
         'name',
         'serial',
-        'ident_number',
+        'ident_id',
         'kargavichak',
         'user_id',
 
@@ -27,5 +27,9 @@ class Hardware extends Model
     public function worker()
     {
         return $this->belongsTo(User::class,'worker_id');
+    }
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }

@@ -66,6 +66,10 @@
                         <li><a class="dropdown-item" href="#">xekavari pashton</a></li>
                         <li><a class="dropdown-item" href="{{route('users.index')}}">Օգտագործողներ</a></li>
                         <li><a class="dropdown-item" href="#">object type</a></li>
+                        <li><a class="dropdown-item" href="{{route('prices.index')}}">Գնացուցակ</a></li>
+
+
+
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link nav-link" href="#"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>

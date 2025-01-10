@@ -90,6 +90,10 @@ class   Project extends Model
     {
         return $this->hasMany(Simlist::class);
     }
+    public function hardwares()
+    {
+        return $this->hasMany(Hardware::class);
+    }
     public function patasxanatus()
     {
         return $this->hasMany(Patasxanatu::class);

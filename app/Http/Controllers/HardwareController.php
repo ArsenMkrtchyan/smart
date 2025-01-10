@@ -64,7 +64,7 @@ class HardwareController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'serial' => 'required|string|max:255',
-            'ident_number' => 'required|string|max:255',
+
             'kargavichak' => 'required|integer',
             'worker_id' => 'required|exists:users,id',
         ]);
@@ -72,7 +72,7 @@ class HardwareController extends Controller
         \App\Models\Hardware::create([
             'name' => $validated['name'],
             'serial' => $validated['serial'],
-            'ident_number' => $validated['ident_number'],
+            'ident_id' => null,
             'kargavichak' => $validated['kargavichak'],
             'user_id' => auth()->id(), // Автоматически устанавливаем ID текущего пользователя
             'worker_id' => $validated['worker_id'],

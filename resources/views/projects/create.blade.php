@@ -282,7 +282,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="entity-select-5-j" >
+                                                <select class="form-select form-select" id="entity-select-5-j" name="ceorole_id">
 
                                                     <optgroup label="roles">
                                                         @foreach($seoroles as $seorole)
@@ -564,13 +564,13 @@
                                     </div>
                                     <div class="col">
                                         <div class="mb-3 floating-label">
-                                            <button type="button" class="btn btn-secondary" id="openSimModal">
-                                                Выбрать SIM-карты
+                                            <button type="button" class="btn btn-secondary" id="openHardwareModal">
+                                                Выбрать Оборудование
                                             </button>
 
-                                            {{-- Контейнер для отображения выбранных SIM-карт --}}
-                                            <div id="selectedSimContainer" class="mt-3">
-                                                {{-- Выбранные SIM-карты будут добавлены здесь --}}
+                                            {{-- Контейнер для отображения выбранного оборудования --}}
+                                            <div id="selectedHardwareContainer" class="mt-3">
+                                                {{-- Выбранное оборудование будет добавлено здесь --}}
                                             </div>
                                         </div>
                                     </div>
@@ -789,18 +789,39 @@
             </form>
         </div>
     </div>
+    <div id="hardwareModal" class="w3-modal" style="display: none;">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+            <div class="w3-center">
+                <span onclick="closeHardwareModal()" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+                <h3>Выбрать Оборудование для проекта</h3>
+            </div>
+            <form id="hardwareSearchForm" method="POST">
+                @csrf
+                <div class="w3-container">
+                    <label for="hardwareSearch">Поиск по серийному номеру:</label>
+                    <input type="text" id="hardwareSearch" name="hardwareSearch" class="w3-input" placeholder="Введите серийный номер" oninput="performHardwareSearch()">
+
+                    <div id="hardwareSearchResults" class="w3-margin-top">
+                        <p>Введите серийный номер для поиска...</p>
+                    </div>
+
+                    <button type="button" onclick="saveHardwareSelection()" class="w3-button w3-green w3-margin-top">Сохранить выбор</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Добавляем дополнительные стили при необходимости -->
     <style>
         /* Стилизация выбранных SIM-карт */
-        #selectedSimContainer {
+        #selectedSimContainer, #selectedHardwareContainer {
             border: 1px solid #ccc;
             padding: 10px;
             min-height: 50px;
             border-radius: 4px;
             background-color: #f9f9f9;
         }
-        #selectedSimContainer span {
+        #selectedSimContainer span, #selectedHardwareContainer span {
             display: inline-block;
             background-color: #e7f3fe;
             border: 1px solid #2196F3;
@@ -809,7 +830,7 @@
             border-radius: 4px;
             position: relative;
         }
-        #selectedSimContainer span .remove-sim {
+        #selectedSimContainer span .remove-sim, #selectedHardwareContainer span .remove-hardware {
             margin-left: 10px;
             color: red;
             cursor: pointer;
@@ -834,8 +855,124 @@
             cursor: pointer;
         }
     </style>
+
     {{-- Подключаем jQuery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Обработчик открытия модального окна оборудования
+            $('#openHardwareModal').on('click', function(){
+                openHardwareModal();
+            });
+
+            // Функции для открытия и закрытия модального окна оборудования
+            function openHardwareModal() {
+                $('#hardwareModal').show();
+            }
+
+            function closeHardwareModal() {
+                $('#hardwareModal').hide();
+            }
+
+            // Закрытие модального окна при клике на крестик
+            $(document).on('click', '#hardwareModal .w3-display-topright', function(){
+                closeHardwareModal();
+            });
+
+            // Удаление выбранного оборудования из контейнера
+            $(document).on('click', '.remove-hardware', function(){
+                const hardwareId = $(this).parent().data('hardware-id');
+                // Удаляем скрытый input
+                $(`input[name="hardware_ids[]"][value="${hardwareId}"]`).remove();
+                // Удаляем визуальный элемент
+                $(this).parent().remove();
+                // Также, если оборудование было отмечено в модалке, снимаем отметку
+                $(`.hardware-checkbox[value="${hardwareId}"]`).prop('checked', false);
+            });
+
+            // Функция для выполнения живого поиска оборудования
+            window.performHardwareSearch = function() {
+                const query = $('#hardwareSearch').val().trim();
+
+                if (query.length < 1) {
+                    $('#hardwareSearchResults').html('<p>Введите серийный номер для поиска...</p>');
+                    return;
+                }
+
+                $.ajax({
+                    url: '{{ route("hardwares.searchHardwares") }}', // Убедитесь, что маршрут корректен
+                    method: 'GET',
+                    data: { query: query },
+                    success: function(data) {
+                        let html = '';
+                        if(data.hardwares.length === 0){
+                            html = '<p>Ничего не найдено.</p>';
+                        } else {
+                            data.hardwares.forEach(function(hardware){
+                                // Проверяем, выбрано ли уже это оборудование
+                                const isSelected = $(`input[name="hardware_ids[]"][value="${hardware.id}"]`).length > 0;
+                                html += `
+                                <div class="w3-padding">
+                                    <input type="checkbox" class="hardware-checkbox" value="${hardware.id}" id="hardware_${hardware.id}" ${isSelected ? 'checked' : ''}>
+                                    <label for="hardware_${hardware.id}">${hardware.serial} (${hardware.name}) ${isSelected ? '(выбрано)' : ''}</label>
+                                </div>
+                            `;
+                            });
+                        }
+                        $('#hardwareSearchResults').html(html);
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Ошибка при поиске оборудования:', error);
+                        $('#hardwareSearchResults').html('<p>Произошла ошибка при поиске.</p>');
+                    }
+                });
+            }
+
+            // Функция для сохранения выбранного оборудования
+            window.saveHardwareSelection = function() {
+                $('.hardware-checkbox:checked').each(function(){
+                    const hardwareId = $(this).val();
+                    const hardwareSerial = $(this).next('label').text().split(' (')[0].trim();
+                    const hardwareName = $(this).next('label').text().split(' (')[1].replace(')', '').trim();
+
+                    // Проверяем, есть ли уже скрытый input с этим hardwareId
+                    if($(`input[name="hardware_ids[]"][value="${hardwareId}"]`).length === 0){
+                        // Добавляем скрытый input в основную форму
+                        const hiddenInput = `<input type="hidden" name="hardware_ids[]" value="${hardwareId}">`;
+                        $('#selectedHardwareContainer').append(hiddenInput);
+
+                        // Визуально отображаем выбранное оборудование с возможностью удаления
+                        const hardwareTag = `
+                        <span data-hardware-id="${hardwareId}">
+                            ${hardwareSerial} (${hardwareName})
+                            <span class="remove-hardware">&times;</span>
+                        </span>
+                    `;
+                        $('#selectedHardwareContainer').append(hardwareTag);
+                    }
+                });
+
+                // Закрываем модалку после сохранения
+                closeHardwareModal();
+                // Очистим результаты и поле поиска
+                $('#hardwareSearch').val('');
+                $('#hardwareSearchResults').html('<p>Введите серийный номер для поиска...</p>');
+            }
+
+            // Обработчик клика на кнопку "Сохранить выбор" в модальном окне оборудования
+            $(document).on('click', '#hardwareModal button.w3-green', function(){
+                saveHardwareSelection();
+            });
+
+            // Закрытие модального окна при клике вне его содержимого
+            $(window).on('click', function(event){
+                const modal = $('#hardwareModal');
+                if ($(event.target).is(modal)) {
+                    closeHardwareModal();
+                }
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
