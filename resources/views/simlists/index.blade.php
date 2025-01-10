@@ -15,15 +15,23 @@
                         <table class="table my-0" id="dataTable">
                             <thead>
                             <tr>
-                                <th style="width: 190.078px;">sim number</th>
-                                <th style="width: 70.688px;">sim code</th>
-                                <th style="padding-top: 0px;padding-left: 169px;">Actions</th>
+                                <th style="width: 190.078px;">SIM Համար</th>
+                                <th style="width: 70.688px;">SIM Կոդ</th>
+                                <th style="padding-top: 0px;padding-left: 169px;">Օպերատոր</th>
+                                <th style="width: 190.078px;">Պահեստ</th>
+                                <th style="width: 70.688px;">Իդենտ համարը</th>
+                                <th style="padding-top: 0px;padding-left: 169px;">ամսաթիվ</th>
+                                <th style="padding-top: 0px;padding-left: 169px;">Գործողություն</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($simlists as $simlist)
                                 <tr>
                                     <td> {{$simlist->sim_info}}</td>
+                                    <td> {{$simlist->number}}</td>
+                                    <td> {{$simlist->number}}</td>
+                                    <td> {{$simlist->number}}</td>
+                                    <td> {{$simlist->number}}</td>
                                     <td> {{$simlist->number}}</td>
                                     <td style="padding-left: 169px;">
                                         <form  method="POST" style="display:inline;">
