@@ -59,14 +59,26 @@ class FinanceController extends Controller
             return response()->json([]);
         }
 
-        $finances = Finance::where('month', $monthYear)->get(['id','project_id','amount']);
+        $finances = Finance::where('month', $monthYear)->with('projecte')->get(['id','project_id','amount']);
+
+
 
         $data = $finances->map(function($f) {
-            return [
-                'finance_id' => $f->id,
-                'project_id' => $f->project_id,
-                'amount' => $f->amount,
-            ];
+            if ($f->project->firm_name != null){
+                return [
+                    'finance_id' => $f->id,
+                    'project_id' => $f->project ? $f->project->firm_name : null,
+                    'amount' => $f->amount,
+                ];
+
+        }else{
+                return [
+                    'finance_id' => $f->id,
+                    'project_id' => $f->project ? $f->project->brand_name : null,
+                    'amount' => $f->amount,
+                ];
+
+            }
         });
 
         return response()->json($data);

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('sim_info');
             $table->string('number');
             $table->string('sim_id');
-            $table->string('price');
+            $table->string('price')->nullable();
             $table->string('ident_id')->nullable();
-            $table->string('mb');
+            $table->string('mb')->nullable();
             $table->foreignId('project_id')->nullable()->references('id')->on('projects')->onDelete('cascade');
             $table->foreignId('worker_id')->nullable()->references('id')->on('users')->onDelete('cascade');
 

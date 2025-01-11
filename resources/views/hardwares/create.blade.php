@@ -23,15 +23,8 @@
                 <input type="number" name="kargavichak" class="form-control" required>
             </div>
 
-            <div class="mb-3">
-                <label for="worker_id" class="form-label">Ответственный работник</label>
-                <select name="worker_id" class="form-select" required>
-                    <option value="">Выберите работника</option>
-                    @foreach($workers as $worker)
-                        <option value="{{ $worker->id }}">{{ $worker->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <input value="1" type="hidden" name="worker_id">
+
 
             <!-- Поле project_id не отображается, поскольку оно всегда будет null -->
 

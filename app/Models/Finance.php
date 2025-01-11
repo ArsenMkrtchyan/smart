@@ -16,5 +16,9 @@ class Finance extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function projecte()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 
 }

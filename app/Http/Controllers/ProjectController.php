@@ -27,6 +27,48 @@ use Dompdf\Options;
 
 class ProjectController extends Controller
 {
+    public function showInvoices()
+    {
+        // 1) Найти все файлы в папке "public" (или можно "public/invoices"?)
+        //    Если нужно именно "storage/app/public", то с точки зрения Laravel это "disk('public')" без дополнительной папки
+        //    или же указываем 'disk('public')->files('invoices')' если у нас папка invoices.
+        //    Но предположим, что файлы лежат прямо в public.
+        $allFiles = \Storage::disk('public')->files();
+        // например, $allFiles = ['invoices_001.pdf', 'invoices_test.docx', 'avatar.png', ... ]
+
+        // 2) Отфильтровать те, что начинаются на "invoices_"
+        $invoices = array_filter($allFiles, function ($file) {
+            return \Str::startsWith($file, 'invoices_');
+        });
+
+        // 3) Передать список файлов во view
+        return view('invoices', compact('invoices'));
+    }
+
+    public function downloadInvoice(Request $request)
+    {
+        $filename = $request->query('filename');
+        // Примерно /invoices/download?filename=invoices_001.pdf
+
+        // Можно дополнительно проверить startsWith('invoices_'),
+        // чтобы не дать скачать посторонние файлы
+        if (! $filename || ! \Str::startsWith($filename, 'invoices_')) {
+            abort(404, 'Файл не найден или не подходит под invoices_*');
+        }
+
+        // Проверить, что файл реально существует
+        if (! \Storage::disk('public')->exists($filename)) {
+            abort(404, 'Файл не найден на диске.');
+        }
+
+        // Отдать файл на скачивание
+        return \Storage::disk('public')->download($filename);
+    }
+
+
+
+
+
     public function index(Request $request)
     {
         // Заготовка запроса

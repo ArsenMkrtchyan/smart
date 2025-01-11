@@ -111,7 +111,7 @@ class HardwareController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'serial' => 'required|string|max:255',
-            'ident_number' => 'required|string|max:255',
+
             'kargavichak' => 'required|integer',
             'worker_id' => 'required|exists:users,id',
         ]);
@@ -120,10 +120,10 @@ class HardwareController extends Controller
         $hardware->update([
             'name' => $validated['name'],
             'serial' => $validated['serial'],
-            'ident_number' => $validated['ident_number'],
+
             'kargavichak' => $validated['kargavichak'],
             'worker_id' => $validated['worker_id'],
-            'project_id' => null, // Убедимся, что project_id остаётся null
+
         ]);
 
         return redirect()->route('hardwares.index')->with('success', 'Оборудование успешно обновлено!');

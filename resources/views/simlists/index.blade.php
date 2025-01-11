@@ -16,7 +16,7 @@
                             <thead>
                             <tr>
                                 <th><strong>SIM Համար</strong></th>
-                                <th><strong>SIM Կոդ</strong></th>
+                                <th><strong>SIM Կոդ ICMC</strong></th>
                                 <th><strong>Օպերատոր</strong></th>
                                 <th><strong>Պահեստ</strong></th>
                                 <th><strong>Իդենտ համարը</strong></th>
@@ -29,10 +29,10 @@
                             <tbody>
                             @foreach($simlists as $simlist)
                                 <tr>
+                                    <td> {{$simlist->number}}</td>
                                     <td> {{$simlist->sim_info}}</td>
-                                    <td> {{$simlist->number}}</td>
-                                    <td> {{$simlist->number}}</td>
-                                    <td> {{$simlist->number}}</td>
+                                    <td> {{$simlist->sim_id}}</td>
+                                    <td> {{$simlist->worker->name}} - {{$simlist->worker->name}}</td>
                                     <td> {{$simlist->number}}</td>
                                     <td> {{$simlist->number}}</td>
                                     <td style="padding-left: 169px;">

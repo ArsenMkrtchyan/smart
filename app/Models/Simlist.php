@@ -28,4 +28,8 @@ class Simlist extends Model
     {
         return $this->hasMany(Project::class);
     }
+    public function worker()
+    {
+        return $this->belongsTo(User::class, 'worker_id');
+    }
 }

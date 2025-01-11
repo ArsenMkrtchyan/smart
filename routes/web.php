@@ -83,6 +83,10 @@ Route::get('payments/project/{project}/create', [PaymentController::class, 'crea
 Route::get('payments/search', [PaymentController::class, 'search'])->name('payments.search');
 Route::post('payments/storeForProject', [PaymentController::class, 'storeForProject'])->name('payments.storeForProject');
 
+
+
+Route::get('/invoices', [ProjectController::class, 'showInvoices'])->name('projects.invoices');
+Route::get('/invoices/download', [ProjectController::class, 'downloadInvoice'])->name('projects.downloadInvoice');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

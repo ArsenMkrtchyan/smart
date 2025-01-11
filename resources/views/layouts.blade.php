@@ -52,7 +52,16 @@
             <ul class="navbar-nav text-light" id="accordionSidebar">
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('projects.index')}}"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('payments.index')}}"><i class="fas fa-user"></i><span>Ֆինանսական</span></a></li>
+
+                <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="financesMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Ֆինանսական</span></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
+                        <li><a class="dropdown-item" href="{{route('payments.index')}}">payments</a></li>
+                        <li><a class="dropdown-item" href="{{route('finances.index')}}">finances</a></li>
+                        <li><a class="dropdown-item" href="{{route('projects.invoices')}}">invoices</a></li>
+                    </ul>
+                </li>
+
+
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Սարքավորումներ</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
                         <li><a class="dropdown-item" href="{{route('hardwares.index')}}">Hardware</a></li>

@@ -322,8 +322,14 @@ class PaymentController extends Controller
         $financeId = $request->finance_id;
         $projectId = $request->project_id;
         $paymentAmount = $request->amount;
-        $description = $request->description;
+        if ( $request->description == null ) {
+            $description = 'no description';
 
+        }else{
+            $description = $request->description;
+
+        }
+    
         if ($financeId) {
             // Логика из старого кода для оплаты по конкретному finance
             $finance = Finance::findOrFail($financeId);

@@ -17,10 +17,7 @@
                 <input type="text" name="serial" class="form-control" value="{{ $hardware->serial }}" required>
             </div>
 
-            <div class="mb-3">
-                <label for="ident_number" class="form-label">Идентификационный номер</label>
-                <input type="text" name="ident_number" class="form-control" value="{{ $hardware->ident_number }}" required>
-            </div>
+
 
             <div class="mb-3">
                 <label for="kargavichak" class="form-label">Количество</label>

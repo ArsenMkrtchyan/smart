@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Simlist;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SimlistController extends Controller
@@ -29,8 +30,8 @@ $projects = Project::all();
             'sim_info' => 'required|string|max:255',
             'number' => 'required|string|max:255',
             'sim_id' => 'required|string|max:255',
-            'price' => 'required|string|max:255',
-            'mb' => 'required|string|max:255',
+            'price' => 'nullable|string|max:255',
+            'mb' => 'nullable|string|max:255',
 //            'project_id' => 'exists:projects,id',
         ]);
         $validated['project_id'] = null;
@@ -43,8 +44,9 @@ $projects = Project::all();
 
     public function edit($id)
     {
+        $workers = User::all();
         $simlist = Simlist::findOrFail($id);
- return view('simlists.edit',compact('simlist'));
+ return view('simlists.edit',compact('simlist','workers'));
     }
 
 
@@ -55,9 +57,9 @@ $projects = Project::all();
             'sim_info' => 'required|string|max:255',
             'number' => 'required|string|max:255',
             'sim_id' => 'required|string|max:255',
-            'price' => 'required|string|max:255',
-            'mb' => 'required|string|max:255',
-            'project_id' => 'required|exists:projects,id',
+            'price' => 'nullable|string|max:255',
+            'mb' => 'nullable|string|max:255',
+'worker_id' => 'nullable|integer'
         ]);
         $userId = auth()->id();
         $validated['user_id'] = $userId;

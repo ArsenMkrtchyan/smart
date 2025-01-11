@@ -1,4 +1,4 @@
-@extends('finances.app')
+@extends('layouts')
 
 @section('content')
     <div class="container">
@@ -44,7 +44,7 @@
     </div>
 @endsection
 
-@section('scripts')
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -127,4 +127,4 @@
 
         });
     </script>
-@endsection
+
