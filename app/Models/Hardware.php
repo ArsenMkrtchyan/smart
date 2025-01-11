@@ -16,7 +16,7 @@ class Hardware extends Model
         'ident_id',
         'kargavichak',
         'user_id',
-
+'store',
         'worker_id',
         'project_id',
     ];

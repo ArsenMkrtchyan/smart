@@ -257,7 +257,7 @@ $hardwares = Hardware::all();
         }
             if (!empty($validated['hardware_ids'])) {
                 Hardware::whereIn('id', $validated['hardware_ids'])
-                    ->update(['project_id' => $project->id]);
+                    ->update(['project_id' => $project->id , 'ident_id' => $project->ident_id]);
             }
 
 

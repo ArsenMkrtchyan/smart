@@ -57,8 +57,8 @@ class UserController extends Controller
         $user = new User();
         $user->fill($validated);
         $user->password = Hash::make($validated['password']);
-        $user->is_admin = $request->has('is_admin') ? $validated['is_admin'] : null;
-        $user->havayrole = $request->has('havayrole') ? $validated['havayrole'] : null;
+        $user->is_admin = $request->has('is_admin') ? $validated['is_admin'] : 0;
+        $user->havayrole = $request->has('havayrole') ? $validated['havayrole'] : 0;
         $user->save();
 
         return redirect()->route('users.index')->with('success', 'User created successfully!');
@@ -117,8 +117,8 @@ class UserController extends Controller
         }
 
         // Обработка полей is_admin и havayrole
-        $user->is_admin = $request->has('is_admin') ? $request->is_admin : null;
-        $user->havayrole = $request->has('havayrole') ? $request->havayrole : null;
+        $user->is_admin = $request->has('is_admin') ? $request->is_admin : 0;
+        $user->havayrole = $request->has('havayrole') ? $request->havayrole : 0;
 
         $user->save();
 

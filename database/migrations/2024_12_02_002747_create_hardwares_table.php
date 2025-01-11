@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('serial');
-            $table->string('store');
+            $table->string('store')->nullable();
             $table->string('ident_id')->nullable();
             $table->integer('kargavichak');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('worker_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('worker_id')->default('1')->constrained('users')->onDelete('cascade');
 
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');
 

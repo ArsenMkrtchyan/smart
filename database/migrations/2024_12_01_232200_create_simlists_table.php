@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('ident_id')->nullable();
             $table->string('mb');
             $table->foreignId('project_id')->nullable()->references('id')->on('projects')->onDelete('cascade');
-            $table->foreignId('worker_id')->nullable()->references('id')->on('workers')->onDelete('cascade');
+            $table->foreignId('worker_id')->nullable()->references('id')->on('users')->onDelete('cascade');
 
             $table->foreignId('user_id')->nullable()->references('id')->on('projects')->onDelete('cascade');
 
