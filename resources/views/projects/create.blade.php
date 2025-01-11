@@ -502,16 +502,18 @@
                                 </div>
                                 <div class="col">
                                     <div class="mb-3 floating-label">
-                                        <select class="form-select" id="entity-select-4-j" name="price_id">
-                                            <optgroup label="Իրավաբանական/Ֆիզիկական">
+                                        <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
+                                            <option     value="{{null}}" selected="">Ընտրեք</option>
+                                            <optgroup label="object կարգավիճակ">
+
                                                 @foreach($prices as $price)
-                                                    <option value="{{$price->id}}" >{{$price->price_name}} - {{$price->amount}} </option>
+                                                    <option value="{{$price->id}}">{{$price->price_name}}-{{$price->amount}}</option>
                                                 @endforeach
                                             </optgroup>
                                         </select>
+                                        <label for="entity-select-1">object կարգավիճակ</label>
                                     </div>
                                 </div>
-
                                 <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select" id="entity-select-4-j" name="worker_id">
@@ -684,8 +686,7 @@
                                 <h6 class="text-primary fw-bold m-0">Լուծարել պայմանագիրը</h6>
                             </div>
                             <div class="card-body">
-                                <input type="date" name="paymanagir_start"><small>Դիմումի օր</small>
-                                <div></div>
+
                                 <input type="date" name="paymanagir_end">
                                 <div></div>
                                 <input type="date" name="end_dimum">
@@ -756,20 +757,7 @@
                                                     <label for="entity-select-1">object կարգավիճակ</label>
                                                 </div>
                                             </div>
-                                            <div class="col">
-                                                <div class="mb-3 floating-label">
-                                                    <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
-                                                        <option value="" selected="">Ընտրեք</option>
-                                                        <optgroup label="object կարգավիճակ">
 
-                                                           @foreach($prices as $price)
-                                                                <option value="{{$price->id}}">{{$price->name}}</option>
-                                                           @endforeach
-                                                        </optgroup>
-                                                    </select>
-                                                    <label for="entity-select-1">object կարգավիճակ</label>
-                                                </div>
-                                            </div>
 
                                         </div>
 

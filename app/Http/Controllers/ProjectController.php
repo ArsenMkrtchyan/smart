@@ -35,7 +35,7 @@ class ProjectController extends Controller
         // Поиск по brand_name, если есть что искать
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('brand_name', 'like', "%{$search}%");
+            $query->where('firm_name', 'like', "%{$search}%")->orWhere('ident_id', 'like', "%{$search}%");
         }
 
         // Сколько записей показывать на странице
@@ -217,7 +217,7 @@ $hardwares = Hardware::all();
             'firm_name'     => 'nullable|string',  // (пример)
             'hvhh'          => 'nullable|string',
             'fin_contact'   => 'nullable|string',
-            'price_id' => 'nullable|integer',
+            'price_id' => 'nullable',
             // Адреса
             'i_marz_id'     => 'nullable|integer',
             'i_address'     => 'nullable|string',
@@ -468,7 +468,7 @@ $hardwares = Hardware::all();
             'end_dimum' => 'nullable|date',
             'tech_check' => 'nullable|string',
             'object_check' => 'nullable|string',
-            'price_id' => 'nullable|integer',
+            'price_id' => 'nullable',
             'status_edit' => 'nullable|boolean',
             'worker_id' => 'nullable|integer',
             // Связанные SIM-карты и Pатասxanatu

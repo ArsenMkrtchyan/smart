@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects');
-            $table->foreignId('finance_id')->constrained('finances');
-            $table->text('description');
+            $table->foreignId('finance_id')->nullable()->constrained('finances');
+            $table->text('description')->nullable();
             $table->double('amount');
 
             $table->timestamps();

@@ -79,7 +79,16 @@
                 <tr class="{{ $debt > 0 ? 'table-danger' : '' }}">
                     <td>
                         <a href="{{ route('payments.projectPayments', ['project' => $data['project']->id]) }}">
-                            {{ $data['project']->brand_name ?? 'Project #'.$data['project']->id }}
+
+                            @if($data['project']->firm_name != null)
+
+                                {{$data['project']->firm_name}}
+                            @elseif($data['project']->brand_name != null)
+                                {{$data['project']->brand_name}}
+                            @else
+                            {{'Project #'.$data['project']->id}}
+                            @endif
+{{--                            {{ $data['project']->firm_name ?? 'Project #'.$data['project']->id }}--}}
                         </a>
                     </td>
                     <td>{{ $data['needed'] }}</td>
