@@ -493,8 +493,7 @@
                                             <h6 class="text-primary fw-bold m-0">start պայմանագիր </h6>
                                         </div>
                                         <div class="card-body">
-                                            <input type="date" name="paymanagir_start">
-                                            <div></div>
+                                            <input type="date" name="paymanagir_start" id="dateInput"   min="2024-01-01">
 
                                         </div>
                                     </div>

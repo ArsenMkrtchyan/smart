@@ -35,10 +35,8 @@
 
                     <div class="form-group mb-3">
                         <label for="detail" class="form-label">Detail:</label>
-                        <input type="text" id="detail" name="detail" class="form-control @error('detail') is-invalid @enderror" required>
-                        @error('detail')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <input type="text" id="detail" name="detail" class="form-control">
+
                     </div>
 
                     <div class="form-group mb-3">

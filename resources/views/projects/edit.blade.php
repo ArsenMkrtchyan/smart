@@ -478,21 +478,42 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="mb-3 floating-label">
-                                        <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
+                                @if($project->price_id == null)
 
-                                            <optgroup label="object կարգավիճակ">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
+<option value="{{null}}" selected> yntreq </option>
+                                                <optgroup label="object կարգավիճակ">
 
-                                                @foreach($prices as $price)
-                                                    <option value="{{$price->id}}" {{ $project->price_id == $price->id ? 'selected' : '' }}>{{$price->price_name}}-{{$price->amount}}</option>
-                                                @endforeach
-                                                    <option     value="{{null}}" >Ընտրեք</option>
-                                            </optgroup>
-                                        </select>
-                                        <label for="entity-select-1">object կարգավիճակ</label>
+                                                    @foreach($prices as $price)
+                                                        <option value="{{$price->id}}" {{ $project->price_id == $price->id ? 'selected' : '' }}>{{$price->price_name}}-{{$price->amount}}</option>
+                                                    @endforeach
+
+                                                </optgroup>
+                                            </select>
+                                            <label for="entity-select-1">object կարգավիճակ</label>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
+
+                                                <optgroup label="object կարգավիճակ">
+
+                                                    @foreach($prices as $price)
+                                                        <option value="{{$price->id}}" {{ $project->price_id == $price->id ? 'selected' : '' }}>{{$price->price_name}}-{{$price->amount}}</option>
+                                                    @endforeach
+
+                                                </optgroup>
+                                            </select>
+                                            <label for="entity-select-1">object կարգավիճակ</label>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select" id="worker-select" name="worker_id">

@@ -46,7 +46,7 @@ class CalculateMonthlyPayments extends Command
                 $endOfMonth = $end;
             }
 
-            $monthYear = $date->format('F-Y');
+            $monthYear = $date->format('F_Y');
 
             $existingRecord = Finance::where('project_id', $project->id)
                 ->where('month', $monthYear)
@@ -63,7 +63,7 @@ class CalculateMonthlyPayments extends Command
             Finance::create([
                 'project_id' => $project->id,
                 'month' => $monthYear,
-                'amount' => round($payment, 2),
+                'amount' => round($payment, 0),
 
             ]);
         }

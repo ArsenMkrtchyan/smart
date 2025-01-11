@@ -31,7 +31,7 @@ class PriceController extends Controller
     {
         $validatedData = $request->validate([
             'price_name' => 'required|string|max:255',
-            'detail' => 'required|string',
+            'detail' => 'nullable|string',
             'amount' => 'required|numeric',
         ]);
 
@@ -66,7 +66,7 @@ class PriceController extends Controller
     {
         $validatedData = $request->validate([
             'price_name' => 'required|string|max:255',
-            'detail' => 'required|string',
+            'detail' => 'nullable|string',
             'amount' => 'required|numeric',
         ]);
 

@@ -159,7 +159,7 @@ class GenerateMonthlyInvoices extends Command
         // Итоговая цена пропорциональна доле дней:
         $finalPrice = ($monthlyAmount * $daysUsed) / $daysInMonth;
 
-        return round($finalPrice, 2);
+        return round($finalPrice, 0);
     }
 
     protected function generateInvoiceNumber($project)

@@ -91,7 +91,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="detail" class="form-label">Detail:</label>
-                                <input type="text" id="detail" name="detail" value="{{ $price->detail }}" class="form-control @error('detail') is-invalid @enderror" required>
+                                <input type="text" id="detail" name="detail" value="{{ $price->detail }}" class="form-control @error('detail') is-invalid @enderror" >
                                 @error('detail')
                                 <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
