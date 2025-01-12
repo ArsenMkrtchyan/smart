@@ -53,7 +53,8 @@ class   Project extends Model
         'status_edit',
         'object_check',
 'ceorole_id',
-        'tech_check'
+        'tech_check',
+        'id_card'
     ];
 
     public function price()

@@ -127,12 +127,12 @@ $xml .= '<AccountingDocument Version="1.0">
         <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
         <Unit>հատ</Unit>
         <Amount>1</Amount>
-        <PricePerUnit>1550</PricePerUnit>
-        <Price>1550</Price>
-        <TotalPrice>1550</TotalPrice>
+        <PricePerUnit>'.$finalPrice.'</PricePerUnit>
+        <Price>'.$finalPrice.'</Price>
+        <TotalPrice>1'.$finalPrice.'550</TotalPrice>
       </Good>
       <Total>
-        <TotalPrice>1550</TotalPrice>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
       </Total>
     </GoodsInfo>
   </AccountingDocument>';
@@ -177,12 +177,12 @@ $xml .= '<AccountingDocument Version="1.0">
         <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
         <Unit>հատ</Unit>
         <Amount>1</Amount>
-        <PricePerUnit>1550</PricePerUnit>
-        <Price>1550</Price>
-        <TotalPrice>1550</TotalPrice>
+        <PricePerUnit>'.$finalPrice.'</PricePerUnit>
+        <Price>'.$finalPrice.'</Price>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
       </Good>
       <Total>
-        <TotalPrice>1550</TotalPrice>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
       </Total>
     </GoodsInfo>
   </AccountingDocument>';
