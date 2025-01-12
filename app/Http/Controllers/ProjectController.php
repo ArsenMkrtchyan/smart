@@ -353,7 +353,7 @@ $hardwares = Hardware::all();
             'identification' => 'required|in:manual,auto',
             'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
 'paymanagir_start' => 'nullable|date',
-
+            'paymanagir_received' => 'nullable',
 
         'worker_id' => 'nullable|integer',
             // Админ-техническая
@@ -586,7 +586,7 @@ $hardwares = Hardware::all();
             // Техническая секция
             'identification' => 'nullable|in:manual,auto',
             'ident_id' => 'nullable|digits:4|unique:projects,ident_id,'.$project->id,
-
+            'paymanagir_received' => 'nullable',
             // Админ-техническая секция
             'paymanagir_start' => 'nullable|date',
             'paymanagir_end' => 'nullable|date',

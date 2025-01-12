@@ -33,8 +33,13 @@
                                     <td> {{$simlist->sim_info}}</td>
                                     <td> {{$simlist->sim_id}}</td>
 
-                                    <td> {{$simlist->worker->name}} - {{$simlist->worker->name}}</td>
-                                    <td> {{$simlist->number}}</td>
+                                    <td> {{$simlist->worker->name}} - {{$simlist->worker->female}}</td>
+                                    @if($simlist->ident_id == null)
+
+                                        <td>-</td>
+                                    @else
+                                        <td>{{$simlist->ident_id}}</td>
+                                    @endif
                                     <td> {{$simlist->number}}</td>
                                     <td style="padding-left: 169px;">
                                         <form  method="POST" style="display:inline;">

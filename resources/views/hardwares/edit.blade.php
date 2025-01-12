@@ -19,10 +19,6 @@
 
 
 
-            <div class="mb-3">
-                <label for="kargavichak" class="form-label">Количество</label>
-                <input type="number" name="kargavichak" class="form-control" value="{{ $hardware->kargavichak }}" required>
-            </div>
 
             <div class="mb-3">
                 <label for="worker_id" class="form-label">Ответственный работник</label>
@@ -30,7 +26,7 @@
                     <option value="">Выберите работника</option>
                     @foreach($workers as $worker)
                         <option value="{{ $worker->id }}" {{ $hardware->worker_id == $worker->id ? 'selected' : '' }}>
-                            {{ $worker->name }}
+                            {{ $worker->name }} - {{$worker -> firm_name}}
                         </option>
                     @endforeach
                 </select>

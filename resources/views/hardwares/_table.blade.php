@@ -16,9 +16,20 @@
             <td>{{$hardware->name}}</td>
             <td>{{$hardware->serial}}</td>
             <td>{{$hardware->worker->name}} {{$hardware->worker->female}}</td>
-            <td>-</td>
-            <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
-            <td>Վաճառված</td>
+
+            @if($hardware->ident_id == null)
+
+                <td>-</td>
+                <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
+
+                <td>-</td>
+                @else
+                <td>{{$hardware->ident_id}}</td>
+                <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
+
+                <td>texadrvac</td>
+            @endif
+
 
 
             <td>   <a href="{{ route('hardwares.edit', $hardware->id) }}">

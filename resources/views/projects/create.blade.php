@@ -679,8 +679,8 @@
                                     <div class="mb-3 floating-label"></div>
                                     <div class="mb-3 floating-label"></div>
                                     <div class="form-check">
-                                        <input type="hidden" name="activepaymnanagir_received" value="0">
-                                        <input class="form-check-input" type="checkbox" name="activepaymnanagir_received" value="1" {{ old('paymnanagir_received') ? 'checked' : '' }}>
+                                        <input type="hidden" name="paymanagir_received" value="0">
+                                        <input class="form-check-input" type="checkbox" name="paymanagir_received" value="1" {{ old('paymnanagir_received') ? 'checked' : '' }}>
 
                                         <label class="form-check-label" for="formCheck-2">Պայմանագիրը ստացել ենք</label>
                                     </div>

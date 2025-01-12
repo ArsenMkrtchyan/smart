@@ -65,7 +65,6 @@ class HardwareController extends Controller
             'name' => 'required|string|max:255',
             'serial' => 'required|string|max:255',
 
-            'kargavichak' => 'required|integer',
             'worker_id' => 'required|exists:users,id',
         ]);
 
@@ -73,7 +72,7 @@ class HardwareController extends Controller
             'name' => $validated['name'],
             'serial' => $validated['serial'],
             'ident_id' => null,
-            'kargavichak' => $validated['kargavichak'],
+
             'user_id' => auth()->id(), // Автоматически устанавливаем ID текущего пользователя
             'worker_id' => $validated['worker_id'],
             'project_id' => null, // Устанавливаем project_id в null
@@ -112,7 +111,7 @@ class HardwareController extends Controller
             'name' => 'required|string|max:255',
             'serial' => 'required|string|max:255',
 
-            'kargavichak' => 'required|integer',
+
             'worker_id' => 'required|exists:users,id',
         ]);
 
@@ -121,7 +120,7 @@ class HardwareController extends Controller
             'name' => $validated['name'],
             'serial' => $validated['serial'],
 
-            'kargavichak' => $validated['kargavichak'],
+
             'worker_id' => $validated['worker_id'],
 
         ]);

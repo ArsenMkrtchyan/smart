@@ -18,10 +18,7 @@
 
 
 
-            <div class="mb-3">
-                <label for="kargavichak" class="form-label">Количество</label>
-                <input type="number" name="kargavichak" class="form-control" required>
-            </div>
+
 
             <input value="1" type="hidden" name="worker_id">
 
