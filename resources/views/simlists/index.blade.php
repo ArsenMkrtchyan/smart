@@ -54,12 +54,12 @@
 
 
 
-                                    <td style="padding-left: 169px;">
-                                        <form  method="POST" style="display:inline;">
+                                    <td>
+                                        <form  method="POST" >
                                             @csrf
                                             @method('DELETE')
                                             <a href="{{ route('simlists.edit', $simlist->id) }}" class="btn btn-primary">Edit</a>
-                                            <button class="btn btn-danger" type="submit">Delete</button>
+
                                         </form>
                                     </td>
                                 </tr>
