@@ -45,8 +45,7 @@ class GenerateMonthlyInvoices extends Command
 
 
         if ($project->hvhh != null){
-            $xml .= '
-    <AccountingDocument Version="1.0">
+            $xml .= '<AccountingDocument Version="1.0">
     <Type>3</Type>
     <GeneralInfo>
       <DeliveryDate>' . $deliveryDate . '</DeliveryDate>
@@ -90,8 +89,7 @@ class GenerateMonthlyInvoices extends Command
   </AccountingDocument>
   ';
         } elseif($project->hvhh == null and $project->andznagir != null){
-$xml = '
-<AccountingDocument Version="1.0">
+$xml .= '<AccountingDocument Version="1.0">
     <Type>3</Type>
     <GeneralInfo>
       <DeliveryDate>2024-10-31+04:00</DeliveryDate>
@@ -140,8 +138,7 @@ $xml = '
   </AccountingDocument>';
 
         }elseif ($project->hvhh == null && $project->andznagir == null){
-            $xml = '
-<AccountingDocument Version="1.0">
+            $xml .= '<AccountingDocument Version="1.0">
     <Type>3</Type>
     <GeneralInfo>
       <DeliveryDate>2024-10-31+04:00</DeliveryDate>

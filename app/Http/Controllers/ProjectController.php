@@ -120,33 +120,31 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        // Заготовка запроса
+
         $query = Project::with('wMarz','object_type')->orderBy('ident_id','DESC');
 
-        // Поиск по brand_name, если есть что искать
+
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('firm_name', 'like', "%{$search}%")->orWhere('ident_id', 'like', "%{$search}%");
         }
 
-        // Сколько записей показывать на странице
+
         $perPage = $request->input('per_page', 10);
 
-        // Получаем данные с пагинацией
+
         $projects = $query->paginate($perPage);
 
-        // Проверяем, AJAX это или нет
+
         if ($request->ajax()) {
-            // Возвращаем только часть разметки (кусок таблицы + пагинация)
-            // Для этого удобно вынести таблицу в отдельный blade-файл `_table.blade.php`
-            // и вернуть готовый HTML. Ниже пример.
+
             $html = view('projects._table', compact('projects'))->render();
 
-            // Возвращаем в формате JSON
+
             return response()-> json(['html' => $html]);
         }
 
-        // Если это НЕ AJAX, то грузим всю страницу (projects.index)
+
         return view('projects.index', compact('projects'));
     }
 

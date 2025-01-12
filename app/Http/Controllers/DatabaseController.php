@@ -29,11 +29,10 @@ class DatabaseController extends Controller
 
     public function backup(Request $request)
     {
-        // Запускаем php artisan backup:run
-        // Можно добавить --only-db=true, если хотите только бэкап БД
+
         Artisan::call('backup:run', ['--only-db' => true]);
 
-        // После успеха — просто редирект на список
+
         return redirect()->route('db.index')
             ->with('success', 'Backup completed!');
     }
@@ -41,13 +40,12 @@ class DatabaseController extends Controller
     public function download(Request $request)
     {
         $disk = 'local';
-        $file = $request->query('file'); // например ?file=Laravel/2023-09-01-....
+        $file = $request->query('file');
         if (! $file || ! Storage::disk($disk)->exists($file)) {
             return redirect()->route('db.index')
                 ->with('error','File not found!');
         }
 
-        // Скачать
         $filename = basename($file);
         return Storage::disk($disk)->download($file, $filename);
     }
