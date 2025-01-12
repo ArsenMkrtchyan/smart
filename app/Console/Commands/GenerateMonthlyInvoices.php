@@ -168,7 +168,6 @@ $xml .= '<AccountingDocument Version="1.0">
          <Address>ՀՀ,մ․'.$marzName.','.$districtName.', '.$project->i_address.'</Address>
         <TinNotRequired>false</TinNotRequired>
         <IsNatural>true</IsNatural>
-        <PSNOrAbsence>2511890216</PSNOrAbsence>
       </Taxpayer>
       <IsCitizenArmenia>false</IsCitizenArmenia>
     </BuyerInfo>
