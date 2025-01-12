@@ -93,6 +93,30 @@ class ProjectController extends Controller
         // 3) Передать список файлов во view
         return view('invoices', compact('invoices'));
     }
+    public function deleteInvoice(Request $request)
+    {
+        // Получаем имя файла из формы
+        $filename = $request->input('filename');
+
+        // Проверяем, что оно не пустое
+        if (!$filename) {
+            return redirect()->route('projects.invoices')
+                ->with('error', 'No filename specified!');
+        }
+
+        // Удаляем файл
+        // Предполагается, что лежит на диске 'public' (storage/app/public)
+        $disk = 'public';
+        if (!\Storage::disk($disk)->exists($filename)) {
+            return redirect()->route('projects.invoices')
+                ->with('error', 'File not found or already deleted!');
+        }
+
+        \Storage::disk($disk)->delete($filename);
+
+        return redirect()->route('projects.invoices')
+            ->with('success', 'Файл «' . $filename . '» удалён успешно!');
+    }
 
     public function downloadInvoice(Request $request)
     {

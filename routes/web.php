@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
 
 
-
+Route::delete('/projects/invoices/delete', [ProjectController::class, 'deleteInvoice'])
+    ->name('projects.deleteInvoice');
 Route::get('/databases', [DatabaseController::class, 'index'])->name('db.index');
 Route::post('/databases/backup', [DatabaseController::class, 'backup'])->name('db.backup');
 Route::get('/databases/download', [DatabaseController::class, 'download'])->name('db.download');

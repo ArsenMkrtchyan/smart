@@ -30,6 +30,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Hardware::class); // Указывает, что пользователь имеет много hardwares
     }
+    public function simlists()
+    {
+        return $this->hasMany(Simlist::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -32,6 +32,7 @@
                                     <td> {{$simlist->number}}</td>
                                     <td> {{$simlist->sim_info}}</td>
                                     <td> {{$simlist->sim_id}}</td>
+
                                     <td> {{$simlist->worker->name}} - {{$simlist->worker->name}}</td>
                                     <td> {{$simlist->number}}</td>
                                     <td> {{$simlist->number}}</td>

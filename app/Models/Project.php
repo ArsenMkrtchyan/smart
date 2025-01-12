@@ -61,6 +61,7 @@ class   Project extends Model
     {
         return $this->belongsTo(Price::class);
     }
+
     public function object_type()
     {
         return $this->belongsTo(Object_type::class,'type_id');
@@ -95,6 +96,7 @@ class   Project extends Model
     {
         return $this->hasMany(Hardware::class);
     }
+
     public function patasxanatus()
     {
         return $this->hasMany(Patasxanatu::class);

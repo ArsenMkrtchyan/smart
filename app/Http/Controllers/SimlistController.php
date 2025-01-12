@@ -14,7 +14,7 @@ class SimlistController extends Controller
     public function index()
     {
 $projects = Project::all();
-        $simlists = Simlist::all();
+        $simlists = Simlist::with('worker')->get();
 
         return view('simlists.index', compact('simlists','projects'));
 
@@ -32,9 +32,11 @@ $projects = Project::all();
             'sim_id' => 'required|string|max:255',
             'price' => 'nullable|string|max:255',
             'mb' => 'nullable|string|max:255',
+'worker_id' => 'nullable',
 //            'project_id' => 'exists:projects,id',
         ]);
         $validated['project_id'] = null;
+
         $userId = auth()->id();
         $validated['user_id'] = $userId;
         Simlist::create($validated);

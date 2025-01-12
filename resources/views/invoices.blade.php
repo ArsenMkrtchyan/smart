@@ -29,14 +29,29 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $filename }}</td>
-                            <td>
+                            <td class="d-flex gap-2">
+                                <!-- Кнопка "Скачать" -->
                                 <a href="{{ route('projects.downloadInvoice', ['filename' => $filename]) }}"
                                    class="btn btn-sm btn-primary">
                                     Скачать
                                 </a>
+
+                                <!-- Кнопка "Удалить" -->
+                                <form action="{{ route('projects.deleteInvoice') }}" method="POST"
+                                      onsubmit="return confirm('Вы действительно хотите удалить этот файл?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <!-- Скрытое поле с именем файла -->
+                                    <input type="hidden" name="filename" value="{{ $filename }}">
+
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Удалить
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
+
                     </tbody>
                 </table>
             </div>
