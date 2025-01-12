@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Price;
 use App\Models\Finance; // не забудьте добавить этот use
 use Carbon\Carbon;
+use App\Models\State;
 
 class GenerateMonthlyInvoices extends Command
 {
@@ -25,86 +26,175 @@ class GenerateMonthlyInvoices extends Command
             return;
         }
 
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>
-<ExportedAccDocData xmlns="http://www.taxservice.am/tp3/invoice/definitions">';
+        $xml = '<ExportedAccDocData xmlns="http://www.taxservice.am/tp3/invoice/definitions">';
 
-        // Формируем строку месяца, например "December_2024"
+
         $monthStr = $previousMonth->format('F_Y');
 
         foreach ($projects as $project) {
+            $state = State::find($project->i_marz_id);
+
+            $marzName = $state ? $state->name : '';
+            $districtName = $state ? $state->district : '';
             $finalPrice = $this->calculateProjectPriceForMonth($project, $previousMonth);
 
             $invoiceNumber = $this->generateInvoiceNumber($project);
             $series = 'B';
             $deliveryDate = $previousMonth->endOfMonth()->format('Y-m-d').'+04:00';
 
-            // В реальном проекте подставьте реальные данные о покупателе.
-            $buyerTin = $project->buyer_tin ?? '83565253';
-            $buyerName = $project->firm_name ?? 'ՇԱՎԱՐՇ ԱԲՈՎՅԱՆ Անհատ ձեռնարկատեր (ԱՁ)';
-            $buyerAddress = $project->buyer_address ?? 'ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ՄՅԱՍՆԻԿՅԱՆ Փ. 1 ԲՆ.23';
 
+
+        if ($project->hvhh != null){
             $xml .= '
-    <SignedAccDocData>
-        <Data>
-            <SignableData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1.0" xsi:type="AccountingDocument">
-                <User>smartsec1</User>
-                <Type>3</Type>
-                <GeneralInfo>
-                    <InvoiceNumber>
-                        <Number>' . $invoiceNumber . '</Number>
-                        <Series>' . $series . '</Series>
-                    </InvoiceNumber>
-                    <DeliveryDate>' . $deliveryDate . '</DeliveryDate>
-                    <Procedure>1</Procedure>
-                </GeneralInfo>
-                <SupplierInfo>
-                    <Taxpayer>
-                        <TIN>06973829</TIN>
-                        <Name>«ՍՄԱՌԹ» ՍՊԸ</Name>
-                        <Address>ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ԱՂԱՅԱՆ Փ. 78/1 ԲՆ.7</Address>
-                        <BankAccount>
-                            <BankName>ԱՄԵՐԻԱԲԱՆԿ ՓԲԸ</BankName>
-                            <BankAccountNumber>1570007469564600</BankAccountNumber>
-                        </BankAccount>
-                    </Taxpayer>
-                </SupplierInfo>
-                <OnBehalfOfSupplierInfo>
-                    <Taxpayer>
-                        <PrincipalTinNotRequired>false</PrincipalTinNotRequired>
-                    </Taxpayer>
-                </OnBehalfOfSupplierInfo>
-                <BuyerInfo>
-                    <Taxpayer>
-                        <TIN>' . $buyerTin . '</TIN>
-                        <Name>' . $buyerName . '</Name>
-                        <Address>' . $buyerAddress . '</Address>
-                        <TinNotRequired>false</TinNotRequired>
-                        <IsNatural>false</IsNatural>
-                    </Taxpayer>
-                    <IsCitizenArmenia>false</IsCitizenArmenia>
-                </BuyerInfo>
-                <GoodsInfo>
-                    <Good>
-                        <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
-                        <Unit>հատ</Unit>
-                        <Amount>1</Amount>
-                        <PricePerUnit>' . $finalPrice . '</PricePerUnit>
-                        <Price>' . $finalPrice . '</Price>
-                        <TotalPrice>' . $finalPrice . '</TotalPrice>
-                    </Good>
-                    <Total>
-                        <TotalPrice>' . $finalPrice . '</TotalPrice>
-                    </Total>
-                </GoodsInfo>
-            </SignableData>
-        </Data>
-        <Signature>
-            <SignatureType>PKCS7</SignatureType>
-        </Signature>
-        <AccDocMetadata>
-            <SubmissionDate>' . now()->format('Y-m-d\TH:i:s.uP') . '</SubmissionDate>
-        </AccDocMetadata>
-    </SignedAccDocData>';
+    <AccountingDocument Version="1.0">
+    <Type>3</Type>
+    <GeneralInfo>
+      <DeliveryDate>' . $deliveryDate . '</DeliveryDate>
+      <Procedure>1</Procedure>
+    </GeneralInfo>
+    <SupplierInfo>
+      <Taxpayer>
+        <TIN>06973829</TIN>
+        <Name>«ՍՄԱՌԹ» Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)</Name>
+        <Address>ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ԱՂԱՅԱՆ Փ. 78/1 ԲՆ.7</Address>
+        <BankAccount>
+          <BankName>ԱՄԵՐԻԱԲԱՆԿ  ՓԲԸ</BankName>
+          <BankAccountNumber>1570047599065900</BankAccountNumber>
+        </BankAccount>
+      </Taxpayer>
+    </SupplierInfo>
+    <OnBehalfOfSupplierInfo>
+      <Taxpayer>
+        <PrincipalTinNotRequired>false</PrincipalTinNotRequired>
+      </Taxpayer>
+    </OnBehalfOfSupplierInfo>
+    <BuyerInfo>
+      <Taxpayer>
+        <TIN>'.$project->hvhh.'</TIN>
+      </Taxpayer>
+      <IsCitizenArmenia>false</IsCitizenArmenia>
+    </BuyerInfo>
+    <GoodsInfo>
+      <Good>
+        <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
+        <Unit>հատ</Unit>
+        <Amount>1</Amount>
+        <PricePerUnit>'.$finalPrice.'</PricePerUnit>
+        <Price>'.$finalPrice.'</Price>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
+      </Good>
+      <Total>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
+      </Total>
+    </GoodsInfo>
+  </AccountingDocument>
+  ';
+        } elseif($project->hvhh == null and $project->andznagir != null){
+$xml = '
+<AccountingDocument Version="1.0">
+    <Type>3</Type>
+    <GeneralInfo>
+      <DeliveryDate>2024-10-31+04:00</DeliveryDate>
+      <Procedure>1</Procedure>
+    </GeneralInfo>
+    <SupplierInfo>
+      <Taxpayer>
+        <TIN>06973829</TIN>
+        <Name>«ՍՄԱՌԹ» Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)</Name>
+        <Address>ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ԱՂԱՅԱՆ Փ. 78/1 ԲՆ.7</Address>
+        <BankAccount>
+          <BankName>ԱՄԵՐԻԱԲԱՆԿ  ՓԲԸ</BankName>
+          <BankAccountNumber>1570007469564600</BankAccountNumber>
+        </BankAccount>
+      </Taxpayer>
+    </SupplierInfo>
+    <OnBehalfOfSupplierInfo>
+      <Taxpayer>
+        <PrincipalTinNotRequired>false</PrincipalTinNotRequired>
+      </Taxpayer>
+    </OnBehalfOfSupplierInfo>
+    <BuyerInfo>
+      <Taxpayer>
+        <Passport>'.$project->andznagir.'</Passport>
+        <PIDType>RA_PASSPORT</PIDType>
+        <Name>'.$project->firm_name.'</Name>
+        <Address>ՀՀ,մ․'.$marzName.','.$districtName.', '.$project->i_address.'</Address>
+        <TinNotRequired>false</TinNotRequired>
+        <IsNatural>true</IsNatural>
+      </Taxpayer>
+      <IsCitizenArmenia>false</IsCitizenArmenia>
+    </BuyerInfo>
+    <GoodsInfo>
+      <Good>
+        <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
+        <Unit>հատ</Unit>
+        <Amount>1</Amount>
+        <PricePerUnit>1550</PricePerUnit>
+        <Price>1550</Price>
+        <TotalPrice>1550</TotalPrice>
+      </Good>
+      <Total>
+        <TotalPrice>1550</TotalPrice>
+      </Total>
+    </GoodsInfo>
+  </AccountingDocument>';
+
+        }elseif ($project->hvhh == null && $project->andznagir == null){
+            $xml = '
+<AccountingDocument Version="1.0">
+    <Type>3</Type>
+    <GeneralInfo>
+      <DeliveryDate>2024-10-31+04:00</DeliveryDate>
+      <Procedure>1</Procedure>
+    </GeneralInfo>
+    <SupplierInfo>
+      <Taxpayer>
+        <TIN>06973829</TIN>
+        <Name>«ՍՄԱՌԹ» Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)</Name>
+        <Address>ԼՈՌԻ ՎԱՆԱՁՈՐ ՎԱՆԱՁՈՐ ԱՂԱՅԱՆ Փ. 78/1 ԲՆ.7</Address>
+        <BankAccount>
+          <BankName>ԱՄԵՐԻԱԲԱՆԿ  ՓԲԸ</BankName>
+          <BankAccountNumber>1570007469564600</BankAccountNumber>
+        </BankAccount>
+      </Taxpayer>
+    </SupplierInfo>
+    <OnBehalfOfSupplierInfo>
+      <Taxpayer>
+        <PrincipalTinNotRequired>false</PrincipalTinNotRequired>
+      </Taxpayer>
+    </OnBehalfOfSupplierInfo>
+    <BuyerInfo>
+      <Taxpayer>
+        <Passport>'.$project->id_card.'</Passport>
+        <PIDType>ID_CARD</PIDType>
+        <Name>'.$project->firm_name.'</Name>
+         <Address>ՀՀ,մ․'.$marzName.','.$districtName.', '.$project->i_address.'</Address>
+        <TinNotRequired>false</TinNotRequired>
+        <IsNatural>true</IsNatural>
+        <PSNOrAbsence>2511890216</PSNOrAbsence>
+      </Taxpayer>
+      <IsCitizenArmenia>false</IsCitizenArmenia>
+    </BuyerInfo>
+    <GoodsInfo>
+      <Good>
+        <Description>Հակահրդեհային անվտանգության տագնապի ազդանշանը ՀՀ ՆԳն փոխանցման ծառայություն</Description>
+        <Unit>հատ</Unit>
+        <Amount>1</Amount>
+        <PricePerUnit>1550</PricePerUnit>
+        <Price>1550</Price>
+        <TotalPrice>1550</TotalPrice>
+      </Good>
+      <Total>
+        <TotalPrice>1550</TotalPrice>
+      </Total>
+    </GoodsInfo>
+  </AccountingDocument>';
+
+        }
+
+
+
+
 
             // Добавляем запись в finances, но сначала проверим, не существует ли такая запись
             $existingFinance = Finance::where('project_id', $project->id)

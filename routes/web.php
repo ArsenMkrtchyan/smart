@@ -6,7 +6,14 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DatabaseController;
 
+
+
+Route::get('/databases', [DatabaseController::class, 'index'])->name('db.index');
+Route::post('/databases/backup', [DatabaseController::class, 'backup'])->name('db.backup');
+Route::get('/databases/download', [DatabaseController::class, 'download'])->name('db.download');
+Route::post('/invoices/download', [ProjectController::class, 'makeinvoice'])->name('invoice.download');
 
 Route::get('/update-finances', [FinanceController::class, 'updateFinances'])->name('update.finances');
 Route::post('projects/{id}/check-status', [ProjectController::class, 'checkStatus'])->name('projects.checkStatus');
@@ -82,7 +89,6 @@ Route::get('payments/project/{project}/create', [PaymentController::class, 'crea
 
 Route::get('payments/search', [PaymentController::class, 'search'])->name('payments.search');
 Route::post('payments/storeForProject', [PaymentController::class, 'storeForProject'])->name('payments.storeForProject');
-
 
 
 Route::get('/invoices', [ProjectController::class, 'showInvoices'])->name('projects.invoices');

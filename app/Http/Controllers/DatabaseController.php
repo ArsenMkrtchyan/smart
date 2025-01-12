@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+class DatabaseController extends Controller
+{
+    public function index()
+    {
+        // Получим все файлы из storage/app/Laravel
+        // Disk = 'local' предполагается
+        $disk = 'local';
+        $folder = 'Laravel';
+
+        $files = Storage::disk($disk)->files($folder);
+
+        // Можно отфильтровать только zip/sql:
+        // $files = array_filter($files, fn($f) => Str::endsWith($f, ['.zip','.sql']));
+        // Но это по желанию
+
+        return view('databases', [
+            'files' => $files,
+        ]);
+    }
+
+    public function backup(Request $request)
+    {
+        // Запускаем php artisan backup:run
+        // Можно добавить --only-db=true, если хотите только бэкап БД
+        Artisan::call('backup:run', ['--only-db' => true]);
+
+        // После успеха — просто редирект на список
+        return redirect()->route('db.index')
+            ->with('success', 'Backup completed!');
+    }
+
+    public function download(Request $request)
+    {
+        $disk = 'local';
+        $file = $request->query('file'); // например ?file=Laravel/2023-09-01-....
+        if (! $file || ! Storage::disk($disk)->exists($file)) {
+            return redirect()->route('db.index')
+                ->with('error','File not found!');
+        }
+
+        // Скачать
+        $filename = basename($file);
+        return Storage::disk($disk)->download($file, $filename);
+    }
+
+}

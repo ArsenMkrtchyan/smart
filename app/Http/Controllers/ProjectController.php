@@ -12,6 +12,7 @@ use App\Models\Simlist;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
@@ -24,9 +25,57 @@ use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\IOFactory;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 
+
+
+use Symfony\Component\HttpFoundation\StreamedResponse;
 class ProjectController extends Controller
 {
+    public function dbBackup()
+    {
+        try {
+            Artisan::call('backup:run', ['--only-db' => true]);
+            // Предположим, что пакет создаёт ZIP где-то в storage/app/laravel-backup/.
+            $disk = config('backup.destination.disks')[0] ?? 'local';
+            // Или если у вас отдельный настроенный диск.
+
+            // Ищем последний файл
+            // (Можете воспользоваться классом Spatie\Backup\BackupDestination\BackupDestination
+            //  и его методами lastBackupFile() и т.д.)
+
+            // Но упрощённо:
+            $files = \Storage::disk($disk)->files('laravel');
+            // Возвращаются массив путей внутри laravel-backup
+            // Сортируем по времени ...
+            usort($files, function ($a, $b) use ($disk) {
+                return \Storage::disk($disk)->lastModified($b) <=>
+                    \Storage::disk($disk)->lastModified($a);
+            });
+            // $files[0] — самый свежий
+            $latest = $files[0] ?? null;
+            if (!$latest) {
+                throw new \Exception("No backup file found");
+            }
+
+            // Скачиваем
+            $fullPath = storage_path("app/{$latest}");
+            return response()->download($fullPath);
+
+        } catch (Exception $e) {
+            return redirect()->back()->with('error','Backup failed: '.$e->getMessage());
+        }
+    }
+    public function makeinvoice(Request $request)
+    {
+        // Запускаем php artisan backup:run
+        // Можно добавить --only-db=true, если хотите только бэкап БД
+        Artisan::call('invoices:generate');
+
+        // После успеха — просто редирект на список
+        return redirect()->route('projects.invoices')
+            ->with('success', 'Backup completed!');
+    }
     public function showInvoices()
     {
         // 1) Найти все файлы в папке "public" (или можно "public/invoices"?)

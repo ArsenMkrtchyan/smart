@@ -98,11 +98,24 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select name="firm_bank" class="form-select" id="bank-select-1">
-                                                    <optgroup label="Ընտրել">
-                                                        <option value="konvers" {{ $project->firm_bank == 'konvers' ? 'selected' : '' }}>Կոնվերս բանկ ԲԲԸ</option>
-                                                        <option value="ameria" {{ $project->firm_bank == 'ameria' ? 'selected' : '' }}>Ամերիաբանկ ԲԲԸ</option>
-                                                    </optgroup>
+                                                <select name="firm_bank" class="form-select" required>
+                                                    <option value="Ամերիաբանկ ՓԲԸ" {{ $project->firm_bank == 'Ամերիաբանկ ՓԲԸ' ? 'selected' : '' }}>Ամերիաբանկ ՓԲԸ</option>
+                                                    <option value="Ինեկոբանկ ՓԲԸ" {{ $project->firm_bank == 'Ինեկոբանկ ՓԲԸ' ? 'selected' : '' }}>Ինեկոբանկ ՓԲԸ</option>
+                                                    <option value="Այդի բանկ ՓԲԸ" {{ $project->firm_bank == 'Այդի բանկ ՓԲԸ' ? 'selected' : '' }}>Այդի բանկ ՓԲԸ</option>
+                                                    <option value="Ակբա բանկ ՓԲԸ" {{ $project->firm_bank == 'Ակբա բանկ ՓԲԸ' ? 'selected' : '' }}>Ակբա բանկ ՓԲԸ</option>
+                                                    <option value="Կոնվերս բանկ ՓԲԸ" {{ $project->firm_bank == 'Կոնվերս բանկ ՓԲԸ' ? 'selected' : '' }}>Կոնվերս բանկ ՓԲԸ</option>
+                                                    <option value="Յունիբանկ ԲԲԸ" {{ $project->firm_bank == 'Յունիբանկ ԲԲԸ' ? 'selected' : '' }}>Յունիբանկ ԲԲԸ</option>
+                                                    <option value="Արարատբանկ ԲԲԸ" {{ $project->firm_bank == 'Արարատբանկ ԲԲԸ' ? 'selected' : '' }}>Արարատբանկ ԲԲԸ</option>
+                                                    <option value="Արդշինբանկ ՓԲԸ" {{ $project->firm_bank == 'Արդշինբանկ ՓԲԸ' ? 'selected' : '' }}>Արդշինբանկ ՓԲԸ</option>
+                                                    <option value="Ամիօ բանկ ՓԲԸ" {{ $project->firm_bank == 'Ամիօ բանկ ՓԲԸ' ? 'selected' : '' }}>Ամիօ բանկ ՓԲԸ</option>
+                                                    <option value="Ֆասթ բանկ ՓԲԸ" {{ $project->firm_bank == 'Ֆասթ բանկ ՓԲԸ' ? 'selected' : '' }}>Ֆասթ բանկ ՓԲԸ</option>
+                                                    <option value="Հայէկոնոմբանկ ԲԲԸ" {{ $project->firm_bank == 'Հայէկոնոմբանկ ԲԲԸ' ? 'selected' : '' }}>Հայէկոնոմբանկ ԲԲԸ</option>
+                                                    <option value="Էվոկաբանկ ՓԲԸ" {{ $project->firm_bank == 'Էվոկաբանկ ՓԲԸ' ? 'selected' : '' }}>Էվոկաբանկ ՓԲԸ</option>
+                                                    <option value="ՎՏԲ-Հայաստան բանկ ՓԲԸ" {{ $project->firm_bank == 'ՎՏԲ-Հայաստան բանկ ՓԲԸ' ? 'selected' : '' }}>ՎՏԲ-Հայաստան բանկ ՓԲԸ</option>
+                                                    <option value="Բիբլոս բանկ արմենիա ՓԲԸ" {{ $project->firm_bank == 'Բիբլոս բանկ արմենիա ՓԲԸ' ? 'selected' : '' }}>Բիբլոս բանկ արմենիա ՓԲԸ</option>
+                                                    <option value="Արցախբանկ ՓԲԸ" {{ $project->firm_bank == 'Արցախբանկ ՓԲԸ' ? 'selected' : '' }}>Արցախբանկ ՓԲԸ</option>
+                                                    <option value="Արմսվիսբանկ ՓԲԸ" {{ $project->firm_bank == 'Արմսվիսբանկ ՓԲԸ' ? 'selected' : '' }}>Արմսվիսբանկ ՓԲԸ</option>
+                                                    <option value="ՀՀ ֆին․ նախ" {{ $project->firm_bank == 'ՀՀ ֆին․ նախ' ? 'selected' : '' }}>ՀՀ ֆին․ նախ</option>
                                                 </select>
                                                 <label for="bank-select-1">բանկ</label>
                                             </div>

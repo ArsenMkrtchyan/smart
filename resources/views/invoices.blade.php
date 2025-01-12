@@ -4,7 +4,12 @@
 
     <div class="container mt-4">
         <h3>Список инвойсов (invoices_...)</h3>
-
+        <form action="{{ route('invoice.download') }}" method="POST" class="mb-3">
+            @csrf
+            <button type="submit" class="btn btn-primary">
+                Make invoice
+            </button>
+        </form>
         @if(count($invoices) === 0)
             <div class="alert alert-info mt-3">
                 Нет файлов, начинающихся на "invoices_".
