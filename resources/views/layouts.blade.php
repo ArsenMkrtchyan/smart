@@ -76,6 +76,7 @@
                         <li><a class="dropdown-item" href="{{route('users.index')}}">Օգտագործողներ</a></li>
                         <li><a class="dropdown-item" href="#">Օբեկտի տիպեր</a></li>
                         <li><a class="dropdown-item" href="{{route('prices.index')}}">Գնացուցակ</a></li>
+                        <li><a class="dropdown-item" href="{{route('db.index')}}">Db</a></li>
 
 
 

@@ -32,6 +32,46 @@ use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 class ProjectController extends Controller
 {
+
+    public function index(Request $request)
+    {
+
+        $query = Project::with('wMarz','object_type')->orderBy('ident_id','DESC');
+
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('firm_name', 'like', "%{$search}%")->orWhere('ident_id', 'like', "%{$search}%");
+        }
+        if ($request->filled('object_check')) {
+            $check = $request->input('object_check');
+            $query->where('object_check', $check);
+        }
+
+        // Кол-во найденных (после всех фильтров, но до пагинации)
+        $totalCount = $query->count();
+
+
+        $perPage = $request->input('per_page', 10);
+        $projects = $query->paginate($perPage);
+
+
+        if ($request->ajax()) {
+
+            $html = view('projects._table', compact('projects'))->render();
+
+
+            return response()-> json([
+                'html' => $html,
+                'count' => $totalCount,
+
+            ]);
+        }
+
+
+        return view('projects.index', compact('projects','totalCount'));
+    }
+
     public function dbBackup()
     {
         try {
@@ -142,35 +182,7 @@ class ProjectController extends Controller
 
 
 
-    public function index(Request $request)
-    {
 
-        $query = Project::with('wMarz','object_type')->orderBy('ident_id','DESC');
-
-
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('firm_name', 'like', "%{$search}%")->orWhere('ident_id', 'like', "%{$search}%");
-        }
-
-
-        $perPage = $request->input('per_page', 10);
-
-
-        $projects = $query->paginate($perPage);
-
-
-        if ($request->ajax()) {
-
-            $html = view('projects._table', compact('projects'))->render();
-
-
-            return response()-> json(['html' => $html]);
-        }
-
-
-        return view('projects.index', compact('projects'));
-    }
 
     public function export($id)
     {

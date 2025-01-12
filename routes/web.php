@@ -11,7 +11,7 @@ use App\Http\Controllers\DatabaseController;
 
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('projects.index');
 });
 Auth::routes();
 Route::group(['middleware' => ['auth', 'admin']], function () {

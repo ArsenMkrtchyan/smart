@@ -1,4 +1,3 @@
-
 @extends('layouts')
 
 @section('content')
@@ -6,40 +5,60 @@
         <h3 class="text-dark mb-4">Оբեկտ</h3>
         <div class="card shadow">
             <div class="card-header py-3">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                    <a class="btn btn-outline-primary" role="button" href="{{ route('projects.create') }}">
-                        Ստեղծել նոր Օբեկտ
-                    </a>
-                </div>
+                <a class="btn btn-outline-primary" role="button" href="{{ route('projects.create') }}">
+                    Ստեղծել նոր Օբեկտ
+                </a>
             </div>
             <div class="card-body">
 
                 <div class="row mb-3">
+                    <div class="col-auto">
+                        <label for="objectCheckSelect">Фильтр по статусу:</label>
+                        <select id="objectCheckSelect" class="form-select">
+                            <option value="">Все</option>
+                            <option value="1">սպասվող</option>
+                            <option value="2">Հրաժարված</option>
+                            <option value="3">Պայմանագիրը լուծարված</option>
+                            <option value="4">Պայմանագրի ընդացք</option>
+                            <option value="5">կարգավորման ընդացք</option>
+                            <option value="6">911-ին միացված</option>
+                        </select>
+                    </div>
+                    <div class="col-auto d-flex align-items-end">
+                    <span class="ms-2">
+                        Совпадений: <strong id="objectCountSpan">{{ $totalCount ?? '' }}</strong>
+                    </span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!-- Выбор кол-ва записей -->
                     <div class="col-md-6">
-                        <label class="form-label">Show
+                        <label class="form-label">
+                            Показать
                             <select class="form-select form-select-sm d-inline-block" id="perPage">
-                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="10"  {{ request('per_page') == 10  ? 'selected' : '' }}>10</option>
+                                <option value="25"  {{ request('per_page') == 25  ? 'selected' : '' }}>25</option>
+                                <option value="50"  {{ request('per_page') == 50  ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                             </select>
                         </label>
                     </div>
 
+                    <!-- Поиск -->
                     <div class="col-md-6 text-md-end">
                         <input
                             type="search"
                             class="form-control form-control-sm"
                             id="search"
-                            placeholder="Search brand name..."
+                            placeholder="Поиск (фирма, идентификатор)..."
                             value="{{ request('search') ?? '' }}"
                         >
                     </div>
                 </div>
 
-                {{-- Блок, куда будем AJAX-ом загружать таблицу --}}
+                <!-- Контейнер для таблицы -->
                 <div id="tableData">
-                    {{-- Подключаем часть разметки из _table.blade.php --}}
                     @include('projects._table', ['projects' => $projects])
                 </div>
 
@@ -47,45 +66,54 @@
         </div>
     </div>
 
-    {{-- Подключим jQuery (или используйте свой вариант) --}}
+    {{-- jQuery --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
-        $(function(){
-            // При изменении "сколько записей показывать"
-            $('#perPage').on('change', function() {
+        $(function() {
+
+            // При смене objectCheckSelect:
+            $('#objectCheckSelect').on('change', function(){
                 fetchData();
             });
 
-            // При вводе в поле поиска
-            $('#search').on('keyup', function() {
-                // Сделаем небольшую задержку, чтобы не дергать сервер на каждый символ
-                // Можно использовать setTimeout, debounce... Но для примера хватит и так
+            // При смене perPage:
+            $('#perPage').on('change', function(){
+                fetchData();
+            });
+
+            // При вводе в search:
+            // (добавим задержку - debounce - если хотим)
+            $('#search').on('keyup', function(){
+                // Можно поставить setTimeout, но для примера просто так
                 fetchData();
             });
 
             function fetchData() {
-                // Получаем текущее значение полей
+                let objectCheckVal = $('#objectCheckSelect').val();
                 let perPageVal = $('#perPage').val();
-                let searchVal  = $('#search').val();
+                let searchVal = $('#search').val();
 
                 $.ajax({
                     url: '{{ route('projects.index') }}',
                     type: 'GET',
                     data: {
+                        object_check: objectCheckVal,
                         per_page: perPageVal,
-                        search: searchVal,
-                        // доп. параметр ajax не обязателен, но можно
+                        search: searchVal
                     },
-                    success: function(response) {
-                        // В ответе придёт JSON вида { html: '...таблица...'}
+                    dataType: 'json',
+                    success: function(response){
+                        // Обновим HTML таблицы
                         $('#tableData').html(response.html);
+                        // Обновим счётчик
+                        $('#objectCountSpan').text(response.count);
                     },
-                    error: function(err) {
-                        console.log('Ошибка:', err);
+                    error: function(err){
+                        console.log('Ошибка AJAX:', err);
                     }
                 });
             }
+
         });
     </script>
 @endsection
