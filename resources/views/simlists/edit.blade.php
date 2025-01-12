@@ -81,7 +81,7 @@
                     {{-- Если вам нужно сохранить worker_id --}}
                     <div class="form-group">
                         <label for="sim_id">Օպերատոր</label>
-                        <select class="form-control" name="sim_id">
+                        <select class="form-control" name="worker_id">
 
                             {{-- Пустой вариант --}}
 

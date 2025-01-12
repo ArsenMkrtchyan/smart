@@ -5,8 +5,8 @@
         <th><strong>Serial</strong></th>
         <th>Պահեստ</th>
         <th>Իդենտ․ համար</th>
-        <th>Ամսաթիվ</th>
-        <th>Կարգավիճակ</th>
+        <th>Կարգավիճակ</th>   <th>Ամսաթիվ</th>
+
         <th>Գործողություն</th>
     </tr>
     </thead>
@@ -20,14 +20,14 @@
             @if($hardware->ident_id == null)
 
                 <td>-</td>
-                <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
 
-                <td>-</td>
+                <td>-</td> <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
+
                 @else
                 <td>{{$hardware->ident_id}}</td>
-                <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
+                <td>texadrvac</td> <td>{{ $hardware->created_at ? \Carbon\Carbon::parse($hardware->created_at)->format('d,m,Y') : '-' }}</td>
 
-                <td>texadrvac</td>
+
             @endif
 
 

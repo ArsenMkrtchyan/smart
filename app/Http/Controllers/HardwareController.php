@@ -20,7 +20,7 @@ class HardwareController extends Controller
         // Поиск по имени, если параметр 'search' присутствует
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('name', 'like', "%{$search}%");
+            $query->where('serial', 'like', "%{$search}%");
         }
 
         // Определяем количество записей на странице, по умолчанию 10

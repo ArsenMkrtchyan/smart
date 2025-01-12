@@ -54,7 +54,7 @@ $projects = Project::all();
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+    $validated=    $request->validate([
 
             'sim_info' => 'required|string|max:255',
             'number' => 'required|string|max:255',
@@ -63,10 +63,16 @@ $projects = Project::all();
             'mb' => 'nullable|string|max:255',
 'worker_id' => 'nullable|integer'
         ]);
+
+//        if($validated['sim_id'] == 1){
+//
+//            $validated['sim_id'] = 'Viva';
+//        }
+//
         $userId = auth()->id();
         $validated['user_id'] = $userId;
         $simlist = Simlist::findOrFail($id);
-        $simlist->update($request->all());
+        $simlist->update($validated);
 
         return redirect()->route('simlists.index')
             ->with('success', 'Sim updated successfully.');

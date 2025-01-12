@@ -20,6 +20,7 @@
                                 <th><strong>Օպերատոր</strong></th>
                                 <th><strong>Պահեստ</strong></th>
                                 <th><strong>Իդենտ համարը</strong></th>
+                                <th>Կարգավիճակ</th>
                                 <th><strong>ամսաթիվ</strong></th>
                                 <th><strong>Գործողություն</strong></th>
 
@@ -37,10 +38,22 @@
                                     @if($simlist->ident_id == null)
 
                                         <td>-</td>
+                                        <td>pahest</td>
                                     @else
                                         <td>{{$simlist->ident_id}}</td>
+                                        <td>pahest</td>
                                     @endif
-                                    <td> {{$simlist->number}}</td>
+
+
+
+                                    <td>{{ $simlist->created_at ? \Carbon\Carbon::parse($simlist->created_at)->format('d,m,Y') : '-' }}</td>
+
+
+
+
+
+
+
                                     <td style="padding-left: 169px;">
                                         <form  method="POST" style="display:inline;">
                                             @csrf
