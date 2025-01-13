@@ -37,14 +37,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <form action="{{ route('update.finances') }}" method="GET">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">Update Finances</button>
-                    </form>
-                    <form method="GET" action="{{ route('update.discounts') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-warning">Apply Discounts</button>
-                    </form>
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
