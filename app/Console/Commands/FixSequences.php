@@ -15,7 +15,7 @@ class FixSequences extends Command
     {
         $tables = [
             'patasxanatus',
-            'some_other_table',
+
             // ...
         ];
 
