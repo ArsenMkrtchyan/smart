@@ -278,10 +278,10 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="entity-select-5-j" name="role_id">
+                                                <select class="form-select form-select" id="entity-select-5-j" name="ceorole_id">
                                                     <optgroup label="Roles">
                                                         @foreach($seoroles as $seorole)
-                                                            <option value="{{ $seorole->id }}" {{ $project->role_id == $seorole->id ? 'selected' : '' }}>{{ $seorole->name }}</option>
+                                                            <option value="{{ $seorole->id }}" {{ $project->ceorole_id == $seorole->id ? 'selected' : '' }}>{{ $seorole->name }}</option>
                                                         @endforeach
                                                     </optgroup>
                                                 </select>
@@ -317,6 +317,7 @@
                                         <div class="col">
                                             <div class="mb-3 floating-label">
                                                 <select class="form-select form-select" id="bank-select-1-j" name="firm_bank">
+                                                    <option  value="{{null}}"  selected> yntrel</option>
                                                     <optgroup label="Ընտրել">
                                                         <option value="Ամերիաբանկ ՓԲԸ" {{ $project->firm_bank == 'Ամերիաբանկ ՓԲԸ' ? 'selected' : '' }}>Ամերիաբանկ ՓԲԸ</option>
                                                         <option value="Ինեկոբանկ ՓԲԸ" {{ $project->firm_bank == 'Ինեկոբանկ ՓԲԸ' ? 'selected' : '' }}>Ինեկոբանկ ՓԲԸ</option>
@@ -491,11 +492,11 @@
                                         </div>
                                         <div class="card-body">
 
-                                            @if($project->choosed_type == 1 && $project->hvhh != null)
+                                            @if($project->firm_type == 1 && $project->hvhh != null)
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
 
 
-                                            @elseif($project->choosed_type == 0 && ($project->soc != null || $project->andznagir != null))
+                                            @elseif($project->firm_type == 0 && ($project->soc != null || $project->andznagir != null))
 
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
 

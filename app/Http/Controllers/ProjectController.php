@@ -401,6 +401,11 @@ $hardwares = Hardware::all();
         // соответствующие поля/колонки есть).
         // 2) Создаём новый Project (примерно)
         // Создаём новый проект
+            if (isset($validated['hvhh'])) {
+                $validated['firm_type'] = 1;
+            } else {
+                $validated['firm_type'] = 0;
+            }
         $project = Project::create($validated);
 
         // Привязываем выбранные SIM-карты к проекту
@@ -656,10 +661,10 @@ $hardwares = Hardware::all();
 
 
 
-        if (isset($validated['hvhh']) && $validated['hvhh'] !== null) {
-            $validated['choosed_type'] = 1;
+        if (isset($validated['hvhh'])) {
+            $validated['firm_type'] = 1;
         } else {
-            $validated['choosed_type'] = 0;
+            $validated['firm_type'] = 0;
         }
         // Обновление данных проекта
         $project->update($validated);
