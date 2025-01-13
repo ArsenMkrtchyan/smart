@@ -12,7 +12,7 @@ use App\Http\Controllers\SeoroleController;
 
 
 Route::get('/', function () {
-    return redirect('projects.index');
+    return redirect('projects');
 });
 Auth::routes();
 Route::group(['middleware' => ['auth', 'admin']], function () {
