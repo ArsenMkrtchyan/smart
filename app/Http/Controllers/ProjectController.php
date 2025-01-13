@@ -198,7 +198,7 @@ class ProjectController extends Controller
         $templatePath = public_path('paypamagir1.docx');
 
         // Копирование шаблона, чтобы не изменять оригинальный файл
-        $tempPath = storage_path('app/public/' . $project->firm_name . '_temp.docx');
+        $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
         copy($templatePath, $tempPath);
 
         // Открываем .docx файл как ZIP архив
