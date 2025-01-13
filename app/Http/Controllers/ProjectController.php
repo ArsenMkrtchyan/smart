@@ -187,6 +187,11 @@ class ProjectController extends Controller
     public function export($id)
     {
         $project = Project::findOrFail($id);
+        $price = Price::find($project->price_id);
+        $i_marz = State::find($project->i_marz_id);
+        $ceo = Seorole::find($project->ceorole_id);
+
+
         $project->signed = 1;
         $project->save();
         // Проверка на наличие даты начала договора
@@ -197,39 +202,49 @@ class ProjectController extends Controller
         // Путь к шаблону
         $templatePath = public_path('paypamagir1.docx');
 
-        // Копирование шаблона, чтобы не изменять оригинальный файл
+
         $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
         copy($templatePath, $tempPath);
 
-        // Открываем .docx файл как ZIP архив
+
         $zip = new \ZipArchive;
         if ($zip->open($tempPath) === true) {
-            // Читаем содержимое документа
+
             $xml = $zip->getFromName('word/document.xml');
 
-            // Заменяем текст в XML
+
             $xml = str_replace('Սեզամ-Գազ', $project->firm_name, $xml);
-            $xml = str_replace('06403723', $project->hvhh, $xml);
-            $xml = str_replace('1-3001',$project->paymanagir_id_marz, $xml);
-            // Сохраняем измененный XML обратно в архив
+            $xml = str_replace('price', $price->amount , $xml);
+            $xml = str_replace('price_detail', $price->detail , $xml);
+            $xml = str_replace('firm_name', $project->firm_name , $xml);
+            $xml = str_replace('i_region', $i_marz->name , $xml);
+            $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+            $xml = str_replace('hvhh', $project->hvhh , $xml);
+            $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+            $xml = str_replace('firm_bank_hh', $project->firm_bank_hh , $xml);
+            $xml = str_replace('firm_email', $project->firm_email , $xml);
+            $xml = str_replace('060808010', $project->ceo_phone , $xml);
+            $xml = str_replace('role_id', $ceo->name , $xml);
+            $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+            $xml = str_replace('1001',$project->ident_id, $xml);
             $zip->addFromString('word/document.xml', $xml);
             $zip->close();
         }
 
-        // Путь к выходному файлу DOCX
+
         $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_paymanagir.docx');
 
-        // Переименовываем временный файл в окончательный DOCX
+
         rename($tempPath, $outputDocxPath);
 
-        // Путь к выходному файлу PDF
+
         $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
 
-        // Конвертация DOCX в PDF с помощью LibreOffice
+
         $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
         exec($command);
 
-        // Отправка PDF файла пользователю
+
         return response()->download($outputPdfPath)->deleteFileAfterSend(true);
     }
 
