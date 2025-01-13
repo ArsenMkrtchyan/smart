@@ -11,6 +11,7 @@
         <th>Տեսակ</th>
         <th>Կարգավիճակ</th>
         <th>edit</th>
+        <th>paymanagir</th>
     </tr>
     </thead>
     <tbody>
@@ -68,6 +69,17 @@
             <td>   <a href="{{ route('projects.edit', $project->id) }}">
                     <button class="btn btn-warning">Edit</button>
                 </a></td>
+            <td>
+                @if($project->paymanagir_start)
+                    <form action="{{ route('projects.export', $project->id) }}" method="POST">
+                        @csrf
+                        <button class="btn btn-secondary">Export</button>
+                    </form>
+                @else
+                    <button class="btn btn-secondary" disabled>Export</button>
+                @endif
+            </td>
+
         </tr>
     @endforeach
     </tbody>

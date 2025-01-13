@@ -19,7 +19,16 @@ class GenerateMonthlyInvoices extends Command
         $currentDate = Carbon::now();
         $previousMonth = $currentDate->copy()->subMonth();
 
-        $projects = Project::whereDate('paymanagir_start', '<=', $previousMonth->endOfMonth()->toDateString())->get();
+//        $projects = Project::whereDate('paymanagir_start', '<=', $previousMonth->endOfMonth()->toDateString())->get();
+
+//        $projects = Project::whereDate('paymanagir_start', '<=', $previousMonth->endOfMonth()->toDateString())
+//            ->whereNotIn('object_check', ['սպասվող', 'Հրաժարված']) // Исключаем по строковым значениям
+//            ->get();
+
+        $projects = Project::whereDate('paymanagir_start', '<=', $previousMonth->endOfMonth()->toDateString())
+            ->whereNotIn('object_check', [1, 2 ,3]) // Исключаем "սպասվող" и "Հրաժարված"
+            ->get();
+
 
         if ($projects->isEmpty()) {
             $this->info('No projects to invoice.');

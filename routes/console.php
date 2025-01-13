@@ -13,3 +13,4 @@ Schedule::command('calculate:monthly-payments')->monthlyOn(1, '00:00');
 Schedule::command('monthly:generate')->monthlyOn(1, '00:00');
 
 Schedule::command('calculate:finance')->daily();
+Schedule::command('db:fix-sequences')->daily();

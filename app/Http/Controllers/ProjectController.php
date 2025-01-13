@@ -187,7 +187,8 @@ class ProjectController extends Controller
     public function export($id)
     {
         $project = Project::findOrFail($id);
-
+        $project->signed = 1;
+        $project->save();
         // Проверка на наличие даты начала договора
         if (!$project->paymanagir_start) {
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
@@ -354,7 +355,7 @@ $hardwares = Hardware::all();
             'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
 'paymanagir_start' => 'nullable|date',
             'paymanagir_received' => 'nullable',
-
+            'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         'worker_id' => 'nullable|integer',
             // Админ-техническая
             'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
@@ -368,6 +369,18 @@ $hardwares = Hardware::all();
             'numbers.*'       => 'nullable|string|max:255',
 
         ]);
+            if($request->hasFile('nkar')){
+                // Например, генерируем имя
+                // Либо: $filename = $request->file('photo')->hashName(); (Laravel сам сгенерирует)
+                // Или: $filename = time().'.'.$request->file('photo')->extension();
+                $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
+
+                // Сохраняем в disk "public" (по умолчанию = storage/app/public)
+                $request->file('nkar')->storeAs('projects', $filename, 'public');
+
+                // Запишем в $validated
+                $validated['nkar'] = $filename;
+            }
 
         // Сохраняем в таблицу projects (предполагая, что
         // соответствующие поля/колонки есть).
@@ -562,7 +575,7 @@ $hardwares = Hardware::all();
             'firm_bank'     => 'nullable|string',
             'firm_bank_hh'  => 'nullable|string',
             'firm_email'    => 'nullable|string',
-
+            'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
             'andznagir'     => 'nullable|string',
@@ -605,8 +618,34 @@ $hardwares = Hardware::all();
             'numbers.*'       => 'nullable|string|max:255',
             'hardware_ids' => 'nullable|array',
             'hardware_ids.*' => 'integer|exists:hardwares,id',
+
         ]);
 
+
+        if($request->hasFile('nkar')) {
+            // Сгенерируем имя файла
+            $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
+
+            // Сохраняем в папку storage/app/public/projects
+            $request->file('nkar')->storeAs('projects', $filename, 'public');
+
+            // Если хотите удалять старый файл:
+            // if($project->photo) {
+            //     Storage::disk('public')->delete('projects/'.$project->photo);
+            // }
+
+            // Запишем в $validated
+            $validated['nkar'] = $filename;
+        }
+
+
+
+
+        if (isset($validated['hvhh']) && $validated['hvhh'] !== null) {
+            $validated['choosed_type'] = 1;
+        } else {
+            $validated['choosed_type'] = 0;
+        }
         // Обновление данных проекта
         $project->update($validated);
 

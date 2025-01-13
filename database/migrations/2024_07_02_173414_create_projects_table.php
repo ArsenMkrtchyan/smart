@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->boolean('choosed_type')->nullable();
             $table->string('check_time')->nullable();
             $table->string('brand_name')->nullable();
             $table->string('tech_check')->nullable();

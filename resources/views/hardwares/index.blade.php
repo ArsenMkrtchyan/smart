@@ -5,7 +5,12 @@
         <h3 class="text-dark mb-4">Սարքավորումներ</h3>
         <div class="card shadow">
             <div class="card-header py-3">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('hardwares.create')}}"><strong>ավելացնել Սարք</strong></a></div>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('hardwares.create')}}"><strong>ավելացնել Սարք</strong></a><div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" id="filterIdentNull">
+    <label class="form-check-label" for="filterIdentNull">ident_id == null</label>
+</div>
+                </div>
+
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="hardware-sim.html"><strong>Վաճառել</strong></a></div>
             </div>
             <div class="card-body">
@@ -74,6 +79,46 @@
                     },
                     success: function(response) {
                         // В ответе придёт JSON вида { html: '...таблица...'}
+                        $('#tableData').html(response.html);
+                    },
+                    error: function(err) {
+                        console.log('Ошибка:', err);
+                    }
+                });
+            }
+        });
+    </script>
+    <script>$(function(){
+            // Обработка события изменения чекбокса
+            $('#filterIdentNull').on('change', function() {
+                fetchData();
+            });
+
+            // При изменении "сколько записей показывать"
+            $('#perPage').on('change', function() {
+                fetchData();
+            });
+
+            // При вводе в поле поиска
+            $('#search').on('keyup', function() {
+                fetchData();
+            });
+
+            function fetchData() {
+                // Получаем текущее значение полей
+                let perPageVal = $('#perPage').val();
+                let searchVal  = $('#search').val();
+                let filterIdentNull = $('#filterIdentNull').is(':checked'); // Проверяем, установлен ли чекбокс
+
+                $.ajax({
+                    url: '{{ route('hardwares.index') }}',
+                    type: 'GET',
+                    data: {
+                        per_page: perPageVal,
+                        search: searchVal,
+                        filter_ident_null: filterIdentNull, // Отправляем значение чекбокса
+                    },
+                    success: function(response) {
                         $('#tableData').html(response.html);
                     },
                     error: function(err) {

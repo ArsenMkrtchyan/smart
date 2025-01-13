@@ -54,7 +54,7 @@
                                                 <select class="form-select form-select" id="entity-select-5" name="type_id" >
                                                     <option value="" selected="">Ընտրեք</option>
 
-                                                    <optgroup label="Իրավաբանական/Ֆիզիկական">
+                                                    <optgroup label="types">
                                                       @foreach($types as $type)
 
                                                             <option value="{{$type->id}}">{{$type->name}}</option>
@@ -541,9 +541,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg" width="160" height="160">
+                                <img id="previewImg"
+                                     class="rounded-circle mb-3 mt-4"
+                                     src="{{ asset('assets/img/dogs/image2.jpeg') }}"
+                                     width="160" height="160">
+
                                 <div class="mb-3">
-                                    <button class="btn btn-primary btn-sm" type="button">ավելացնել նկար</button>
+                                    <label class="form-label">Նկար</label>
+                                    <input type="file" name="nkar" id="photoInput" class="form-control">
                                 </div>
 
                             </div>
@@ -1466,6 +1471,21 @@
 {{--            $('#simSearchResults').html('<p>Введите номер для поиска...</p>');--}}
 {{--        }--}}
 {{--    </script>--}}
+
+    <script>
+        document.getElementById('photoInput').addEventListener('change', function(e){
+            if(e.target.files && e.target.files[0]){
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onload = function(evt){
+                    document.getElementById('previewImg').src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+
     <script>
         $(document).ready(function(){
             // Переключение методов идентификации

@@ -96,9 +96,13 @@
                                                 <label for="last_name-4"><strong>email</strong></label>
                                             </div>
                                         </div>
+
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select name="firm_bank" class="form-select" required>
+
+                                                <select name="firm_bank" class="form-select" >
+                                                    <option value="" selected>Ընտրեք</option>
+                                                    <optgroup label="Տեխնիկական կարգավիճակ">
                                                     <option value="Ամերիաբանկ ՓԲԸ" {{ $project->firm_bank == 'Ամերիաբանկ ՓԲԸ' ? 'selected' : '' }}>Ամերիաբանկ ՓԲԸ</option>
                                                     <option value="Ինեկոբանկ ՓԲԸ" {{ $project->firm_bank == 'Ինեկոբանկ ՓԲԸ' ? 'selected' : '' }}>Ինեկոբանկ ՓԲԸ</option>
                                                     <option value="Այդի բանկ ՓԲԸ" {{ $project->firm_bank == 'Այդի բանկ ՓԲԸ' ? 'selected' : '' }}>Այդի բանկ ՓԲԸ</option>
@@ -116,6 +120,7 @@
                                                     <option value="Արցախբանկ ՓԲԸ" {{ $project->firm_bank == 'Արցախբանկ ՓԲԸ' ? 'selected' : '' }}>Արցախբանկ ՓԲԸ</option>
                                                     <option value="Արմսվիսբանկ ՓԲԸ" {{ $project->firm_bank == 'Արմսվիսբանկ ՓԲԸ' ? 'selected' : '' }}>Արմսվիսբանկ ՓԲԸ</option>
                                                     <option value="ՀՀ ֆին․ նախ" {{ $project->firm_bank == 'ՀՀ ֆին․ նախ' ? 'selected' : '' }}>ՀՀ ֆին․ նախ</option>
+                                                    </optgroup>
                                                 </select>
                                                 <label for="bank-select-1">բանկ</label>
                                             </div>
@@ -485,8 +490,20 @@
                                             <h6 class="text-primary fw-bold m-0">start պայմանագիր</h6>
                                         </div>
                                         <div class="card-body">
-                                            <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
-                                            <div></div>
+
+                                            @if($project->choosed_type == 1 && $project->hvhh != null)
+                                                <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+
+
+                                            @elseif($project->choosed_type == 0 && ($project->soc != null || $project->andznagir != null))
+
+                                                <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+
+                                            @else
+                                                <p>fill all inputs</p>
+
+                                            @endif
+                                             <div></div>
 
                                         </div>
                                     </div>
@@ -538,10 +555,39 @@
                                         </select>
                                     </div>
                                 </div>
-                                <img class="rounded-circle mb-3 mt-4" src="{{ asset('assets/img/dogs/image2.jpeg') }}" width="160" height="160">
+                                @if($project->nkar)
+                                    <img id="photoPreview"
+                                         class="rounded-circle mb-3 mt-4"
+                                         src="{{ asset('storage/projects/'.$project->nkar) }}"
+                                         width="160" height="160"
+                                         alt="Project Photo">
+                                @else
+                                    <img id="photoPreview"
+                                         class="rounded-circle mb-3 mt-4"
+                                         src="{{ asset('assets/img/dogs/image2.jpeg') }}"
+                                         width="160" height="160"
+                                         alt="Default Photo">
+                                @endif
+
                                 <div class="mb-3">
-                                    <button class="btn btn-primary btn-sm" type="button">ավելացնել նկար</button>
+                                    <label for="photo" class="form-label">Նկար (Photo)</label>
+                                    <input type="file"
+                                           name="nkar"
+                                           id="photo"
+                                           class="form-control"
+                                    >
                                 </div>
+                                <script>
+                                    document.getElementById('photo').addEventListener('change', function(e){
+                                        if(e.target.files && e.target.files[0]){
+                                            let reader = new FileReader();
+                                            reader.onload = function(evt){
+                                                document.getElementById('photoPreview').src = evt.target.result;
+                                            };
+                                            reader.readAsDataURL(e.target.files[0]);
+                                        }
+                                    });
+                                </script>
                             </div>
                         </div>
                         <div class="card shadow mb-4"></div>

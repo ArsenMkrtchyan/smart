@@ -54,7 +54,8 @@ class   Project extends Model
         'object_check',
 'ceorole_id',
         'tech_check',
-        'id_card'
+        'id_card',
+        'choosed_type'
     ];
 
     public function price()

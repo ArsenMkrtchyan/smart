@@ -7,7 +7,8 @@ use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
-
+use App\Http\Controllers\ObjectTypeController;
+use App\Http\Controllers\SeoroleController;
 
 
 Route::get('/', function () {
@@ -98,5 +99,42 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+
+
+
+    Route::get('object-types/list', [ObjectTypeController::class, 'list'])
+        ->name('object_types.list');
+// Возвращает HTML таблицы (для модалки).
+
+    Route::get('object-types/create', [ObjectTypeController::class, 'create'])
+        ->name('object_types.create');
+// Возвращает HTML формы (для модалки).
+
+    Route::post('object-types/store', [ObjectTypeController::class, 'store'])
+        ->name('object_types.store');
+// Обработчик POST для создания.
+
+    Route::get('object-types/{id}/edit', [ObjectTypeController::class, 'edit'])
+        ->name('object_types.edit');
+// Возвращает HTML формы редактирования.
+
+    Route::put('object-types/{id}', [ObjectTypeController::class, 'update'])
+        ->name('object_types.update');
+
+    Route::delete('object-types/{id}', [ObjectTypeController::class, 'destroy'])
+        ->name('object_types.destroy');
+    Route::get('seoroles/list', [SeoroleController::class, 'list'])
+        ->name('seoroles.list');
+    Route::get('seoroles/create', [SeoroleController::class, 'create'])
+        ->name('seoroles.create');
+    Route::post('seoroles/store', [SeoroleController::class, 'store'])
+        ->name('seoroles.store');
+    Route::get('seoroles/{id}/edit', [SeoroleController::class, 'edit'])
+        ->name('seoroles.edit');
+    Route::put('seoroles/{id}', [SeoroleController::class, 'update'])
+        ->name('seoroles.update');
+    Route::delete('seoroles/{id}', [SeoroleController::class, 'destroy'])
+        ->name('seoroles.destroy');
 });
 

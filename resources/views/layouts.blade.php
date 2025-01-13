@@ -72,9 +72,23 @@
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-user-circle"></i><span>Տեխնիկ․ համ․ ստուգում</span></a></li>
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="sarqavorumnerMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Կարգավորում</span></span></a>
                     <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
-                        <li><a class="dropdown-item" href="#">Ղեկավարի պաշտոներ</a></li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="#seorolesModal"
+                               data-bs-toggle="modal"
+                               data-bs-target="#seorolesModal">
+                                Список Seorole
+                            </a>
+                        </li>
                         <li><a class="dropdown-item" href="{{route('users.index')}}">Օգտագործողներ</a></li>
-                        <li><a class="dropdown-item" href="#">Օբեկտի տիպեր</a></li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="#objectTypesModal"
+                               data-bs-toggle="modal"
+                            data-bs-target="#objectTypesModal">
+                            Օբեկտի տիպեր
+                            </a>
+                        </li>
                         <li><a class="dropdown-item" href="{{route('prices.index')}}">Գնացուցակ</a></li>
                         <li><a class="dropdown-item" href="{{route('db.index')}}">Db</a></li>
 
@@ -191,6 +205,61 @@
         </footer>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
+<!-- Модальное окно "Список Object Types" -->
+<div class="modal fade" id="objectTypesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <!-- modal-xl, чтобы влезла таблица -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Օբեկտի տիպեր</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Здесь будет динамически подгружаться таблица через AJAX -->
+                <div id="objectTypesTableContainer">
+                    <p>Загрузка...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно "Форма" (Create/Edit) -->
+<div class="modal fade" id="objectTypeFormModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="objectTypeFormContent">
+            <!-- Сюда будем грузить form (create / edit) -->
+        </div>
+    </div>
+</div>
+<!-- Модал "Список Seoroles" -->
+<div class="modal fade" id="seorolesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seorole List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="seorolesTableContainer">
+                    <!-- Сюда AJAX подгрузит таблицу -->
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модал "Форма Create/Edit" -->
+<div class="modal fade" id="seoroleFormModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="seoroleFormContent">
+            <!-- Сюда AJAX подгрузит form -->
+        </div>
+    </div>
+</div>
+
 <script href="{{ asset('smart/assets/bootstrap/js/bootstrap.min.js') }}">/*!
   * Bootstrap v5.3.3 (https://getbootstrap.com/)
   * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
@@ -200,6 +269,241 @@
 </script>
 <script href="{{ asset('smart/assets/js/script.min.js') }}"></script>
 <script href="{{ asset('smart/assets/js/chart.min.min.js') }}"></script>
+
+<script>
+    // Когда открывается модал "objectTypesModal", подгружаем таблицу через AJAX
+    document.getElementById('objectTypesModal').addEventListener('show.bs.modal', function (event) {
+        loadObjectTypesTable();
+    });
+
+    // Загрузка таблицы
+    function loadObjectTypesTable() {
+        fetch('{{ route("object_types.list") }}')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('objectTypesTableContainer').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Ошибка загрузки object_types:', err);
+                document.getElementById('objectTypesTableContainer').innerHTML = '<div class="alert alert-danger">Ошибка при загрузке</div>';
+            });
+    }
+
+    // Открыть форму Create (второй модал)
+    function openCreateObjectType() {
+        // Загружаем фрагмент "create" по AJAX
+        fetch('{{ route("object_types.create") }}')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('objectTypeFormContent').innerHTML = html;
+                let formModal = new bootstrap.Modal(
+                    document.getElementById('objectTypeFormModal')
+                );
+                formModal.show();
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Отправить форму Create
+    function submitCreateObjectTypeForm() {
+        let formData = new FormData(document.getElementById('createObjectTypeForm'));
+
+        fetch('{{ route("object_types.store") }}', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    // Закрываем модал
+                    let formModalEl = document.getElementById('objectTypeFormModal');
+                    let modal = bootstrap.Modal.getInstance(formModalEl);
+                    modal.hide();
+
+                    // Обновляем таблицу
+                    loadObjectTypesTable();
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Открыть форму Edit
+    function openEditObjectType(id) {
+        fetch('/object-types/' + id + '/edit')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('objectTypeFormContent').innerHTML = html;
+                let formModal = new bootstrap.Modal(
+                    document.getElementById('objectTypeFormModal')
+                );
+                formModal.show();
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Отправить форму Edit
+    function submitEditObjectTypeForm(id) {
+        let formData = new FormData(document.getElementById('editObjectTypeForm'));
+        formData.append('_method', 'PUT');
+
+        fetch('/object-types/' + id, {
+            method: 'POST', // для Laravel PUT->method spoofing
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    let formModalEl = document.getElementById('objectTypeFormModal');
+                    let modal = bootstrap.Modal.getInstance(formModalEl);
+                    modal.hide();
+
+                    // Обновляем таблицу
+                    loadObjectTypesTable();
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Удаление
+    function deleteObjectType(id) {
+        if(!confirm('Точно удалить?')) return;
+
+        let formData = new FormData();
+        formData.append('_method', 'DELETE');
+        formData.append('_token', '{{ csrf_token() }}');
+
+        fetch('/object-types/' + id, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    loadObjectTypesTable();
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
+            })
+            .catch(err => console.error(err));
+    }
+</script>
+<script>
+    document.getElementById('seorolesModal').addEventListener('show.bs.modal', function (event) {
+        // Когда открывается - грузим список
+        loadSeorolesTable();
+    });
+
+    function loadSeorolesTable() {
+        fetch('{{ route("seoroles.list") }}')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('seorolesTableContainer').innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Ошибка:', err);
+                document.getElementById('seorolesTableContainer').innerHTML = '<div class="alert alert-danger">Ошибка загрузки</div>';
+            });
+    }
+
+    // Открыть форму создания
+    function openCreateSeorole() {
+        fetch('{{ route("seoroles.create") }}')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('seoroleFormContent').innerHTML = html;
+                let formModal = new bootstrap.Modal(document.getElementById('seoroleFormModal'));
+                formModal.show();
+            })
+            .catch(err => console.error(err));
+    }
+
+    function submitCreateSeoroleForm() {
+        let formData = new FormData(document.getElementById('createSeoroleForm'));
+
+        fetch('{{ route("seoroles.store") }}', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    // Закрываем
+                    let mEl = document.getElementById('seoroleFormModal');
+                    let modal = bootstrap.Modal.getInstance(mEl);
+                    modal.hide();
+                    // Обновляем список
+                    loadSeorolesTable();
+                } else {
+                    alert(data.message || 'Ошибка');
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Открыть форму редактирования
+    function openEditSeorole(id) {
+        fetch('/seoroles/' + id + '/edit')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('seoroleFormContent').innerHTML = html;
+                let formModal = new bootstrap.Modal(document.getElementById('seoroleFormModal'));
+                formModal.show();
+            })
+            .catch(err => console.error(err));
+    }
+
+    function submitEditSeoroleForm(id) {
+        let formData = new FormData(document.getElementById('editSeoroleForm'));
+        formData.append('_method', 'PUT');
+
+        fetch('/seoroles/' + id, {
+            method: 'POST', // Laravel подхватит _method=PUT
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    // Закрываем
+                    let mEl = document.getElementById('seoroleFormModal');
+                    let modal = bootstrap.Modal.getInstance(mEl);
+                    modal.hide();
+                    // Обновляем
+                    loadSeorolesTable();
+                } else {
+                    alert(data.message || 'Ошибка');
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    // Удаление
+    function deleteSeorole(id) {
+        if(!confirm('Удалить seorole?')) return;
+        let formData = new FormData();
+        formData.append('_method', 'DELETE');
+        formData.append('_token', '{{ csrf_token() }}');
+
+        fetch('/seoroles/' + id, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    loadSeorolesTable();
+                } else {
+                    alert(data.message || 'Ошибка');
+                }
+            })
+            .catch(err => console.error(err));
+    }
+</script>
+
+
 </body>
 
 </html>

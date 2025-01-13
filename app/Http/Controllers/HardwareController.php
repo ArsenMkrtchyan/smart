@@ -23,6 +23,11 @@ class HardwareController extends Controller
             $query->where('serial', 'like', "%{$search}%");
         }
 
+        if ($request->boolean('filter_ident_null')) {
+            $query->whereNull('ident_id');
+        }
+
+
         // Определяем количество записей на странице, по умолчанию 10
         $perPage = $request->input('per_page', 10);
 
