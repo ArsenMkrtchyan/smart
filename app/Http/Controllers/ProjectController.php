@@ -213,15 +213,17 @@ class ProjectController extends Controller
             $xml = $zip->getFromName('word/document.xml');
 
 
-            $xml = str_replace('Սեզամ-Գազ', $project->firm_name, $xml);
+
             $xml = str_replace('price', $price->amount , $xml);
             $xml = str_replace('price_detail', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
+
             $xml = str_replace('i_region', $i_marz->name , $xml);
             $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+            $xml = str_replace('i_address', $project->i_address, $xml);
             $xml = str_replace('hvhh', $project->hvhh , $xml);
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
-            $xml = str_replace('firm_bank_hh', $project->firm_bank_hh , $xml);
+            $xml = str_replace('f1irm_bank_hh', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
             $xml = str_replace('060808010', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
