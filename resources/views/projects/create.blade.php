@@ -517,6 +517,19 @@
 
                                 </div>
                                 <div class="col">
+                                    <div class="card mb-3"></div>
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="text-primary fw-bold m-0">start act </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="date" name="start_act" id="dateInput"   min="2024-01-01">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
                                             <option     value="{{null}}" selected="">Ընտրեք</option>

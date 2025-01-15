@@ -624,6 +624,7 @@ $hardwares = Hardware::all();
             'paymanagir_received' => 'nullable',
             // Админ-техническая секция
             'paymanagir_start' => 'nullable|date',
+            'start_act' => 'nullable|date',
             'paymanagir_end' => 'nullable|date',
             'end_dimum' => 'nullable|date',
             'tech_check' => 'nullable|string',
@@ -672,7 +673,7 @@ $hardwares = Hardware::all();
         $project->update($validated);
 
         // Обновляем связанные SIM-карты
-        Simlist::where('project_id', $project->id)->update(['project_id' => null]);
+        Simlist::where('project_id', $project->id)->update(['project_id' => null , 'ident_id' => null]);
         if (!empty($validated['sim_ids'])) {
             Simlist::whereIn('id', $validated['sim_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
         }

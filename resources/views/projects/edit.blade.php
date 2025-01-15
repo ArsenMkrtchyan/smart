@@ -494,11 +494,13 @@
 
                                             @if($project->firm_type == 1 && $project->hvhh != null)
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+                                                <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
 
 
                                             @elseif($project->firm_type == 0 && ($project->soc != null || $project->andznagir != null))
 
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+                                                <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
 
                                             @else
                                                 <p>fill all inputs</p>

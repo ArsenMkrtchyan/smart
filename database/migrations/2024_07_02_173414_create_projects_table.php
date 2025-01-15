@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('i_address')->nullable();
             $table->foreignId('w_marz_id')->nullable()->references('id')->on('states')->onDelete('cascade');
             $table->string('w_address')->nullable();
-
+$table->date('start_act')->nullable();
 
             $table->foreignId('ceorole_id')->nullable()->references('id')->on('seoroles')->onDelete('cascade');
            $table->foreignId('type_id')->nullable()->references('id')->on('object_types')->onDelete('cascade');
