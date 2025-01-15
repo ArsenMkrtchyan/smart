@@ -677,7 +677,7 @@ $hardwares = Hardware::all();
             Simlist::whereIn('id', $validated['sim_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
         }
 
-        Hardware::where('project_id', $project->id)->update(['project_id' => null]);
+        Hardware::where('project_id', $project->id)->update(['project_id' => null , 'ident_id' => null]);
         if (!empty($validated['hardware_ids'])) {
             Hardware::whereIn('id', $validated['hardware_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
         }
