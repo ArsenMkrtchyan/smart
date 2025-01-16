@@ -187,7 +187,7 @@ class ProjectController extends Controller
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
-
+        $hardware = Hardware::where('id','=',$project->id)->first();
 
 
         // Проверка на наличие даты начала договора
@@ -215,8 +215,8 @@ class ProjectController extends Controller
             $xml = str_replace('firm_name', $project->firm_name , $xml);
 
             $xml = str_replace('00.10.2024', $project->firm_name , $xml);
-            $xml = str_replace('GSM-9N', $project->firm_name , $xml);
-            $xml = str_replace('serial', $project->firm_name , $xml);
+            $xml = str_replace('GSM-9N', $hardware->name , $xml);
+            $xml = str_replace('serial', $hardware->serial , $xml);
             $xml = str_replace('0999999', $project->firm_name , $xml);
 
 
