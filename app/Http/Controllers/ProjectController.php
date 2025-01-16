@@ -189,6 +189,19 @@ class ProjectController extends Controller
         $ceo = Seorole::find($project->ceorole_id);
         $hardware = Hardware::where('id','=',$project->id)->first();
 
+        if (Simlist::where('id','=',$project->id)->count() == 2){
+            $simlist_1 =  Simlist::where('id','=',$project->id)->first();
+            $simlist_2 =  Simlist::where('id','=',$project->id)->last();
+        }elseif(Simlist::where('id','=',$project->id)->count() == 1){
+            $simlist_1 =  Simlist::where('id','=',$project->id)->first();
+            $simlist_2 = null;
+        }elseif(Simlist::where('id','=',$project->id)->count() == 0){
+            $simlist_1 = null;
+            $simlist_2 = null;
+        }
+
+
+
 
         // Проверка на наличие даты начала договора
         if (!$project->paymanagir_start) {
@@ -220,6 +233,7 @@ if (empty($project->start_act)){
     $xml = str_replace('00.10.2024', $project->start_act , $xml);
 }
 
+             $xml = str_replace('17.12.2024', $project->paymanagir_start , $xml);
             if (empty($hardware))
             {
                 $xml = str_replace('GSM-9N','-', $xml);
@@ -230,7 +244,9 @@ if (empty($project->start_act)){
             }
 
 
-            $xml = str_replace('0999999', $project->firm_name , $xml);
+
+            $xml = str_replace('Ldsim',  $simlist_1, $xml);
+            $xml = str_replace(',idsim2',$simlist_2 , $xml);
 
 
             $xml = str_replace('i_region', $i_marz->name , $xml);
@@ -238,7 +254,7 @@ if (empty($project->start_act)){
             $xml = str_replace('i_address', $project->i_address, $xml);
             $xml = str_replace('hvhh', $project->hvhh , $xml);
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
-            $xml = str_replace('f1irm_bank_hh', $project->firm_bank_hh , $xml);
+            $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
             $xml = str_replace('060808010', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
@@ -301,20 +317,24 @@ if (empty($project->start_act)){
 
 
             $xml = str_replace('price', $price->amount , $xml);
-            $xml = str_replace('price_detail', $price->detail , $xml);
+            $xml = str_replace('deta', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
-            $xml = str_replace('00.10.2024', $project->paymanagir_start , $xml);
+            $xml = str_replace('17.12.2024', $project->paymanagir_start , $xml);
             $xml = str_replace('i_region', $i_marz->name , $xml);
             $xml = str_replace('i_marz_id', $i_marz->district , $xml);
             $xml = str_replace('i_address', $project->i_address, $xml);
             $xml = str_replace('hvhh', $project->hvhh , $xml);
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
-            $xml = str_replace('f1irm_bank_hh', $project->firm_bank_hh , $xml);
+            $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
             $xml = str_replace('060808010', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
             $xml = str_replace('ceo_name', $project->ceo_name , $xml);
             $xml = str_replace('1001',$project->ident_id, $xml);
+
+
+
+
             $zip->addFromString('word/document.xml', $xml);
             $zip->close();
         }
