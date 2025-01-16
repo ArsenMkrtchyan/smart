@@ -4,14 +4,17 @@
         <h3 class="text-dark mb-4">Sim List</h3>
         <div class="card shadow">
             <div class="card-header py-3">
-                <input class="form-check-input" type="checkbox" id="filterIdentNull">
-                <label class="form-check-label" for="filterIdentNull">ident_id == null</label>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('simlists.create')}}"><strong>ավելացնել Sim</strong></a><div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="filterIdentNull">
+                        <label class="form-check-label" for="filterIdentNull">ident_id == null</label>
+                    </div>
             </div>
+
+
+
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6 text-nowrap">
-                        <a class="btn btn-success" href="{{ route('simlists.create') }}">Create New Sim info</a>
-                    </div>
+
                     <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                         <table class="table my-0" id="dataTable">
                             <thead>
