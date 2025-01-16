@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('serial');
+
+
+
             $table->string('store')->nullable();
             $table->string('ident_id')->nullable();
             $table->integer('kargavichak')->nullable();

@@ -27,13 +27,15 @@ $projects = Project::all();
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'sim_info' => 'required|string|max:255',
-            'number' => 'required|string|max:255',
+            'sim_info' => 'required|string|max:255|unique:simlists',
+            'number' => 'required|string|max:255|unique:simlists',
             'sim_id' => 'required|string|max:255',
             'price' => 'nullable|string|max:255',
             'mb' => 'nullable|string|max:255',
-'worker_id' => 'nullable',
+            'worker_id' => 'nullable',
 //            'project_id' => 'exists:projects,id',
+
+
         ]);
         $validated['project_id'] = null;
 
