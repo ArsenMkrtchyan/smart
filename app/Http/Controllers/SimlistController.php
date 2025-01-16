@@ -58,8 +58,8 @@ $projects = Project::all();
     {
     $validated=    $request->validate([
 
-            'sim_info' => 'required|string|max:255',
-            'number' => 'required|string|max:255',
+            'sim_info' => 'required|string|max:255|unique:simlists',
+            'number' => 'required|string|max:255|unique:simlists',
             'sim_id' => 'required|string|max:255',
             'price' => 'nullable|string|max:255',
             'mb' => 'nullable|string|max:255',
