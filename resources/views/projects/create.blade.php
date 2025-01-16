@@ -507,28 +507,23 @@
                                     <div class="card mb-3"></div>
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
-                                            <h6 class="text-primary fw-bold m-0">start պայմանագիր </h6>
+                                            <h6 class="text-primary fw-bold m-0">start պայմանագիր/start act </h6>
                                         </div>
                                         <div class="card-body">
                                             <input type="date" name="paymanagir_start" id="dateInput"   min="2024-01-01">
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col">
-                                    <div class="card mb-3"></div>
-                                    <div class="card shadow mb-4">
-                                        <div class="card-header py-3">
-                                            <h6 class="text-primary fw-bold m-0">start act </h6>
-                                        </div>
-                                        <div class="card-body">
                                             <input type="date" name="start_act" id="dateInput"   min="2024-01-01">
 
                                         </div>
+                                        <div class="card-body">
+                                            <input type="hidden" name="paymanagir_received" value="0">
+                                            <input class="form-check-input" type="checkbox" name="paymanagir_received" value="1" {{ old('paymnanagir_received') ? 'checked' : '' }}>
+
+                                            <label class="form-check-label" for="formCheck-2">Պայմանագիրը ստացել ենք</label>
+                                        </div>
                                     </div>
 
                                 </div>
+
                                 <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select form-select"  name="price_id"  id="entity-select-2" >
@@ -631,21 +626,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
 
-                                    <div class="col">
-                                        <div class="mb-3 floating-label">
-                                            <input class="form-control form-control" type="text" id="last_name-1" name="x_gps" placeholder=" ">
-                                            <label for="last_name-3"><strong>GPS X</strong></label>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3 floating-label">
-                                            <input class="form-control form-control" type="text" id="last_name-2" name="y_gps" placeholder=" ">
-                                            <label for="last_name-3"><strong>GPS Y</strong></label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-xxl-6">
                                         <div class="mb-3 floating-label">
@@ -658,12 +639,27 @@
                                             <select class="form-select form-select" id="entity-select-5"  name="connection_type">
                                                 <option value="" selected="">Ընտրեք</option>
                                                 <optgroup label="Տեխնիկական կարգավիճակ">
-                                                    <option value="12">GSM, Dialer</option>
-                                                    <option value="13">GPRS, Internet</option>
-                                                    <option value="13">wifi</option>
+                                                    <option value=">GSM, Dialer">GSM, Dialer</option>
+                                                    <option value="GPRS, Internet">GPRS, Internet</option>
+                                                    <option value="wifi">wifi</option>
                                                 </optgroup>
                                             </select>
                                             <label for="entity-select-5">Միացման ձև</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control form-control" type="text" id="last_name-1" name="x_gps" placeholder=" ">
+                                            <label for="last_name-3"><strong>GPS X</strong></label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control form-control" type="text" id="last_name-2" name="y_gps" placeholder=" ">
+                                            <label for="last_name-3"><strong>GPS Y</strong></label>
                                         </div>
                                     </div>
                                 </div>
@@ -690,22 +686,19 @@
                             </div> <!-- /card-body -->
                         </div> <!-- /card shadow -->
 
-                        <div class="card shadow">
-                            <div class="mb-3"></div>
-                            <div class="card-body">
-                                <div class="col">
-                                    <div class="mb-3 floating-label"></div>
-                                    <div class="mb-3 floating-label"></div>
-                                    <div class="form-check">
-                                        <input type="hidden" name="paymanagir_received" value="0">
-                                        <input class="form-check-input" type="checkbox" name="paymanagir_received" value="1" {{ old('paymnanagir_received') ? 'checked' : '' }}>
+{{--                        <div class="card shadow">--}}
+{{--                            <div class="mb-3"></div>--}}
+{{--                            <div class="card-body">--}}
+{{--                                <div class="col">--}}
+{{--                                    <div class="mb-3 floating-label"></div>--}}
+{{--                                    <div class="mb-3 floating-label"></div>--}}
+{{--                                    <div class="form-check">--}}
+{{--                                       --}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                        <label class="form-check-label" for="formCheck-2">Պայմանագիրը ստացել ենք</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div> <!-- /card shadow -->
+{{--                            </div>--}}
+{{--                        </div> <!-- /card shadow -->--}}
                     </div> <!-- /col-lg-8 -->
                 </div> <!-- /row -->
             </div> <!-- /#technicalSection -->
@@ -744,11 +737,11 @@
                                                     <select class="form-select form-select" id="entity-select-1" name="tech_check" >
                                                         <option value="" selected="">Ընտրեք</option>
                                                         <optgroup label="Տեխնիկական կարգավիճակ">
-                                                            <option value="12">Հսկման տակ</option>
-                                                            <option value="13">Հսկողությունից հանված</option>
-                                                            <option value="13">Կապ չկա</option>
-                                                            <option value="13">Անջատված է</option>
-                                                            <option value="13">Չի աշխատում</option>
+                                                            <option value=">Հսկման տակ">Հսկման տակ</option>
+                                                            <option value="Հսկողությունից հանված">Հսկողությունից հանված</option>
+                                                            <option value="Կապ չկա">Կապ չկա</option>
+                                                            <option value="Անջատված է">Անջատված է</option>
+                                                            <option value="Չի աշխատում">Չի աշխատում</option>
                                                         </optgroup>
                                                     </select>
                                                     <label for="entity-select-1">Տեխնիկական կարգավիճակ</label>

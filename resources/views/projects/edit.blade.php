@@ -668,7 +668,7 @@
                                     <div class="col">
                                         <div class="mb-3 floating-label">
                                             <select class="form-select" id="entity-select-5" name="connection_type">
-                                                <option value="" selected>Ընտրեք</option>
+                                                <option value="" >Ընտրեք</option>
                                                 <optgroup label="Տեխնիկական կարգավիճակ">
                                                     <option value="GSM, Dialer" {{ $project->connection_type == 'GSM, Dialer' ? 'selected' : '' }}>GSM, Dialer</option>
                                                     <option value="GPRS, Internet" {{ $project->connection_type == 'GPRS, Internet' ? 'selected' : '' }}>GPRS, Internet</option>

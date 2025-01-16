@@ -12,6 +12,7 @@
         <th>Կարգավիճակ</th>
         <th>edit</th>
         <th>paymanagir</th>
+        <th>act</th>
     </tr>
     </thead>
     <tbody>
@@ -72,6 +73,16 @@
             <td>
                 @if($project->paymanagir_start)
                     <form action="{{ route('projects.export', $project->id) }}" method="POST">
+                        @csrf
+                        <button class="btn btn-secondary">Export</button>
+                    </form>
+                @else
+                    <button class="btn btn-secondary" disabled>Export</button>
+                @endif
+            </td>
+            <td>
+                @if($project->paymanagir_start)
+                    <form action="{{ route('projects.exportact', $project->id) }}" method="POST">
                         @csrf
                         <button class="btn btn-secondary">Export</button>
                     </form>

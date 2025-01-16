@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('hardwares', \App\Http\Controllers\HardwareController::class);
     Route::post('/projects/{id}/export', [ProjectController::class, 'export'])->name('projects.export');
+    Route::post('/projects/{id}/exportact', [ProjectController::class, 'exportact'])->name('projects.exportact');
+
     Route::get('/hardwares', [\App\Http\Controllers\HardwareController::class, 'index'])->name('hardwares.index');
     Route::get('/update-discounts', [FinanceController::class, 'applyDiscounts'])->name('update.discounts');
     Route::get('/search-items', [ProjectController::class, 'searchItems'])->name('projects.search');

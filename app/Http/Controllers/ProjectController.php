@@ -181,6 +181,79 @@ class ProjectController extends Controller
 
 
 
+    public function exportact($id)
+    {
+        $project = Project::findOrFail($id);
+        $price = Price::find($project->price_id);
+        $i_marz = State::find($project->i_marz_id);
+        $ceo = Seorole::find($project->ceorole_id);
+
+
+
+        // Проверка на наличие даты начала договора
+        if (!$project->paymanagir_start) {
+            return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
+        }
+
+        // Путь к шаблону
+        $templatePath = public_path('act.docx');
+
+
+        $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
+        copy($templatePath, $tempPath);
+
+
+        $zip = new \ZipArchive;
+        if ($zip->open($tempPath) === true) {
+
+            $xml = $zip->getFromName('word/document.xml');
+
+
+
+            $xml = str_replace('price', $price->amount , $xml);
+            $xml = str_replace('price_detail', $price->detail , $xml);
+            $xml = str_replace('firm_name', $project->firm_name , $xml);
+
+            $xml = str_replace('00.10.2024', $project->firm_name , $xml);
+            $xml = str_replace('GSM-9N', $project->firm_name , $xml);
+            $xml = str_replace('serial', $project->firm_name , $xml);
+            $xml = str_replace('0999999', $project->firm_name , $xml);
+
+
+            $xml = str_replace('i_region', $i_marz->name , $xml);
+            $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+            $xml = str_replace('i_address', $project->i_address, $xml);
+            $xml = str_replace('hvhh', $project->hvhh , $xml);
+            $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+            $xml = str_replace('f1irm_bank_hh', $project->firm_bank_hh , $xml);
+            $xml = str_replace('firm_email', $project->firm_email , $xml);
+            $xml = str_replace('060808010', $project->ceo_phone , $xml);
+            $xml = str_replace('role_id', $ceo->name , $xml);
+            $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+            $xml = str_replace('0000',$project->ident_id, $xml);
+            $zip->addFromString('word/document.xml', $xml);
+            $zip->close();
+        }
+
+
+        $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_act.docx');
+
+
+        rename($tempPath, $outputDocxPath);
+
+
+        $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
+
+
+        $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
+        exec($command);
+
+
+        return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+    }
+
+
+
 
 
 
@@ -348,6 +421,10 @@ $hardwares = Hardware::all();
             'firm_bank_hh'  => 'nullable|string',
             'firm_email'    => 'nullable|string',
             'object_check'    => 'nullable|string',
+            'y_gps' => 'nullable|string',
+            'their_hardware' => 'nullable|string',
+            'connection_type' => 'nullable|string',
+            'check_time' => 'nullable|string',
 
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
@@ -605,7 +682,10 @@ $hardwares = Hardware::all();
             'id_card'       => 'nullable|string',
             'ceo_phone'     => 'nullable|string',
             'ceorole_id'     => 'nullable|string',
-
+            'y_gps' => 'nullable|string',
+            'their_hardware' => 'nullable|string',
+            'connection_type' => 'nullable|string',
+            'check_time' => 'nullable|string',
             // Юр. лицо
             'firm_name'     => 'nullable|string',
             'hvhh'          => 'nullable|string',
