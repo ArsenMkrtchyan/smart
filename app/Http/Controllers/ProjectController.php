@@ -214,7 +214,7 @@ class ProjectController extends Controller
             $xml = str_replace('pr1ice_detail', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
 
-            $xml = str_replace('00.10.2024', $project->firm_name , $xml);
+            $xml = str_replace('00.10.2024', $project->start_act , $xml);
             if (empty($hardware))
             {
                 $xml = str_replace('GSM-9N','-', $xml);
