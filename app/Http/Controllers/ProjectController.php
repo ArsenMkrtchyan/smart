@@ -215,8 +215,16 @@ class ProjectController extends Controller
             $xml = str_replace('firm_name', $project->firm_name , $xml);
 
             $xml = str_replace('00.10.2024', $project->firm_name , $xml);
-            $xml = str_replace('GSM-9N', $hardware->name , $xml);
-            $xml = str_replace('serial', $hardware->serial , $xml);
+            if (!empty($hardware))
+            {
+                $xml = str_replace('GSM-9N','-', $xml);
+                $xml = str_replace('serial', '-' , $xml);
+            }else{
+                $xml = str_replace('GSM-9N',$hardware->name, $xml);
+                $xml = str_replace('serial', $hardware->serial , $xml);
+            }
+
+
             $xml = str_replace('0999999', $project->firm_name , $xml);
 
 
