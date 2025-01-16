@@ -303,7 +303,7 @@ if (empty($project->start_act)){
             $xml = str_replace('price', $price->amount , $xml);
             $xml = str_replace('price_detail', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
-
+            $xml = str_replace('00.10.2024', $project->paymanagir_start , $xml);
             $xml = str_replace('i_region', $i_marz->name , $xml);
             $xml = str_replace('i_marz_id', $i_marz->district , $xml);
             $xml = str_replace('i_address', $project->i_address, $xml);
