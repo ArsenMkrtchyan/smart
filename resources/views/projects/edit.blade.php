@@ -645,20 +645,6 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="mb-3 floating-label">
-                                            <input class="form-control" type="text" id="last_name-1" name="x_gps" placeholder=" " value="{{ old('x_gps', $project->x_gps) }}">
-                                            <label for="last_name-1">GPS X</label>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3 floating-label">
-                                            <input class="form-control" type="text" id="last_name-2" name="y_gps" placeholder=" " value="{{ old('y_gps', $project->y_gps) }}">
-                                            <label for="last_name-2">GPS Y</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-xxl-6">
                                         <div class="mb-3 floating-label">
                                             <input class="form-control" type="text" id="last_name-5" name="their_hardware" placeholder=" " value="{{ old('their_hardware', $project->their_hardware) }}">
@@ -679,6 +665,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control" type="text" id="last_name-1" name="x_gps" placeholder=" " value="{{ old('x_gps', $project->x_gps) }}">
+                                            <label for="last_name-1">GPS X</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3 floating-label">
+                                            <input class="form-control" type="text" id="last_name-2" name="y_gps" placeholder=" " value="{{ old('y_gps', $project->y_gps) }}">
+                                            <label for="last_name-2">GPS Y</label>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div id="patasxanatus-container">
                                     {{-- Выводим существующих Պատասխանատու --}}
