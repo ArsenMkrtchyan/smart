@@ -54,7 +54,7 @@ $projects = Project::all();
     }
 
 
-    public function update(Request $request, $id, $simlist)
+    public function update(Request $request, $id, Simlist $simlist)
     {
     $validated=    $request->validate([
 
