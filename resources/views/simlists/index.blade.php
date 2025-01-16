@@ -1,11 +1,12 @@
 @extends('layouts')
 @section('content')
     <div class="container-fluid">
-        <h3 class="text-dark mb-4">Object</h3>
+        <h3 class="text-dark mb-4">Sim List</h3>
         <div class="card shadow">
-            <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold">Object info</p>
-            </div>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('hardwares.create')}}"><strong>ավելացնել Սարք</strong></a><div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="filterIdentNull">
+                    <label class="form-check-label" for="filterIdentNull">ident_id == null</label>
+                </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 text-nowrap">
