@@ -218,7 +218,7 @@ class ProjectController extends Controller
             if (empty($hardware))
             {
                 $xml = str_replace('GSM-9N','-', $xml);
-                $xml = str_replace('serial', '-' , $xml);
+
             }else{
                 $xml = str_replace('GSM-9N',$hardware->name, $xml);
                 $xml = str_replace('serial', $hardware->serial , $xml);
@@ -250,7 +250,7 @@ class ProjectController extends Controller
         rename($tempPath, $outputDocxPath);
 
 
-        $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
+        $outputPdfPath = public_path($project->firm_name . '_act.pdf');
 
 
         $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
