@@ -5,8 +5,8 @@
         <th><strong>Serial</strong></th>
         <th>Պահեստ</th>
         <th>Իդենտ․ համար</th>
-        <th>Կարգավիճակ</th>   <th>Ամսաթիվ</th>
-
+        <th>Կարգավիճակ</th>
+        <th>Ամսաթիվ</th>
         <th>Գործողություն</th>
     </tr>
     </thead>

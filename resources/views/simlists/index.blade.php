@@ -11,96 +11,118 @@
             </div>
 
 
-
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                        <table class="table my-0" id="dataTable">
-                            <thead>
-                            <tr>
-                                <th><strong>SIM Համար</strong></th>
-                                <th><strong>SIM Կոդ ICMC</strong></th>
-                                <th><strong>Օպերատոր</strong></th>
-                                <th><strong>Պահեստ</strong></th>
-                                <th><strong>Իդենտ համարը</strong></th>
-                                <th>Կարգավիճակ</th>
-                                <th><strong>ամսաթիվ</strong></th>
-                                <th><strong>Գործողություն</strong></th>
-
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($simlists as $simlist)
-                                <tr>
-                                    <td> {{$simlist->number}}</td>
-                                    <td> {{$simlist->sim_info}}</td>
-                                    <td> {{$simlist->sim_id}}</td>
-
-                                    <td> {{$simlist->worker->name}} - {{$simlist->worker->female}}</td>
-                                    @if($simlist->ident_id == null)
-
-                                        <td>-</td>
-                                        <td>pahest</td>
-                                    @else
-                                        <td>{{$simlist->ident_id}}</td>
-                                        <td>pahest</td>
-                                    @endif
-
-
-
-                                    <td>{{ $simlist->created_at ? \Carbon\Carbon::parse($simlist->created_at)->format('d,m,Y') : '-' }}</td>
-
-
-
-
-
-
-
-                                    <td>
-                                        <form  method="POST" >
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="{{ route('simlists.edit', $simlist->id) }}" class="btn btn-primary">Edit</a>
-
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td><strong>Sim Number</strong></td>
-                                <td><strong>Sim Code</strong></td>
-                                <td><strong> Action</strong></td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 align-self-center">
-                            <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                        <div class="col-md-6 text-nowrap">
+                            <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                <label class="form-label">Show
+                                    <select class="form-select form-select-sm d-inline-block" id="perPage">
+                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                    </select>
+                                </label>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                                <ul class="pagination">
-                                    <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-                                </ul>
-                            </nav>
+                        <div class="col-md-6 text-md-end">
+                            <input
+                                type="search"
+                                class="form-control form-control-sm"
+                                id="search"
+                                placeholder="Search brand name..."
+                                value="{{ request('search') ?? '' }}"
+                            >
                         </div>
                     </div>
+                    <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                        <div id="tableData">
+                           @include('simlists._table', ['simlists' => $simlists])
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <footer class="bg-white sticky-footer">
-            <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2024</span></div>
-            </div>
-        </footer>
-    </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            $(function(){
+                // При изменении "сколько записей показывать"
+                $('#perPage').on('change', function() {
+                    fetchData();
+                });
+
+                // При вводе в поле поиска
+                $('#search').on('keyup', function() {
+                    // Сделаем небольшую задержку, чтобы не дергать сервер на каждый символ
+                    // Можно использовать setTimeout, debounce... Но для примера хватит и так
+                    fetchData();
+                });
+
+                function fetchData() {
+                    // Получаем текущее значение полей
+                    let perPageVal = $('#perPage').val();
+                    let searchVal  = $('#search').val();
+
+                    $.ajax({
+                        url: '{{ route('simlists.index') }}',
+                        type: 'GET',
+                        data: {
+                            per_page: perPageVal,
+                            search: searchVal,
+                            // доп. параметр ajax не обязателен, но можно
+                        },
+                        success: function(response) {
+                            // В ответе придёт JSON вида { html: '...таблица...'}
+                            $('#tableData').html(response.html);
+                        },
+                        error: function(err) {
+                            console.log('Ошибка:', err);
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>$(function(){
+                // Обработка события изменения чекбокса
+                $('#filterIdentNull').on('change', function() {
+                    fetchData();
+                });
+
+                // При изменении "сколько записей показывать"
+                $('#perPage').on('change', function() {
+                    fetchData();
+                });
+
+                // При вводе в поле поиска
+                $('#search').on('keyup', function() {
+                    fetchData();
+                });
+
+                function fetchData() {
+                    // Получаем текущее значение полей
+                    let perPageVal = $('#perPage').val();
+                    let searchVal  = $('#search').val();
+                    let filterIdentNull = $('#filterIdentNull').is(':checked'); // Проверяем, установлен ли чекбокс
+
+                    $.ajax({
+                        url: '{{ route('simlists.index') }}',
+                        type: 'GET',
+                        data: {
+                            per_page: perPageVal,
+                            search: searchVal,
+                            filter_ident_null: filterIdentNull, // Отправляем значение чекбокса
+                        },
+                        success: function(response) {
+                            $('#tableData').html(response.html);
+                        },
+                        error: function(err) {
+                            console.log('Ошибка:', err);
+                        }
+                    });
+                }
+            });
+        </script>
 @endsection

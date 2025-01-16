@@ -11,14 +11,44 @@ use Illuminate\Http\Request;
 class SimlistController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-$projects = Project::all();
-        $simlists = Simlist::with('worker')->get();
+        $projects = Project::all();
+
+        $query = simlist::query()->with('worker');
+
+
+        // Поиск по имени, если параметр 'search' присутствует
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('number', 'like', "%{$search}%");
+        }
+
+        // Определяем количество записей на странице, по умолчанию 10
+        $perPage = $request->input('per_page', 10);
+
+        // Получаем данные с пагинацией
+        $simlists = $query->paginate($perPage);
+
+        // Проверяем, AJAX запрос или нет
+        if ($request->ajax()) {
+            // Рендерим частичный вид таблицы
+            $html = view('simlists._table', compact('simlists'))->render();
+
+            // Возвращаем JSON ответ
+            return response()->json(['html' => $html]);
+        }
+
+
+
+
 
         return view('simlists.index', compact('simlists','projects'));
 
     }
+
+
+
     public function create()
     {
         $projects = Project::all();
