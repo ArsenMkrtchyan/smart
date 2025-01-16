@@ -440,188 +440,63 @@ $hardwares = Hardware::all();
         return response()->json(['ident_id' => $formattedId]);
     }
 
-//    public function storeAlls(Request $request)
-//    {
-//        // Здесь мы принимаем ВСЕ поля формы,
-//        // в том числе и для физ. лица, и для юр. лица, и тех. раздел, и админ-тех...
-//        // В зависимости от того, что реально было заполнено,
-//        // поля могут быть пусты.
-//        try {
-//        $validated = $request->validate([
-//            // Общие поля, встречаются и у физ., и у юр.
-//            'type_id'       => 'nullable|integer',
-//            'brand_name'    => 'nullable|string',
-//            'firm_bank'     => 'nullable|string',
-//            'firm_bank_hh'  => 'nullable|string',
-//            'firm_email'    => 'nullable|string',
-//            'object_check'    => 'nullable|string',
-//            'y_gps' => 'nullable|string',
-//            'their_hardware' => 'nullable|string',
-//            'connection_type' => 'nullable|string',
-//            'check_time' => 'nullable|string',
-//
-//            // Физ. лицо
-//            'ceo_name'      => 'nullable|string',
-//            'andznagir'     => 'nullable|string',
-//            'soc'           => 'nullable|string',
-//            'id_card'       => 'nullable|string',
-//            'ceo_phone'     => 'nullable|string',
-//            'ceorole_id'     => 'nullable|integer',
-//            // Юр. лицо
-//            'firm_name'     => 'nullable|string',  // (пример)
-//            'hvhh'          => 'nullable|string',
-//            'fin_contact'   => 'nullable|string',
-//            'price_id' => 'nullable',
-//            // Адреса
-//            'i_marz_id'     => 'nullable|integer',
-//            'i_address'     => 'nullable|string',
-//            'w_marz_id'     => 'nullable|integer',
-//            'w_address'     => 'nullable|string',
-//            'x_gps'     => 'nullable|string',
-//            // Техническая секция
-//            'identification' => 'required|in:manual,auto',
-//            'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
-//'paymanagir_start' => 'nullable|date',
-//            'paymanagir_received' => 'nullable',
-//            'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-//        'worker_id' => 'nullable|integer',
-//            // Админ-техническая
-//            'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
-//            'sim_ids'         => 'array',     // ожидаем массив
-//            'sim_ids.*'       => 'integer',
-//            'hardware_ids'         => 'array',     // ожидаем массив
-//            'hardware_ids.*'       => 'integer',
-//            'patasxanatus'    => 'nullable|array',
-//            'patasxanatus.*'  => 'nullable|string|max:255',
-//            'numbers'         => 'nullable|array',
-//            'numbers.*'       => 'nullable|string|max:255',
-//
-//        ]);
-//            if($request->hasFile('nkar')){
-//                // Например, генерируем имя
-//                // Либо: $filename = $request->file('photo')->hashName(); (Laravel сам сгенерирует)
-//                // Или: $filename = time().'.'.$request->file('photo')->extension();
-//                $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
-//
-//                // Сохраняем в disk "public" (по умолчанию = storage/app/public)
-//                $request->file('nkar')->storeAs('projects', $filename, 'public');
-//
-//                // Запишем в $validated
-//                $validated['nkar'] = $filename;
-//            }
-//
-//        // Сохраняем в таблицу projects (предполагая, что
-//        // соответствующие поля/колонки есть).
-//        // 2) Создаём новый Project (примерно)
-//        // Создаём новый проект
-//            if (isset($validated['hvhh'])) {
-//                $validated['firm_type'] = 1;
-//            } else {
-//                $validated['firm_type'] = 0;
-//            }
-//        $project = Project::create($validated);
-//
-//        // Привязываем выбранные SIM-карты к проекту
-//        if (!empty($validated['sim_ids'])) {
-//            Simlist::whereIn('id', $validated['sim_ids'])
-//                ->update(['project_id' => $project->id ,'ident_id' => $project->ident_id] );
-//        }
-//            if (!empty($validated['hardware_ids'])) {
-//                Hardware::whereIn('id', $validated['hardware_ids'])
-//                    ->update(['project_id' => $project->id , 'ident_id' => $project->ident_id]);
-//            }
-//
-//
-//            // Обработка Патасханату
-//            if (!empty($validated['patasxanatus']) && !empty($validated['numbers'])) {
-//                // Убедимся, что оба массива имеют одинаковую длину
-//                $countNames = count($validated['patasxanatus']);
-//                $countNumbers = count($validated['numbers']);
-//                $count = min($countNames, $countNumbers);
-//
-//                for ($i = 0; $i < $count; $i++) {
-//                    $name = trim($validated['patasxanatus'][$i]);
-//                    $number = trim($validated['numbers'][$i]);
-//
-//                    // Проверяем, что хотя бы одно из полей заполнено
-//                    if (!empty($name) || !empty($number)) {
-//                        $project->patasxanatus()->create([
-//                            'name'   => $name,
-//                            'number' => $number,
-//                        ]);
-//                    }
-//                }
-//            }
-//
-//            // Редирект с сообщением об успехе
-//            return redirect()->route('projects.edit' , $project->id)
-//                ->with('success', 'Проект создан, выбранные SIM-карты/hard и Պատասխանատու сохранены.');
-//        } catch (\Exception $e) {
-//            // Логирование ошибки
-//            \Log::error('Ошибка при создании проекта: ' . $e->getMessage());
-//
-//            // Редирект с ошибкой
-//            return redirect()->back()
-//                ->with('error', 'Произошла ошибка при создании проекта. Пожалуйста, попробуйте снова.');
-//        }
-//    }
     public function storeAll(Request $request)
     {
         // Здесь мы принимаем ВСЕ поля формы,
         // в том числе и для физ. лица, и для юр. лица, и тех. раздел, и админ-тех...
         // В зависимости от того, что реально было заполнено,
         // поля могут быть пусты.
+        try {
+        $validated = $request->validate([
+            // Общие поля, встречаются и у физ., и у юр.
+            'type_id'       => 'nullable|integer',
+            'brand_name'    => 'nullable|string',
+            'firm_bank'     => 'nullable|string',
+            'firm_bank_hh'  => 'nullable|string',
+            'firm_email'    => 'nullable|string',
+            'object_check'    => 'nullable|string',
+            'y_gps' => 'nullable|string',
+            'their_hardware' => 'nullable|string',
+            'connection_type' => 'nullable|string',
+            'check_time' => 'nullable|string',
 
-            $validated = $request->validate([
-                // Общие поля, встречаются и у физ., и у юр.
-                'type_id'       => 'nullable|integer',
-                'brand_name'    => 'nullable|string',
-                'firm_bank'     => 'nullable|string',
-                'firm_bank_hh'  => 'nullable|string',
-                'firm_email'    => 'nullable|string',
-                'object_check'    => 'nullable|string',
-                'y_gps' => 'nullable|string',
-                'their_hardware' => 'nullable|string',
-                'connection_type' => 'nullable|string',
-                'check_time' => 'nullable|string',
+            // Физ. лицо
+            'ceo_name'      => 'nullable|string',
+            'andznagir'     => 'nullable|string',
+            'soc'           => 'nullable|string',
+            'id_card'       => 'nullable|string',
+            'ceo_phone'     => 'nullable|string',
+            'ceorole_id'     => 'nullable|integer',
+            // Юр. лицо
+            'firm_name'     => 'nullable|string',  // (пример)
+            'hvhh'          => 'nullable|string',
+            'fin_contact'   => 'nullable|string',
+            'price_id' => 'nullable',
+            // Адреса
+            'i_marz_id'     => 'nullable|integer',
+            'i_address'     => 'nullable|string',
+            'w_marz_id'     => 'nullable|integer',
+            'w_address'     => 'nullable|string',
+            'x_gps'     => 'nullable|string',
+            // Техническая секция
+            'identification' => 'required|in:manual,auto',
+            'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
+'paymanagir_start' => 'nullable|date',
+            'paymanagir_received' => 'nullable',
+            'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'worker_id' => 'nullable|integer',
+            // Админ-техническая
+            'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
+            'sim_ids'         => 'array',     // ожидаем массив
+            'sim_ids.*'       => 'integer',
+            'hardware_ids'         => 'array',     // ожидаем массив
+            'hardware_ids.*'       => 'integer',
+            'patasxanatus'    => 'nullable|array',
+            'patasxanatus.*'  => 'nullable|string|max:255',
+            'numbers'         => 'nullable|array',
+            'numbers.*'       => 'nullable|string|max:255',
 
-                // Физ. лицо
-                'ceo_name'      => 'nullable|string',
-                'andznagir'     => 'nullable|string',
-                'soc'           => 'nullable|string',
-                'id_card'       => 'nullable|string',
-                'ceo_phone'     => 'nullable|string',
-                'ceorole_id'     => 'nullable|integer',
-                // Юр. лицо
-                'firm_name'     => 'nullable|string',  // (пример)
-                'hvhh'          => 'nullable|string',
-                'fin_contact'   => 'nullable|string',
-                'price_id' => 'nullable',
-                // Адреса
-                'i_marz_id'     => 'nullable|integer',
-                'i_address'     => 'nullable|string',
-                'w_marz_id'     => 'nullable|integer',
-                'w_address'     => 'nullable|string',
-                'x_gps'     => 'nullable|string',
-                // Техническая секция
-                'identification' => 'required|in:manual,auto',
-                'ident_id' => 'nullable|digits:4|unique:projects,ident_id',
-                'paymanagir_start' => 'nullable|date',
-                'paymanagir_received' => 'nullable',
-                'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-                'worker_id' => 'nullable|integer',
-                // Админ-техническая
-                'dismiss_date'  => 'nullable|date', // если у вас есть поле-дата
-                'sim_ids'         => 'array',     // ожидаем массив
-                'sim_ids.*'       => 'integer',
-                'hardware_ids'         => 'array',     // ожидаем массив
-                'hardware_ids.*'       => 'integer',
-                'patasxanatus'    => 'nullable|array',
-                'patasxanatus.*'  => 'nullable|string|max:255',
-                'numbers'         => 'nullable|array',
-                'numbers.*'       => 'nullable|string|max:255',
-
-            ]);
+        ]);
             if($request->hasFile('nkar')){
                 // Например, генерируем имя
                 // Либо: $filename = $request->file('photo')->hashName(); (Laravel сам сгенерирует)
@@ -635,22 +510,22 @@ $hardwares = Hardware::all();
                 $validated['nkar'] = $filename;
             }
 
-            // Сохраняем в таблицу projects (предполагая, что
-            // соответствующие поля/колонки есть).
-            // 2) Создаём новый Project (примерно)
-            // Создаём новый проект
+        // Сохраняем в таблицу projects (предполагая, что
+        // соответствующие поля/колонки есть).
+        // 2) Создаём новый Project (примерно)
+        // Создаём новый проект
             if (isset($validated['hvhh'])) {
                 $validated['firm_type'] = 1;
             } else {
                 $validated['firm_type'] = 0;
             }
-            $project = Project::create($validated);
+        $project = Project::create($validated);
 
-            // Привязываем выбранные SIM-карты к проекту
-            if (!empty($validated['sim_ids'])) {
-                Simlist::whereIn('id', $validated['sim_ids'])
-                    ->update(['project_id' => $project->id ,'ident_id' => $project->ident_id] );
-            }
+        // Привязываем выбранные SIM-карты к проекту
+        if (!empty($validated['sim_ids'])) {
+            Simlist::whereIn('id', $validated['sim_ids'])
+                ->update(['project_id' => $project->id ,'ident_id' => $project->ident_id] );
+        }
             if (!empty($validated['hardware_ids'])) {
                 Hardware::whereIn('id', $validated['hardware_ids'])
                     ->update(['project_id' => $project->id , 'ident_id' => $project->ident_id]);
@@ -681,12 +556,14 @@ $hardwares = Hardware::all();
             // Редирект с сообщением об успехе
             return redirect()->route('projects.edit' , $project->id)
                 ->with('success', 'Проект создан, выбранные SIM-карты/hard и Պատասխանատու сохранены.');
-
+        } catch (\Exception $e) {
             // Логирование ошибки
-
+            \Log::error('Ошибка при создании проекта: ' . $e->getMessage());
 
             // Редирект с ошибкой
-
+            return redirect()->back()
+                ->with('error', 'Произошла ошибка при создании проекта. Пожалуйста, попробуйте снова.');
+        }
     }
     public function searchSimlists(Request $request)
     {
