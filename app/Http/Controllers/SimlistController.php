@@ -13,7 +13,7 @@ class SimlistController extends Controller
 
     public function index(Request $request)
     {
-        $projects = Project::all();
+
 
         $query = simlist::query()->with('worker');
 
@@ -23,6 +23,11 @@ class SimlistController extends Controller
             $search = $request->input('search');
             $query->where('number', 'like', "%{$search}%");
         }
+
+        if ($request->boolean('filter_ident_null')) {
+            $query->whereNull('ident_id');
+        }
+
 
         // Определяем количество записей на странице, по умолчанию 10
         $perPage = $request->input('per_page', 10);
@@ -43,7 +48,7 @@ class SimlistController extends Controller
 
 
 
-        return view('simlists.index', compact('simlists','projects'));
+        return view('simlists.index', compact('simlists'));
 
     }
 
