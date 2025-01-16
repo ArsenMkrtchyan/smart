@@ -113,7 +113,7 @@ class HardwareController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'serial' => 'required|string|max:255|unique:hardwares',
+            'serial' => 'required|string|max:255||unique:hardwares,serial,' . $hardware->id,
             'worker_id' => 'required|exists:users,id',
         ]);
 

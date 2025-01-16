@@ -54,12 +54,13 @@ $projects = Project::all();
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $simlist)
     {
     $validated=    $request->validate([
 
             'sim_info' => 'required|string|max:255|unique:simlists',
-            'number' => 'required|string|max:255|unique:simlists',
+            'number' => 'required|string|max:255|unique:simlists,number,'. $simlist->id,
+
             'sim_id' => 'required|string|max:255',
             'price' => 'nullable|string|max:255',
             'mb' => 'nullable|string|max:255',
