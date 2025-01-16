@@ -54,17 +54,18 @@ $projects = Project::all();
     }
 
 
-    public function update(Request $request, $id, Simlist $simlist)
+    public function update(Request $request, $id )
     {
-    $validated=    $request->validate([
 
-            'sim_info' => 'required|string|max:255|unique:simlists,number,'. $simlist->id,
+        $simlist = Simlist::findOrFail($id);
+
+        $validated=    $request->validate([
+            'sim_info' => 'required|string|max:255|unique:simlists,sim_info,'. $simlist->id,
             'number' => 'required|string|max:255|unique:simlists,number,'. $simlist->id,
-
             'sim_id' => 'required|string|max:255',
             'price' => 'nullable|string|max:255',
             'mb' => 'nullable|string|max:255',
-'worker_id' => 'nullable|integer'
+            'worker_id' => 'nullable|integer'
         ]);
 
 //        if($validated['sim_id'] == 1){
