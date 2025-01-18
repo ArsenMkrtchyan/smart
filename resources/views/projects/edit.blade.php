@@ -552,7 +552,7 @@
                                         <select class="form-select" id="worker-select" name="worker_id">
                                             <optgroup label="Workers">
                                                 @foreach($workers as $worker)
-                                                    <option value="{{ $worker->id }}" {{ $project->worker_id == $worker->id ? 'selected' : '' }}>{{ $worker->name }}</option>
+                                                    <option value="{{ $worker->id }}" {{ $project->worker_id == $worker->id ? 'selected' : '' }}>{{$worker->name}} @if($worker->brand_name == null)  @else {{$worker->brand_name}} @endif</option>
                                                 @endforeach
                                             </optgroup>
                                         </select>
@@ -705,6 +705,7 @@
 
                                 <div class="row">
                                     <div class="col">
+
                                         <!-- Кнопка "ավելացնել Պատասխանատու" -->
                                         <button class="btn btn-outline-primary text-truncate float-none float-sm-none add-another-btn" data-bss-hover-animate="pulse" type="button" style="text-align: center;">
                                             ավելացնել Պատասխանատու <i class="fas fa-plus-circle edit-icon"></i>

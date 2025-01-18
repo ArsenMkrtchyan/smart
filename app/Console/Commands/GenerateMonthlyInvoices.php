@@ -138,7 +138,7 @@ $xml .= '<AccountingDocument Version="1.0">
         <Amount>1</Amount>
         <PricePerUnit>'.$finalPrice.'</PricePerUnit>
         <Price>'.$finalPrice.'</Price>
-        <TotalPrice>1'.$finalPrice.'550</TotalPrice>
+        <TotalPrice>'.$finalPrice.'</TotalPrice>
       </Good>
       <Total>
         <TotalPrice>'.$finalPrice.'</TotalPrice>

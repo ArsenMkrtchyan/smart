@@ -543,7 +543,7 @@
                                         <select class="form-select" id="entity-select-4-j" name="worker_id">
                                             <optgroup label="Իրավաբանական/Ֆիզիկական">
                                                 @foreach($workers as $worker)
-                                                    <option value="{{$worker->id}}" >{{$worker->name}}</option>
+                                                    <option value="{{$worker->id}}" >{{$worker->name}} @if($worker->brand_name == null)  @else {{$worker->brand_name}} @endif</option>
                                                 @endforeach
                                             </optgroup>
                                         </select>
