@@ -8,10 +8,7 @@
                 <a class="btn btn-outline-primary" role="button" href="{{ route('projects.create') }}">
                     Ստեղծել նոր Օբեկտ
                 </a>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="filterIdentNull">
-                    <label class="form-check-label" for="filterIdentNull">signed</label>
-                </div>
+
             </div>
             <div class="card-body">
 
@@ -47,7 +44,12 @@
                                 <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                             </select>
                         </label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="filterIdentNull">
+                            <label class="form-check-label" for="filterIdentNull">Received</label>
+                        </div>
                     </div>
+
 
                     <!-- Поиск -->
                     <div class="col-md-6 text-md-end">
