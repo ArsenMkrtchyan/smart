@@ -4,7 +4,8 @@
         <h3 class="text-dark mb-4">Sim List</h3>
         <div class="card shadow">
             <div class="card-header py-3">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('simlists.create')}}"><strong>ավելացնել Sim</strong></a><div class="form-check form-switch">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"><a class="btn btn-outline-primary" role="button" href="{{route('simlists.create')}}"><strong>ավելացնել Sim</strong></a>
+                    <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="filterIdentNull">
                         <label class="form-check-label" for="filterIdentNull">ident_id == null</label>
                     </div>

@@ -8,6 +8,10 @@
                 <a class="btn btn-outline-primary" role="button" href="{{ route('projects.create') }}">
                     Ստեղծել նոր Օբեկտ
                 </a>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="filterIdentNull">
+                    <label class="form-check-label" for="filterIdentNull">signed</label>
+                </div>
             </div>
             <div class="card-body">
 
@@ -87,11 +91,15 @@
                 // Можно поставить setTimeout, но для примера просто так
                 fetchData();
             });
+            $('#filterIdentNull').on('change', function() {
+                fetchData();
+            });
 
             function fetchData() {
                 let objectCheckVal = $('#objectCheckSelect').val();
                 let perPageVal = $('#perPage').val();
                 let searchVal = $('#search').val();
+                let filterIdentNull = $('#filterIdentNull').is(':checked'); // Проверяем, установлен ли чекбокс
 
                 $.ajax({
                     url: '{{ route('projects.index') }}',
@@ -99,7 +107,8 @@
                     data: {
                         object_check: objectCheckVal,
                         per_page: perPageVal,
-                        search: searchVal
+                        search: searchVal,
+                        filter_ident_null: filterIdentNull,
                     },
                     dataType: 'json',
                     success: function(response){

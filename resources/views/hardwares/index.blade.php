@@ -91,7 +91,8 @@
             }
         });
     </script>
-    <script>$(function(){
+    <script>
+        $(function(){
             // Обработка события изменения чекбокса
             $('#filterIdentNull').on('change', function() {
                 fetchData();

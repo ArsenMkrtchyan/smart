@@ -47,7 +47,9 @@ class ProjectController extends Controller
             $check = $request->input('object_check');
             $query->where('object_check', $check);
         }
-
+        if ($request->boolean('filter_ident_null')) {
+            $query->where('paymanagir_received' , '==', 1);
+        }
         // Кол-во найденных (после всех фильтров, но до пагинации)
         $totalCount = $query->count();
 
