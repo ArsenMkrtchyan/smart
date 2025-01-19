@@ -192,18 +192,22 @@ class ProjectController extends Controller
         $ceo = Seorole::find($project->ceorole_id);
         $hardware = Hardware::where('id','=',$project->id)->first();
 
-        $paymanagirnewyear= $project->paymanagir_start;
-        $newyeardate = Carbon::createFromFormat('Y-m-d', $paymanagirnewyear)
-            ->addYear()
-            ->format('d-m-Y');
+
+
 
 
 
         $paymanagirStart = $project->paymanagir_start;
         $dmydate = Carbon::createFromFormat('Y-m-d', $paymanagirStart)->format('d-m-Y');
 
-        $actdate= $project->start_act;
-        $actfinal = Carbon::createFromFormat('Y-m-d', $actdate)->format('d-m-Y');
+        if ($project->start_act == null){
+            $actdate= null;
+        }else{
+            $actdate= $project->start_act;
+            $actfinal = Carbon::createFromFormat('Y-m-d', $actdate)->format('d-m-Y');
+
+        }
+
 
 
 
@@ -254,7 +258,7 @@ if (empty($project->start_act)){
     $xml = str_replace('00.10.2024', $actfinal , $xml);
 }
 
-             $xml = str_replace('17.12.2024', $actfinal , $xml);
+             $xml = str_replace('17.12.2024', $dmydate , $xml);
 
 
             if (empty($hardware))
