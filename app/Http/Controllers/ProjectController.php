@@ -190,20 +190,20 @@ class ProjectController extends Controller
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
-        $hardware = Hardware::find('id','=',$project->id)->first();
+        $hardware = Hardware::where('id','=',$project->id)->first();
 
         $paymanagirnewyear= $project->paymanagir_start;
-        $newyeardate = Carbon::createFromFormat('m-d-Y', $paymanagirnewyear)
+        $newyeardate = Carbon::createFromFormat('Y-m-d', $paymanagirnewyear)
             ->addYear()
             ->format('d-m-Y');
 
 
 
         $paymanagirStart = $project->paymanagir_start;
-        $dmydate = Carbon::createFromFormat('m-d-Y', $paymanagirStart)->format('d-m-Y');
+        $dmydate = Carbon::createFromFormat('Y-m-d', $paymanagirStart)->format('d-m-Y');
 
         $actdate= $project->start_act;
-        $actfinal = Carbon::createFromFormat('m-d-Y', $actdate)->format('d-m-Y');
+        $actfinal = Carbon::createFromFormat('Y-m-d', $actdate)->format('d-m-Y');
 
 
 
@@ -316,9 +316,9 @@ if (empty($project->start_act)){
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
         $paymanagirStart = $project->paymanagir_start;
-        $dmydate = Carbon::createFromFormat('m-d-Y', $paymanagirStart)->format('d-m-Y');
+        $dmydate = Carbon::createFromFormat('Y-m-d', $paymanagirStart)->format('d-m-Y');
         $paymanagirnewyear= $project->paymanagir_start;
-        $newyeardate = Carbon::createFromFormat('m-d-Y', $paymanagirnewyear)
+        $newyeardate = Carbon::createFromFormat('Y-m-d', $paymanagirnewyear)
             ->addYear()
             ->format('d-m-Y');
 
