@@ -190,6 +190,8 @@ class ProjectController extends Controller
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
+
+
         $hardware = Hardware::where('id','=',$project->id)->first();
 
 
@@ -264,6 +266,7 @@ if (empty($project->start_act)){
             if (empty($hardware))
             {
                 $xml = str_replace('GSM-9N','-', $xml);
+                $xml = str_replace('serial', '', $xml);
 
             }else{
                 $xml = str_replace('GSM-9N',$hardware->name, $xml);
