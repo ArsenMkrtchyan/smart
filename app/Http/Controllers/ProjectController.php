@@ -267,8 +267,11 @@ if (empty($project->start_act)){
             {
                 $xml = str_replace('GSM-9N','-', $xml);
                 $xml = str_replace('serial', '', $xml);
+                $xml = str_replace('qanak', '', $xml);
+
 
             }else{
+                $xml = str_replace('qanak', '1', $xml);
                 $xml = str_replace('GSM-9N',$hardware->name, $xml);
                 $xml = str_replace('serial', $hardware->serial , $xml);
             }
