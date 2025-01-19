@@ -198,8 +198,12 @@ class ProjectController extends Controller
             ->format('d-m-Y');
 
 
+
         $paymanagirStart = $project->paymanagir_start;
         $dmydate = Carbon::createFromFormat('m-d-Y', $paymanagirStart)->format('d-m-Y');
+
+        $actdate= $project->start_act;
+        $actfinal = Carbon::createFromFormat('m-d-Y', $actdate)->format('d-m-Y');
 
 
 
@@ -244,13 +248,13 @@ class ProjectController extends Controller
             $xml = str_replace('pr1ice_detail', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
 if (empty($project->start_act)){
-    $xml = str_replace('00.10.2024', $project->paymanagir_start , $xml);
+    $xml = str_replace('00.10.2024', $dmydate , $xml);
 
 }else{
-    $xml = str_replace('00.10.2024', $project->start_act , $xml);
+    $xml = str_replace('00.10.2024', $actfinal , $xml);
 }
 
-             $xml = str_replace('17.12.2024', $dmydate , $xml);
+             $xml = str_replace('17.12.2024', $actfinal , $xml);
 
 
             if (empty($hardware))
