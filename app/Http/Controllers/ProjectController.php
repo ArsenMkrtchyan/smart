@@ -192,7 +192,7 @@ class ProjectController extends Controller
         $ceo = Seorole::find($project->ceorole_id);
 
 
-        $hardware = Hardware::where('id','=',$project->id)->first();
+        $hardware = Hardware::where('project_id','=',$project->id)->first();
 
 
 
@@ -216,13 +216,13 @@ class ProjectController extends Controller
 
 
 
-        if (Simlist::where('id','=',$project->id)->count() == 2){
-            $simlist_1 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->first();
-            $simlist_2 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->last();
-        }elseif(Simlist::where('id','=',$project->id)->count() == 1){
-            $simlist_1 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->first();
+        if (Simlist::where('project_id','=',$project->id)->count() == 2){
+            $simlist_1 =  Simlist::where('project_id','=',$project->id)->pluck('sim_info')->first();
+            $simlist_2 =  Simlist::where('project_id','=',$project->id)->pluck('sim_info')->last();
+        }elseif(Simlist::where('project_id','=',$project->id)->count() == 1){
+            $simlist_1 =  Simlist::where('project_id','=',$project->id)->pluck('sim_info')->first();
             $simlist_2 = null;
-        }elseif(Simlist::where('id','=',$project->id)->count() == 0){
+        }elseif(Simlist::where('project_id','=',$project->id)->count() == 0){
             $simlist_1 = null;
             $simlist_2 = null;
         }
