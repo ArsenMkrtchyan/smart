@@ -215,10 +215,10 @@ class ProjectController extends Controller
 
 
         if (Simlist::where('id','=',$project->id)->count() == 2){
-            $simlist_1 =  Simlist::where('id','=',$project->id)->first();
-            $simlist_2 =  Simlist::where('id','=',$project->id)->last();
+            $simlist_1 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->first();
+            $simlist_2 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->last();
         }elseif(Simlist::where('id','=',$project->id)->count() == 1){
-            $simlist_1 =  Simlist::where('id','=',$project->id)->first();
+            $simlist_1 =  Simlist::where('id','=',$project->id)->pluck('sim_info')->first();
             $simlist_2 = null;
         }elseif(Simlist::where('id','=',$project->id)->count() == 0){
             $simlist_1 = null;
@@ -272,8 +272,8 @@ if (empty($project->start_act)){
 
 
 
-            $xml = str_replace('Ldsim',  $simlist_1->sim_info, $xml);
-            $xml = str_replace(',idsim2',$simlist_2->sim_info , $xml);
+            $xml = str_replace('Ldsim',  $simlist_1, $xml);
+            $xml = str_replace(',idsim2',$simlist_2 , $xml);
 
 
             $xml = str_replace('i_region', $i_marz->name , $xml);
