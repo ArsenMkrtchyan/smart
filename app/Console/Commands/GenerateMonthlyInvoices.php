@@ -41,8 +41,14 @@ class GenerateMonthlyInvoices extends Command
         $monthStr = $previousMonth->format('F_Y');
 
         foreach ($projects as $project) {
-            $state = State::find($project->i_marz_id);
 
+
+
+            // Извлекаем дату из базы и преобразуем
+
+
+
+            $state = State::find($project->i_marz_id);
             $marzName = $state ? $state->name : '';
             $districtName = $state ? $state->district : '';
             $finalPrice = $this->calculateProjectPriceForMonth($project, $previousMonth);

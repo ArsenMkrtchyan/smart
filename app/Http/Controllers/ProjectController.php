@@ -11,6 +11,7 @@ use App\Models\Seorole;
 use App\Models\Simlist;
 use App\Models\State;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -189,7 +190,21 @@ class ProjectController extends Controller
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
-        $hardware = Hardware::where('id','=',$project->id)->first();
+        $hardware = Hardware::find('id','=',$project->id)->first();
+
+        $paymanagirnewyear= $project->paymanagir_start;
+        $newyeardate = Carbon::createFromFormat('m-d-Y', $paymanagirnewyear)
+            ->addYear()
+            ->format('d-m-Y');
+
+
+        $paymanagirStart = $project->paymanagir_start;
+        $dmydate = Carbon::createFromFormat('m-d-Y', $paymanagirStart)->format('d-m-Y');
+
+
+
+
+
 
         if (Simlist::where('id','=',$project->id)->count() == 2){
             $simlist_1 =  Simlist::where('id','=',$project->id)->first();
@@ -235,7 +250,9 @@ if (empty($project->start_act)){
     $xml = str_replace('00.10.2024', $project->start_act , $xml);
 }
 
-             $xml = str_replace('17.12.2024', $project->paymanagir_start , $xml);
+             $xml = str_replace('17.12.2024', $dmydate , $xml);
+
+
             if (empty($hardware))
             {
                 $xml = str_replace('GSM-9N','-', $xml);
@@ -247,8 +264,8 @@ if (empty($project->start_act)){
 
 
 
-            $xml = str_replace('Ldsim',  $simlist_1, $xml);
-            $xml = str_replace(',idsim2',$simlist_2 , $xml);
+            $xml = str_replace('Ldsim',  $simlist_1->sim_info, $xml);
+            $xml = str_replace(',idsim2',$simlist_2->sim_info , $xml);
 
 
             $xml = str_replace('i_region', $i_marz->name , $xml);
@@ -258,7 +275,7 @@ if (empty($project->start_act)){
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
             $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
-            $xml = str_replace('060808010', $project->ceo_phone , $xml);
+            $xml = str_replace('00000000', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
             $xml = str_replace('ceo_name', $project->ceo_name , $xml);
             $xml = str_replace('0000',$project->ident_id, $xml);
@@ -294,6 +311,12 @@ if (empty($project->start_act)){
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
+        $paymanagirStart = $project->paymanagir_start;
+        $dmydate = Carbon::createFromFormat('m-d-Y', $paymanagirStart)->format('d-m-Y');
+        $paymanagirnewyear= $project->paymanagir_start;
+        $newyeardate = Carbon::createFromFormat('m-d-Y', $paymanagirnewyear)
+            ->addYear()
+            ->format('d-m-Y');
 
 
         $project->signed = 1;
@@ -321,7 +344,8 @@ if (empty($project->start_act)){
             $xml = str_replace('price', $price->amount , $xml);
             $xml = str_replace('deta', $price->detail , $xml);
             $xml = str_replace('firm_name', $project->firm_name , $xml);
-            $xml = str_replace('17.12.2024', $project->paymanagir_start , $xml);
+            $xml = str_replace('17.12.2024', $dmydate , $xml);
+            $xml = str_replace('17․12․2025', $newyeardate , $xml);
             $xml = str_replace('i_region', $i_marz->name , $xml);
             $xml = str_replace('i_marz_id', $i_marz->district , $xml);
             $xml = str_replace('i_address', $project->i_address, $xml);
@@ -329,7 +353,7 @@ if (empty($project->start_act)){
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
             $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
-            $xml = str_replace('060808010', $project->ceo_phone , $xml);
+            $xml = str_replace('000000000', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
             $xml = str_replace('ceo_name', $project->ceo_name , $xml);
             $xml = str_replace('1001',$project->ident_id, $xml);
