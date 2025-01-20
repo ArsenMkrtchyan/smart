@@ -107,7 +107,7 @@ class GenerateMonthlyInvoices extends Command
 $xml .= '<AccountingDocument Version="1.0">
     <Type>3</Type>
     <GeneralInfo>
-      <DeliveryDate>2024-10-31+04:00</DeliveryDate>
+      <DeliveryDate>'.$deliveryDate.'</DeliveryDate>
       <Procedure>1</Procedure>
     </GeneralInfo>
     <SupplierInfo>
@@ -156,7 +156,7 @@ $xml .= '<AccountingDocument Version="1.0">
             $xml .= '<AccountingDocument Version="1.0">
     <Type>3</Type>
     <GeneralInfo>
-      <DeliveryDate>2024-10-31+04:00</DeliveryDate>
+      <DeliveryDate>'.$deliveryDate.'</DeliveryDate>
       <Procedure>1</Procedure>
     </GeneralInfo>
     <SupplierInfo>
