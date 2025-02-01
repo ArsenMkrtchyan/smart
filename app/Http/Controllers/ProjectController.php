@@ -537,20 +537,29 @@ $hardwares = Hardware::all();
             'numbers.*'       => 'nullable|string|max:255',
 
         ]);
-            if($request->hasFile('nkar')){
-                // Например, генерируем имя
-                // Либо: $filename = $request->file('photo')->hashName(); (Laravel сам сгенерирует)
-                // Или: $filename = time().'.'.$request->file('photo')->extension();
-                $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
+//            if($request->hasFile('nkar')){
+//                // Например, генерируем имя
+//                // Либо: $filename = $request->file('photo')->hashName(); (Laravel сам сгенерирует)
+//                // Или: $filename = time().'.'.$request->file('photo')->extension();
+//                $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
+//
+//                // Сохраняем в disk "public" (по умолчанию = storage/app/public)
+//                $request->file('nkar')->storeAs('projects', $filename, 'public');
+//
+//                // Запишем в $validated
+//                $validated['nkar'] = $filename;
+//            }
 
-                // Сохраняем в disk "public" (по умолчанию = storage/app/public)
-                $request->file('nkar')->storeAs('projects', $filename, 'public');
 
-                // Запишем в $validated
-                $validated['nkar'] = $filename;
+            if ($image = $request->file('nkar')) {
+                $destinationPath = 'image/';
+                $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $profileImage);
+                $validated['nkar'] = "$profileImage";
             }
 
-        // Сохраняем в таблицу projects (предполагая, что
+
+            // Сохраняем в таблицу projects (предполагая, что
         // соответствующие поля/колонки есть).
         // 2) Создаём новый Project (примерно)
         // Создаём новый проект
@@ -799,21 +808,32 @@ $hardwares = Hardware::all();
         ]);
 
 
-        if($request->hasFile('nkar')) {
-            // Сгенерируем имя файла
-            $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
-
-            // Сохраняем в папку storage/app/public/projects
-            $request->file('nkar')->storeAs('projects', $filename, 'public');
-
-            // Если хотите удалять старый файл:
-            // if($project->photo) {
-            //     Storage::disk('public')->delete('projects/'.$project->photo);
-            // }
-
-            // Запишем в $validated
-            $validated['nkar'] = $filename;
+        if ($image = $request->file('nkar')) {
+            $destinationPath = 'image/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $validated['nkar']= "$profileImage";
+        }else{
+            unset($validated['nkar']);
         }
+
+
+//
+//        if($request->hasFile('nkar')) {
+//            // Сгенерируем имя файла
+//            $filename = time() . '_' . uniqid() . '.' . $request->nkar->extension();
+//
+//            // Сохраняем в папку storage/app/public/projects
+//            $request->file('nkar')->storeAs('projects', $filename, 'public');
+//
+//            // Если хотите удалять старый файл:
+//            // if($project->photo) {
+//            //     Storage::disk('public')->delete('projects/'.$project->photo);
+//            // }
+//
+//            // Запишем в $validated
+//            $validated['nkar'] = $filename;
+//        }
 
 
 
