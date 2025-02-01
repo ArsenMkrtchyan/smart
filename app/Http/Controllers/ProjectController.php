@@ -804,6 +804,7 @@ $hardwares = Hardware::all();
             'numbers.*'       => 'nullable|string|max:255',
             'hardware_ids' => 'nullable|array',
             'hardware_ids.*' => 'integer|exists:hardwares,id',
+            'comment' => 'string'
 
         ]);
 
@@ -856,6 +857,25 @@ $hardwares = Hardware::all();
         if (!empty($validated['hardware_ids'])) {
             Hardware::whereIn('id', $validated['hardware_ids'])->update(['project_id' => $project->id ,'ident_id'=>$project->ident_id ]);
         }
+
+
+        if (!empty($validated['comment']) ) {
+
+            $name = $validated['comment'];
+            $userId = auth()->id();
+            $validated['user_id'] =  $userId    ;
+
+            if (!empty($name) ) {
+                $project->comments()->create([
+                    'comment'   => $name,
+                    'project_id' => $project->id,
+                    'user_id' => $userId,
+                ]);
+            }
+        }
+
+
+
 
         // Обработка Pатասxanatu
         $project->patasxanatus()->delete();

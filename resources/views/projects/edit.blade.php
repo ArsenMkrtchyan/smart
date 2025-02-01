@@ -714,7 +714,63 @@
                                 </div>
                             </div> <!-- /card-body -->
                         </div> <!-- /card shadow -->
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 fw-bold">Comments</p>
+                            </div>
+                            <div class="card-body">
+                                {{-- История комментариев --}}
+                                <div class="mb-4">
+                                    <div class="comment-history-box" style="
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                padding: 0.375rem 0.75rem;
+                min-height: 38px;
+                background-color: #e9ecef;
+                overflow-y: auto;
+                max-height: 200px;
+            ">
+                                        @forelse($project->comments as $comment)
+                                            <div class="comment-item" style="
+                        padding: 3px 0;
+                        border-bottom: 1px solid #dee2e6;
+                    ">
+                                                <span style="font-weight: 500;">{{ $comment->user->name  }}:</span>
+                                                <span style="color: #495057;">{{ $comment->comment }}</span>
+                                                <small class="text-muted" style="display: block; font-size: 0.8em;">
+                                                    {{ $comment->created_at->format('d.m.Y H:i') }}
+                                                </small>
+                                            </div>
+                                        @empty
+                                            <span class="text-muted">No comments yet</span>
+                                        @endforelse
+                                    </div>
+                                    <label style="
+                font-size: 0.875em;
+                color: #6c757d;
+                margin-top: 0.25rem;
+                margin-left: 0.5rem;
+            ">Comment History</label>
+                                </div>
 
+                                {{-- Поле для нового комментария --}}
+                                <div class="row">
+                                    <div class="col-xxl-6">
+                                        <div class="mb-3 floating-label">
+                                            <input
+                                                class="form-control"
+                                                type="text"
+                                                id="new-comment"
+                                                name="comment"
+                                                placeholder=" "
+                                                style="border-color: #80bdff; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);"
+                                            >
+                                            <label for="new-comment">Add New Comment</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card shadow">
                             <div class="mb-3"></div>
                             <div class="card-body">

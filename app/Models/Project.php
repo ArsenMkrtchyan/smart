@@ -103,4 +103,8 @@ class   Project extends Model
     {
         return $this->hasMany(Patasxanatu::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
