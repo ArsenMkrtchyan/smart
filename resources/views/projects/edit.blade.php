@@ -561,7 +561,7 @@
                                 @if($project->nkar)
                                     <img id="photoPreview"
                                          class="rounded-circle mb-3 mt-4"
-                                         src="{{ asset('storage/projects/'.$project->nkar) }}"
+                                         src="{{ asset('storage/app/public/projects'.$project->nkar) }}"
                                          width="160" height="160"
                                          alt="Project Photo">
                                 @else
