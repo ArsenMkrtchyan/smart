@@ -21,7 +21,7 @@
             <td>
                 <img class="rounded-circle me-2"
                      width="30" height="30"
-                     src="{{ asset('assets/img/avatars/avatar1.jpeg') }}"
+                     src="/image/{{$project->nkar}}"
                 >
                 &nbsp;{{ $project->id }}
             </td>
