@@ -37,7 +37,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
 
-        $query = Project::with('wMarz','object_type')->orderBy('ident_id','DESC');
+        $query = Project::with('wMarz','object_type')->orderBy('id','DESC');
 
 
         if ($request->filled('search')) {
@@ -804,7 +804,7 @@ $hardwares = Hardware::all();
             'numbers.*'       => 'nullable|string|max:255',
             'hardware_ids' => 'nullable|array',
             'hardware_ids.*' => 'integer|exists:hardwares,id',
-            'comment' => 'string'
+            'comment' => 'string|nullable'
 
         ]);
 

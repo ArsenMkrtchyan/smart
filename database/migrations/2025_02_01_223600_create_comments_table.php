@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
-           $table->text('comment');
+           $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

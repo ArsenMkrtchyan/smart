@@ -495,15 +495,25 @@
                                             @if($project->firm_type == 1 && $project->hvhh != null)
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
                                                 <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
+                                                <input type="hidden" name="paymanagir_received" value="0">
+                                                <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="formCheck-2">ստացել ենք</label>
 
 
                                             @elseif($project->firm_type == 0 && ($project->soc != null || $project->andznagir != null))
 
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
                                                 <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
+                                                <input type="hidden" name="paymanagir_received" value="0">
+                                                <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="formCheck-2">ստացել ենք</label>
+
 
                                             @else
                                                 <p>fill all inputs</p>
+                                                <input type="hidden" name="paymanagir_received" value="0">
+                                                <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="formCheck-2">ստացել ենք</label>
 
                                             @endif
                                              <div></div>
@@ -730,12 +740,12 @@
                 overflow-y: auto;
                 max-height: 200px;
             ">
-                                        @forelse($project->comments as $comment)
+                                        @forelse($project->comments->sortByDesc('created_at')->take(3) as $comment)
                                             <div class="comment-item" style="
                         padding: 3px 0;
                         border-bottom: 1px solid #dee2e6;
                     ">
-                                                <span style="font-weight: 500;">{{ $comment->user->name  }}:</span>
+                                                <span style="font-weight: 500;">{{ $comment->user->name }}:</span>
                                                 <span style="color: #495057;">{{ $comment->comment }}</span>
                                                 <small class="text-muted" style="display: block; font-size: 0.8em;">
                                                     {{ $comment->created_at->format('d.m.Y H:i') }}
@@ -750,7 +760,7 @@
                 color: #6c757d;
                 margin-top: 0.25rem;
                 margin-left: 0.5rem;
-            ">Comment History</label>
+            ">Last 3 Comments</label>
                                 </div>
 
                                 {{-- Поле для нового комментария --}}
@@ -771,22 +781,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card shadow">
-                            <div class="mb-3"></div>
-                            <div class="card-body">
-                                <div class="col">
-                                    <div class="mb-3 floating-label"></div>
-                                    <div class="mb-3 floating-label"></div>
-                                    <div class="form-check">
-                                        <input type="hidden" name="paymanagir_received" value="0">
-                                        <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
-
-                                        <label class="form-check-label" for="formCheck-2">Պայմանագիրը ստացել ենք</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div> <!-- /card shadow -->
+                        <-- /card shadow -->
                     </div> <!-- /col-lg-8 -->
                 </div> <!-- /row -->
             </div> <!-- /#technicalSection -->
