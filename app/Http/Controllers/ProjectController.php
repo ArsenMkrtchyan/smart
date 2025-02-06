@@ -550,13 +550,42 @@ $hardwares = Hardware::all();
 //                $validated['nkar'] = $filename;
 //            }
 
+//
+//            if ($image = $request->file('nkar')) {
+//                $destinationPath = 'image/';
+//                $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+//                $image->move($destinationPath, $profileImage);
+//                $validated['nkar'] = "$profileImage";
+//            }
+
 
             if ($image = $request->file('nkar')) {
                 $destinationPath = 'image/';
-                $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $profileImage = date('YmdHis') . "_" . uniqid() . "." . $image->getClientOriginalExtension();
                 $image->move($destinationPath, $profileImage);
-                $validated['nkar'] = "$profileImage";
+                $validated['nkar'] = $profileImage;
+
+                // Полный путь к сохранённому файлу
+                $filePath = $destinationPath . $profileImage;
+
+                // Проверяем, что расширение exif загружено и файл JPEG
+                if (extension_loaded('exif') && in_array(strtolower($image->getClientOriginalExtension()), ['jpg', 'jpeg'])) {
+                    // @ для подавления предупреждений, если EXIF прочитать не удаётся
+                    $exif = @exif_read_data($filePath);
+                    if ($exif && isset($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef'])) {
+                        $latitude  = $this->getGpsDecimal($exif['GPSLatitude'], $exif['GPSLatitudeRef']);
+                        $longitude = $this->getGpsDecimal($exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+
+                        // Предполагаем, что:
+                        // x_gps - долгота, y_gps - широта
+                        $validated['x_gps'] = $longitude;
+                        $validated['y_gps'] = $latitude;
+                    }
+                }
             }
+
+
+
 
 
             // Сохраняем в таблицу projects (предполагая, что
@@ -613,6 +642,40 @@ $hardwares = Hardware::all();
             return redirect()->back()
                 ->with('error', 'Произошла ошибка при создании проекта. Пожалуйста, попробуйте снова.');
         }
+    }
+    /**
+     * Преобразует GPS координаты из EXIF в десятичное значение.
+     *
+     * @param array  $exifCoord  Массив координат (градусы, минуты, секунды)
+     * @param string $hemisphere Направление (N, S, E, W)
+     * @return float
+     */
+    private function getGpsDecimal($exifCoord, $hemisphere)
+    {
+        $degrees = isset($exifCoord[0]) ? $this->convertToDecimal($exifCoord[0]) : 0;
+        $minutes = isset($exifCoord[1]) ? $this->convertToDecimal($exifCoord[1]) : 0;
+        $seconds = isset($exifCoord[2]) ? $this->convertToDecimal($exifCoord[2]) : 0;
+
+        $decimal = $degrees + ($minutes / 60) + ($seconds / 3600);
+        if ($hemisphere == 'S' || $hemisphere == 'W') {
+            $decimal *= -1;
+        }
+        return $decimal;
+    }
+
+    /**
+     * Преобразует строку формата "числитель/знаменатель" в десятичное число.
+     *
+     * @param string $coordPart Значение координаты (например, "52/1")
+     * @return float
+     */
+    private function convertToDecimal($coordPart)
+    {
+        $parts = explode('/', $coordPart);
+        if (count($parts) === 1) {
+            return (float)$parts[0];
+        }
+        return (float)$parts[0] / (float)$parts[1];
     }
     public function searchSimlists(Request $request)
     {
