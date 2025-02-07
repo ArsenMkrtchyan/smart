@@ -55,7 +55,7 @@
                 </select>
             </div>
 
-            @if(auth()->user()->role_id === 4 && auth()->user()->is_admin)
+            @if(auth()->user()->role_id === 1 && auth()->user()->is_admin)
                 <div class="form-check mb-3">
                     <input type="checkbox" name="is_admin" class="form-check-input" value="1" id="is_admin" {{ $user->is_admin ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_admin">Администратор</label>

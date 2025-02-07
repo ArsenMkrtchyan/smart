@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- Показывать поля только если текущий пользователь соответствует условиям -->
-                @if(auth()->user()->role_id === 4 && auth()->user()->is_admin)
+                @if(auth()->user()->role_id === 1 && auth()->user()->is_admin)
                     <div class="form-check mb-3">
                         <input type="checkbox" name="is_admin" class="form-check-input" value="1" id="is_admin">
                         <label class="form-check-label" for="is_admin">Администратор</label>
@@ -65,7 +65,7 @@
 
                     <div class="form-check mb-3">
                         <input type="checkbox" name="havayrole" class="form-check-input" value="1" id="havayrole">
-                        <label class="form-check-label" for="havayrole">Активировать роль</label>
+                        <label class="form-check-label" for="havayrole">havay role</label>
                     </div>
                 @endif
 
