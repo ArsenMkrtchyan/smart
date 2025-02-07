@@ -550,8 +550,8 @@
                                     </div>
                                 </div>
                                 <img id="previewImg"
-                                     class="rounded-circle mb-3 mt-4"
-                                     src="{{ asset('assets/img/dogs/image2.jpeg') }}"
+                                      class="rounded-circle mb-3 mt-4"
+                                      src="{{ asset('assets/img/dogs/image2.jpeg') }}"
                                      width="160" height="160">
 
                                 <div class="mb-3">

@@ -649,7 +649,7 @@ $hardwares = Hardware::all();
      * @param array  $exifCoord  Массив координат (градусы, минуты, секунды)
      * @param string $hemisphere Направление (N, S, E, W)
      * @return float
-     */
+     */ 
     private function getGpsDecimal($exifCoord, $hemisphere)
     {
         $degrees = isset($exifCoord[0]) ? $this->convertToDecimal($exifCoord[0]) : 0;
