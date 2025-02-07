@@ -78,7 +78,7 @@ class UserController extends Controller
     {
         // Проверка прав доступа
         $currentUser = auth()->user();
-        if ($currentUser->role_id !== 4 || !$currentUser->is_admin) {
+        if ($currentUser->role_id !== 1 || !$currentUser->is_admin) {
             abort(403, 'Access denied');
         }
 
