@@ -61,15 +61,15 @@
                     <label class="form-check-label" for="is_admin">Администратор</label>
                 </div>
 
-                <div class="form-check mb-3">
-                    <input type="checkbox" name="havayrole" class="form-check-input" value="1" id="havayrole" {{ $user->havayrole ? 'checked' : '' }}>
-                    <label class="form-check-label" for="havayrole">Активировать роль</label>
-                </div>
+{{--                <div class="form-check mb-3">--}}
+{{--                    <input type="checkbox" name="havayrole" class="form-check-input" value="1" id="havayrole" {{ $user->havayrole ? 'checked' : '' }}>--}}
+{{--                    <label class="form-check-label" for="havayrole">Активировать роль</label>--}}
+{{--                </div>--}}
             @endif
 
             <div class="mb-3">
                 <label for="password" class="form-label">Пароль (оставьте пустым, чтобы не изменять)</label>
-                <input type="password" name="password" class="form-control" required>
+                <input type="password" name="password" class="form-control" >
             </div>
 
             <button type="submit" class="btn btn-primary">Обновить</button>

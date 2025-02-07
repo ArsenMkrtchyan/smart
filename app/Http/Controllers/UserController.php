@@ -93,26 +93,64 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'female' => 'required|string|max:255',
-            'firm_name' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:255',
-            'balance' => 'nullable|numeric',
-            'number' => 'nullable|string|max:15',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role_id' => 'required|exists:roles,id',
-            'is_admin' => 'nullable|boolean',
-            'havayrole' => 'nullable|boolean',
-            'password' => 'nullable|string|min:8', // пароль теперь может быть null
-        ]);
 
-        // Заполнение данных пользователя
-        $user->fill($validated);
+
+//        $validated = $request->validate([
+//            'name' => 'required|string|max:255',
+//            'female' => 'required|string|max:255',
+//            'firm_name' => 'nullable|string|max:255',
+//            'address' => 'nullable|string|max:255',
+//            'balance' => 'nullable|numeric',
+//            'number' => 'nullable|string|max:15',
+//            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+//            'role_id' => 'required|exists:roles,id',
+//            'is_admin' => 'nullable|boolean',
+//            'havayrole' => 'nullable|boolean',
+//            'password' => 'nullable|string|min:8', // пароль теперь может быть null
+//        ]);
+//
+//        // Заполнение данных пользователя
+//        $user->fill($validated);
 
         // Если поле password заполнено, обновить его
         if ($request->filled('password')) {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'female' => 'required|string|max:255',
+                'firm_name' => 'nullable|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'balance' => 'nullable|numeric',
+                'number' => 'nullable|string|max:15',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'role_id' => 'required|exists:roles,id',
+                'is_admin' => 'nullable|boolean',
+                'havayrole' => 'nullable|boolean',
+                'password' => 'nullable|string|min:8', // пароль теперь может быть null
+            ]);
+
+            // Заполнение данных пользователя
+            $user->fill($validated);
+
+
             $user->password = Hash::make($request->password);
+        }else {
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'female' => 'required|string|max:255',
+                'firm_name' => 'nullable|string|max:255',
+                'address' => 'nullable|string|max:255',
+                'balance' => 'nullable|numeric',
+                'number' => 'nullable|string|max:15',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'role_id' => 'required|exists:roles,id',
+                'is_admin' => 'nullable|boolean',
+                'havayrole' => 'nullable|boolean',
+
+            ]);
+
+            // Заполнение данных пользователя
+            $user->fill($validated);
         }
 
         // Обработка полей is_admin и havayrole
