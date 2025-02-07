@@ -562,7 +562,7 @@
                                         <select class="form-select" id="worker-select" name="worker_id">
                                             <optgroup label="Workers">
                                                 @foreach($workers as $worker)
-                                                    <option value="{{ $worker->id }}" {{ $project->worker_id == $worker->id ? 'selected' : '' }}>{{$worker->name}} @if($worker->brand_name == null)  @else {{$worker->brand_name}} @endif</option>
+                                                    <option value="{{ $worker->id }}" {{ $project->worker_id == $worker->id ? 'selected' : '' }}>{{$worker->name}} - {{$worker->female}} @if($worker->brand_name == null)  @else {{$worker->brand_name}} @endif </option>
                                                 @endforeach
                                             </optgroup>
                                         </select>
@@ -781,7 +781,7 @@
                                 </div>
                             </div>
                         </div>
-                        <-- /card shadow -->
+
                     </div> <!-- /col-lg-8 -->
                 </div> <!-- /row -->
             </div> <!-- /#technicalSection -->

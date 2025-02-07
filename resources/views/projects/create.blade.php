@@ -342,10 +342,28 @@
                                         </div>
                                         <div class="col">
                                             <div class="mb-3 floating-label">
-                                                <select class="form-select form-select" id="bank-select-1-j" name="firm_bank" >
+                                                <select name="firm_bank" class="form-select form-select" id="bank-select-1" >
+                                                    <option value="{{null}}"  selected>yntrel</option>
                                                     <optgroup label="Ընտրել">
-                                                        <option value="Կոնվերս">Կոնվերս բանկ ԲԲԸ</option>
-                                                        <option value="Ամերիաբանկ">Ամերիաբանկ ԲԲԸ</option>
+
+                                                        <option value="Ամերիաբանկ ՓԲԸ" >Ամերիաբանկ ՓԲԸ</option>
+                                                        <option value="Ինեկոբանկ ՓԲԸ" >Ինեկոբանկ ՓԲԸ</option>
+                                                        <option value="Այդի բանկ ՓԲԸ" >Այդի բանկ ՓԲԸ</option>
+                                                        <option value="Ակբա բանկ ՓԲԸ" >Ակբա բանկ ՓԲԸ</option>
+                                                        <option value="Կոնվերս բանկ ՓԲԸ" >Կոնվերս բանկ ՓԲԸ</option>
+                                                        <option value="Յունիբանկ ԲԲԸ" >Յունիբանկ ԲԲԸ</option>
+                                                        <option value="Արարատբանկ ԲԲԸ" >Արարատբանկ ԲԲԸ</option>
+                                                        <option value="Արդշինբանկ ՓԲԸ" >Արդշինբանկ ՓԲԸ</option>
+                                                        <option value="Ամիօ բանկ ՓԲԸ" >Ամիօ բանկ ՓԲԸ</option>
+                                                        <option value="Ֆասթ բանկ ՓԲԸ" >Ֆասթ բանկ ՓԲԸ</option>
+                                                        <option value="Հայէկոնոմբանկ ԲԲԸ" >Հայէկոնոմբանկ ԲԲԸ</option>
+                                                        <option value="Էվոկաբանկ ՓԲԸ" >Էվոկաբանկ ՓԲԸ</option>
+                                                        <option value="ՎՏԲ-Հայաստան բանկ ՓԲԸ" >ՎՏԲ-Հայաստան բանկ ՓԲԸ</option>
+                                                        <option value="Բիբլոս բանկ արմենիա ՓԲԸ" >Բիբլոս բանկ արմենիա ՓԲԸ</option>
+                                                        <option value="Արցախբանկ ՓԲԸ" >Արցախբանկ ՓԲԸ</option>
+                                                        <option value="Արմսվիսբանկ ՓԲԸ" >Արմսվիսբանկ ՓԲԸ</option>
+                                                        <option value="ՀՀ ֆին․ նախ" >ՀՀ ֆին․ նախ</option>
+
                                                     </optgroup>
                                                 </select>
                                                 <label for="bank-select">բանկ</label>

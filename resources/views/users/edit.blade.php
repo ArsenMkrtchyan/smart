@@ -9,33 +9,33 @@
 
             <div class="row mb-3">
                 <div class="col">
-                    <label for="name" class="form-label">Имя</label>
+                    <label for="name" class="form-label">Name</label>
                     <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
                 </div>
                 <div class="col">
-                    <label for="female" class="form-label">Пол</label>
+                    <label for="female" class="form-label">Female</label>
                     <input type="text" name="female" class="form-control" value="{{ $user->female }}" required>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col">
-                    <label for="firm_name" class="form-label">Название компании</label>
+                    <label for="firm_name" class="form-label">Firm Name</label>
                     <input type="text" name="firm_name" class="form-control" value="{{ $user->firm_name }}">
                 </div>
                 <div class="col">
-                    <label for="address" class="form-label">Адрес</label>
+                    <label for="address" class="form-label">Address</label>
                     <input type="text" name="address" class="form-control" value="{{ $user->address }}">
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="balance" class="form-label">Баланс</label>
+                <label for="balance" class="form-label">Balance</label>
                 <input type="number" name="balance" class="form-control" value="{{ $user->balance }}">
             </div>
 
             <div class="mb-3">
-                <label for="number" class="form-label">Номер телефона</label>
+                <label for="number" class="form-label">Number</label>
                 <input type="text" name="number" class="form-control" value="{{ $user->number }}">
             </div>
 
@@ -45,7 +45,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="role_id" class="form-label">Роль</label>
+                <label for="role_id" class="form-label">Role</label>
                 <select name="role_id" class="form-select" required>
                     @foreach($roles as $role)
                         <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
