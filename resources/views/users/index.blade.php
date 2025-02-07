@@ -28,7 +28,7 @@
                                     <tbody>
                                     @foreach($users as $user)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->name }} inchka laves {{ $user->female }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td style="width: 144.031px;">{{ $user->number }}</td>
                                             <td style="width: 287.234px;">
