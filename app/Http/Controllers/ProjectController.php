@@ -292,7 +292,7 @@ if (empty($project->start_act)){
             $xml = str_replace('00000000', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
             $xml = str_replace('ceo_name', $project->ceo_name , $xml);
-            $xml = str_replace('0000',$project->ident_id, $xml);
+            $xml = str_replace('1001',$project->ident_id, $xml);
             $zip->addFromString('word/document.xml', $xml);
             $zip->close();
         }
@@ -367,7 +367,7 @@ if (empty($project->start_act)){
             $xml = str_replace('firm_bank', $project->firm_bank , $xml);
             $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
             $xml = str_replace('firm_email', $project->firm_email , $xml);
-            $xml = str_replace('000000000', $project->ceo_phone , $xml);
+            $xml = str_replace('00000000', $project->ceo_phone , $xml);
             $xml = str_replace('role_id', $ceo->name , $xml);
             $xml = str_replace('ceo_name', $project->ceo_name , $xml);
             $xml = str_replace('1001',$project->ident_id, $xml);
@@ -649,7 +649,7 @@ $hardwares = Hardware::all();
      * @param array  $exifCoord  Массив координат (градусы, минуты, секунды)
      * @param string $hemisphere Направление (N, S, E, W)
      * @return float
-     */ 
+     */
     private function getGpsDecimal($exifCoord, $hemisphere)
     {
         $degrees = isset($exifCoord[0]) ? $this->convertToDecimal($exifCoord[0]) : 0;
