@@ -35,9 +35,19 @@
                              src="/image/{{ $project->nkar }}">
                     </a>
                 @else
-                    <img class="rounded-circle me-2"
-                         width="30" height="30"
-                         src="/image/{{ $project->nkar }}">
+
+                    @if($project->nkar)
+                        <img class="rounded-circle me-2"
+                             width="30" height="30"
+                             src="/image/{{ $project->nkar }}">
+                    @else
+                        <img class="rounded-circle me-2"
+                             width="30" height="30"
+                             src="/image/nophoto.png">
+
+                        @endif
+
+
                 @endif
                 &nbsp;{{ $project->id }}
             </td>
