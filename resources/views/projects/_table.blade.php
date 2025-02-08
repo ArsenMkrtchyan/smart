@@ -15,16 +15,16 @@
         <th>act</th>
     </tr>
     </thead>
+    <style>
+
+       td {
+            background-color: #971313;
+        }
+    </style>
     <tbody>
     @foreach ($projects as $project)
         <tr>
-{{--            <td>--}}
-{{--                <img class="rounded-circle me-2"--}}
-{{--                     width="30" height="30"--}}
-{{--                     src="/image/{{$project->nkar}}"--}}
-{{--                >--}}
-{{--                &nbsp;{{ $project->id }}--}}
-{{--            </td>--}}
+
 
 
             <td>
@@ -53,7 +53,7 @@
             </td>
 
 
-            <td>{{$project->ident_id}}</td>
+            <td >{{$project->ident_id}}</td>
             @if($project->hvhh == null)
                 <td>ֆիզ</td>
             @else

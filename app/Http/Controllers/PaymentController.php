@@ -86,7 +86,7 @@ use App\Models\Payment;
 use App\Models\Project;
 use Carbon\Carbon;
 
-class PaymentController extends Controller
+class   PaymentController extends Controller
 {
     // Страница со всеми проектами и общей статистикой
 //    public function index()
@@ -329,7 +329,7 @@ class PaymentController extends Controller
             $description = $request->description;
 
         }
-    
+
         if ($financeId) {
             // Логика из старого кода для оплаты по конкретному finance
             $finance = Finance::findOrFail($financeId);
@@ -394,7 +394,7 @@ class PaymentController extends Controller
 
         $projects = [];
         if ($query) {
-            $projects = Project::where('brand_name', 'LIKE', "%{$query}%")->get();
+            $projects = Project::where('firm_name', 'LIKE', "%{$query}%")->orWhere('ident_id', 'like', "%{$query}%")->get();
         }
 
         return view('payments.search', compact('projects', 'query'));
