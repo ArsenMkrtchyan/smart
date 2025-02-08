@@ -317,16 +317,26 @@ class   PaymentController extends Controller
             'project_id' => 'required|exists:projects,id',
             'amount' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'date' => 'nullable|string',
         ]);
 
         $financeId = $request->finance_id;
         $projectId = $request->project_id;
         $paymentAmount = $request->amount;
-        if ( $request->description == null ) {
+        if ( $request->description == null) {
             $description = 'no description';
+
 
         }else{
             $description = $request->description;
+
+        }
+        if (  $request->date == null) {
+            $date = null;
+
+
+        }else{
+            $date = $request->date;
 
         }
 
@@ -343,6 +353,7 @@ class   PaymentController extends Controller
                     'project_id' => $projectId,
                     'amount' => $paymentAmount,
                     'description' => $description,
+
                 ]);
             } else {
                 // Платёж больше, чем осталось оплатить по finance
@@ -376,6 +387,7 @@ class   PaymentController extends Controller
                 'project_id' => $projectId,
                 'amount' => $paymentAmount,
                 'description' => $description,
+                'date' => $date,
             ]);
 
             return redirect()->route('payments.index', ['project' => $projectId])

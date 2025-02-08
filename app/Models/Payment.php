@@ -13,6 +13,7 @@ class Payment extends Model
         'project_id',
         'amount',
         'description',
+        'date'
     ];
 
     public function finance()

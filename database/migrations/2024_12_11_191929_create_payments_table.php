@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('finance_id')->nullable()->constrained('finances');
             $table->text('description')->nullable();
             $table->double('amount');
-
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }
