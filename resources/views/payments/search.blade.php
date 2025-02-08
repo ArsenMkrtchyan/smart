@@ -29,7 +29,7 @@
                 <tbody>
                 @forelse($projects as $project)
                     <tr>
-                        <td>{{$project->firm_name }} - {{$project->firm_name  ?? 'Project #'.$project->id }}</td>
+                        <td>{{$project->ident_id }} - {{$project->firm_name  ?? 'Project #'.$project->id }}</td>
 
                             {{-- Кнопка "Pay" --}}
 {{--                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#payModal"--}}
