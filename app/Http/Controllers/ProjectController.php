@@ -42,7 +42,7 @@ class ProjectController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('firm_name', 'like', "%{$search}%")->orWhere('ident_id', 'like', "%{$search}%");
+            $query->where('firm_name', 'ilike', "%{$search}%")->orWhere('ident_id', 'ilike', "%{$search}%");
         }
         if ($request->filled('object_check')) {
             $check = $request->input('object_check');
