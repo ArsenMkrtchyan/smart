@@ -88,23 +88,86 @@ use Carbon\Carbon;
 
 class   PaymentController extends Controller
 {
-    // Страница со всеми проектами и общей статистикой
+    public function index()
+    {
+        // Получаем проекты с их финансами и платежами
+        $projects = Project::with(['finances', 'payments'])->get();
+
+        $totalNeeded = Finance::sum('amount');
+        $totalPaid   = Payment::sum('amount');
+
+        // Определяем текущую дату и формат "F_Y"
+        $currentDate     = Carbon::now();
+        $currentMonthYear = $currentDate->format('F_Y'); // например, "January_2025"
+
+        // Определяем cutoff – платеж за последний разрешённый месяц.
+        // Если сейчас "January_2025", то разрешён к оплате finance за "December_2024".
+        // То есть все finance с датой меньше "December_2024" считаются просроченными.
+        $cutoffDate = Carbon::createFromFormat('F_Y', $currentMonthYear)->subMonth();
+
+        // Для каждого проекта считаем:
+        // - сумму нужных платежей (needed)
+        // - сумму всех платежей (paid)
+        // - задолженность (debt): сумма оставшихся по всем просроченным (finance, где дата меньше cutoff)
+        $projectData = $projects->map(function ($project) use ($cutoffDate) {
+            $needed = $project->finances->sum('amount');
+            $paid   = $project->payments->sum('amount');
+
+            // Отбираем только те finance, дата которых меньше cutoff.
+            // Например, если cutoff = December_2024, то finance за November_2024, October_2024 и т.д. — просрочены.
+            $overdueFinances = $project->finances->filter(function ($finance) use ($cutoffDate) {
+                $financeDate = Carbon::createFromFormat('F_Y', $finance->month);
+                return $financeDate->lessThan($cutoffDate);
+            })->sortBy(function ($finance) {
+                // Сортируем по возрастанию даты (от самых старых)
+                return Carbon::createFromFormat('F_Y', $finance->month)->timestamp;
+            });
+
+            // Сумма депозитных платежей (без привязки к конкретному finance)
+            $deposit = $project->payments->where('finance_id', null)->sum('amount');
+
+            $overdueDebt = 0;
+
+            // Для каждого просроченного finance распределяем депозитные платежи последовательно
+            foreach ($overdueFinances as $finance) {
+                // Сумма платежей, привязанных к этому finance
+                $directPaid = $project->payments->where('finance_id', $finance->id)->sum('amount');
+
+                // Остаток по finance (если отрицательный — делаем 0)
+                $remaining = max($finance->amount - $directPaid, 0);
+
+                // Если есть депозитные платежи, они покрывают оставшуюся сумму
+                $allocation = min($deposit, $remaining);
+                $remaining -= $allocation;
+                $deposit   -= $allocation;
+
+                // Добавляем остаток (если он больше нуля) к задолженности проекта
+                $overdueDebt += $remaining;
+            }
+
+            return [
+                'project' => $project,
+                'needed'  => $needed,
+                'paid'    => $paid,
+                'debt'    => $overdueDebt,
+            ];
+        });
+
+        // Общая задолженность — сумма просроченных долгов по всем проектам
+        $totalDebt = $projectData->sum('debt');
+
+        return view('payments.index', compact('projectData', 'totalNeeded', 'totalPaid', 'totalDebt', 'currentMonthYear'));
+    }
 //    public function index()
 //    {
-//        // Получаем все проекты
-//        $projects = Project::all();
+//        $projects = Project::with(['finances', 'payments'])->get();
 //
-//        // Считаем общий долг (сумма всех finance.amount по всем проектам)
 //        $totalNeeded = Finance::sum('amount');
-//
-//        // Считаем общую оплату (сумма всех payments.amount)
 //        $totalPaid = Payment::sum('amount');
 //
-//        // Для каждого проекта считаем сумму finance и сумму payments
 //        $projectData = $projects->map(function ($project) {
-//            $projectId = $project->id;
-//            $needed = Finance::where('project_id', $projectId)->sum('amount');
-//            $paid = Payment::where('project_id', $projectId)->sum('amount');
+//            $needed = $project->finances->sum('amount');
+//            $paid = $project->payments->sum('amount');
 //
 //            return [
 //                'project' => $project,
@@ -115,27 +178,6 @@ class   PaymentController extends Controller
 //
 //        return view('payments.index', compact('projectData', 'totalNeeded', 'totalPaid'));
 //    }
-
-    public function index()
-    {
-        $projects = Project::with(['finances', 'payments'])->get();
-
-        $totalNeeded = Finance::sum('amount');
-        $totalPaid = Payment::sum('amount');
-
-        $projectData = $projects->map(function ($project) {
-            $needed = $project->finances->sum('amount');
-            $paid = $project->payments->sum('amount');
-
-            return [
-                'project' => $project,
-                'needed' => $needed,
-                'paid' => $paid,
-            ];
-        });
-
-        return view('payments.index', compact('projectData', 'totalNeeded', 'totalPaid'));
-    }
 
 //    protected function parseMonthYear($monthYear)
 //    {
@@ -353,7 +395,7 @@ class   PaymentController extends Controller
                     'project_id' => $projectId,
                     'amount' => $paymentAmount,
                     'description' => $description,
-
+                    'date' => $date,
                 ]);
             } else {
                 // Платёж больше, чем осталось оплатить по finance
@@ -363,6 +405,7 @@ class   PaymentController extends Controller
                         'project_id' => $projectId,
                         'amount' => $remaining,
                         'description' => $description,
+                        'date' => $date,
                     ]);
                 }
 
@@ -373,6 +416,7 @@ class   PaymentController extends Controller
                         'project_id' => $projectId,
                         'amount' => $overPayment,
                         'description' => $description . ' (Overpayment)',
+                        'date' => $date,
                     ]);
                 }
             }
@@ -406,7 +450,7 @@ class   PaymentController extends Controller
 
         $projects = [];
         if ($query) {
-            $projects = Project::where('firm_name', 'LIKE', "%{$query}%")->orWhere('ident_id', 'like', "%{$query}%")->get();
+            $projects = Project::where('firm_name', 'ILIKE', "%{$query}%")->orWhere('ident_id', 'ILIKE', "%{$query}%")->get();
         }
 
         return view('payments.search', compact('projects', 'query'));

@@ -31,8 +31,13 @@
             <tbody>
             @forelse($payments as $payment)
                 <tr>
-                    <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>
-                    <td>{{ $payment->amount }}</td>
+                    @if( $payment->date)
+                    <td>{{ $payment->date}}</td>
+                    @else
+                        <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>
+
+                    @endif
+                     <td>{{ $payment->amount }}</td>
                     <td>{{ $payment->description }}</td>
                     <td>
                         @if($payment->finance_id)
