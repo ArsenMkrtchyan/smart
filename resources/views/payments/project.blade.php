@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="container">
-        <h1>Payments for {{ $project->firm_name ?? 'Project #'.$project->id }}</h1>
+        <h1>Payments for
+            <a href="{{ route('projects.edit', $project->id) }}">
+                {{ $project->firm_name ?? 'Project #' . $project->id }}
+            </a>
+        </h1>
 
         <div class="alert alert-info">
             <strong>Total Needed:</strong> {{ $needed }} |
@@ -10,117 +14,93 @@
             <strong>Remaining:</strong> {{ $needed - $paid }}
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        <p>
-            <a href="{{ route('payments.createForProject', ['project' => $project->id]) }}" class="btn btn-primary">Pay (Deposit)</a>
-            <a href="{{ route('payments.index') }}" class="btn btn-secondary">Back to Projects</a>
-        </p>
-
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Description</th>
-                <th>Type</th> <!-- либо месяц finance, либо "депозит" -->
+                <th>Finance</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            @forelse($payments as $payment)
+            @foreach($payments as $payment)
                 <tr>
-                    @if( $payment->date)
-                    <td>{{ $payment->date}}</td>
-                    @else
-                        <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>
-
-                    @endif
-                     <td>{{ $payment->amount }}</td>
+                    <td>{{ $payment->date ?? $payment->created_at->format('Y-m-d') }}</td>
+                    <td>{{ $payment->amount }}</td>
                     <td>{{ $payment->description }}</td>
                     <td>
                         @if($payment->finance_id)
                             {{ $payment->finance->month }}
                         @else
-                            Դեպոզիտ (Deposit)
+                            Deposit
                         @endif
                     </td>
+                    <td>
+                        <!-- Кнопка для раскрытия подробностей с использованием Bootstrap Collapse -->
+                        <button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#collapse{{ $payment->id }}" aria-expanded="false" aria-controls="collapse{{ $payment->id }}">
+                            Раскрыть
+                        </button>
+                    </td>
                 </tr>
-            @empty
-                <tr><td colspan="4" class="text-center text-muted">No payments</td></tr>
-            @endforelse
+                <!-- Строка с collapse-блоком, который раскрывается при клике -->
+                <tr>
+                    <td colspan="5" class="p-0 border-0">
+                        <div class="collapse" id="collapse{{ $payment->id }}">
+                            <div class="card card-body">
+                                @if(isset($distributions[$payment->id]) && count($distributions[$payment->id]) > 0)
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Тип</th>
+                                            <th>Месяц / Примечание</th>
+                                            <th>Требуемая сумма</th>
+                                            <th>Оплачено</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($distributions[$payment->id] as $detail)
+                                            @if($detail['type'] === 'finance')
+                                                <tr>
+                                                    <td>Finance</td>
+                                                    <td>{{ $detail['month'] }}</td>
+                                                    <td>{{ $detail['required'] }}</td>
+                                                    <td>{{ $detail['allocated_from_payment'] }}</td>
+                                                    <td>{{ $detail['fully_covered'] ? 'Закрыт' : 'Частично' }}</td>
+                                                </tr>
+                                            @elseif($detail['type'] === 'deposit')
+                                                <tr>
+                                                    <td>Deposit</td>
+                                                    <td colspan="2">Остаток</td>
+                                                    <td>{{ $detail['amount'] }}</td>
+                                                    <td>Депозит</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <p>Нет подробностей.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
 @endsection
-{{--@extends('layouts.app')--}}
 
-{{--@section('content')--}}
-{{--    <div class="container">--}}
-{{--        <h1>Payments for {{ $project->firm_name ?? 'Project #'.$project->id }}</h1>--}}
 
-{{--        @php--}}
-{{--            $currentMonthYear = "January_2025"; // такой же как в index--}}
-{{--            $projectFinancesBefore = \App\Models\Finance::where('project_id',$project->id)->get()->filter(function($f) use ($currentMonthYear) {--}}
-{{--                return isBefore($f->month, $currentMonthYear);--}}
-{{--            });--}}
-{{--            $projectFinancesBeforeSum = $projectFinancesBefore->sum('amount');--}}
+    <!-- Подключаем Bootstrap CSS (если ещё не подключён) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-{{--            $projectFinanceIdsBefore = $projectFinancesBefore->pluck('id');--}}
-{{--            $projectPaymentsBefore = \App\Models\Payment::where('project_id', $project->id)--}}
-{{--                ->where(function($q) use ($projectFinanceIdsBefore) {--}}
-{{--                    $q->whereIn('finance_id', $projectFinanceIdsBefore)--}}
-{{--                      ->orWhereNull('finance_id');--}}
-{{--                })->sum('amount');--}}
 
-{{--            $projectDebt = $projectFinancesBeforeSum - $projectPaymentsBefore;--}}
-{{--        @endphp--}}
-
-{{--        <div class="alert alert-info">--}}
-{{--            <strong>Total Needed:</strong> {{ $needed }} |--}}
-{{--            <strong>Total Paid:</strong> {{ $paid }} |--}}
-{{--            <strong>Remaining:</strong> {{ $needed - $paid }} |--}}
-{{--            <strong>Debt (до {{ $currentMonthYear }}):</strong> {{ $projectDebt }}--}}
-{{--        </div>--}}
-
-{{--        @if(session('success'))--}}
-{{--            <div class="alert alert-success">{{ session('success') }}</div>--}}
-{{--        @endif--}}
-
-{{--        <p>--}}
-{{--            <a href="{{ route('payments.createForProject', ['project' => $project->id]) }}" class="btn btn-primary">Pay (Deposit)</a>--}}
-{{--            <a href="{{ route('payments.index') }}" class="btn btn-secondary">Back to Projects</a>--}}
-{{--        </p>--}}
-
-{{--        <table class="table table-bordered">--}}
-{{--            <thead>--}}
-{{--            <tr>--}}
-{{--                <th>Date</th>--}}
-{{--                <th>Amount</th>--}}
-{{--                <th>Description</th>--}}
-{{--                <th>Type</th> <!-- либо месяц finance, либо "депозит" -->--}}
-{{--            </tr>--}}
-{{--            </thead>--}}
-{{--            <tbody>--}}
-{{--            @forelse($payments as $payment)--}}
-{{--                <tr>--}}
-{{--                    <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>--}}
-{{--                    <td>{{ $payment->amount }}</td>--}}
-{{--                    <td>{{ $payment->description }}</td>--}}
-{{--                    <td>--}}
-{{--                        @if($payment->finance_id)--}}
-{{--                            {{ $payment->finance->month }}--}}
-{{--                        @else--}}
-{{--                            Депոզит (Deposit)--}}
-{{--                        @endif--}}
-{{--                    </td>--}}
-{{--                </tr>--}}
-{{--            @empty--}}
-{{--                <tr><td colspan="4" class="text-center text-muted">No payments</td></tr>--}}
-{{--            @endforelse--}}
-{{--            </tbody>--}}
-{{--        </table>--}}
-{{--    </div>--}}
-{{--@endsection--}}
+    <!-- Подключаем jQuery (если ещё не подключён) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Подключаем Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 

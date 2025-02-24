@@ -20,4 +20,9 @@ class Payment extends Model
     {
         return $this->belongsTo(Finance::class);
     }
+
+    public function project()
+    {
+        return $this->belongsTo(\App\Models\Project::class);
+    }
 }

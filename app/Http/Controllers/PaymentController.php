@@ -88,6 +88,102 @@ use Carbon\Carbon;
 
 class   PaymentController extends Controller
 {
+    /**
+     * Вычисляет распределение платежей по записям finances для проекта.
+     *
+     * Для каждого платежа проходит по всем finance (от старых к новым) и выделяет из суммы платежа:
+     * - Сколько пойдёт на закрытие конкретной finance записи (если сумма меньше или равна требуемой, или частично).
+     * - Если после распределения остаётся сумма – она считается депозитом.
+     *
+     * @param \App\Models\Project $project
+     * @return array  Массив распределений, ключами которого являются payment_id, а значениями – массив деталей.
+     */
+    protected function calculatePaymentDistributions(Project $project)
+    {
+        // Получаем все finance записи проекта, сортируя по дате (преобразуем строку "January_2025" в дату 1 января 2025)
+        $finances = Finance::where('project_id', $project->id)
+            ->get()
+            ->sortBy(function($finance) {
+                return strtotime("1 " . str_replace('_', ' ', $finance->month));
+            })
+            ->values(); // Переиндексируем массив
+
+        // Инициализируем массив для отслеживания, сколько уже распределено по каждой finance записи
+        $allocated = [];
+        foreach ($finances as $finance) {
+            $allocated[$finance->id] = 0;
+        }
+
+        // Получаем все платежи проекта, сортируя по дате (по возрастанию)
+        $payments = Payment::where('project_id', $project->id)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $distributions = [];
+
+        // Проходим по каждому платежу
+        foreach ($payments as $payment) {
+            $remaining = $payment->amount; // Сумма, которую нужно распределить для данного платежа
+            $distribution = [];           // Массив деталей распределения для текущего платежа
+
+            // Проходим по всем finance записям (от самых старых к новым)
+            foreach ($finances as $finance) {
+                $required = $finance->amount;                // Требуемая сумма для данной finance записи
+                $alreadyAllocated = $allocated[$finance->id];  // Сколько уже распределено ранее для этой записи
+
+                // Если для данной записи ещё не распределили всю требуемую сумму
+                if ($alreadyAllocated < $required) {
+                    $outstanding = $required - $alreadyAllocated; // Остаток, который нужно покрыть для этой finance
+                    if ($remaining > 0) {
+                        // Выделяем из текущего платежа либо всю оставшуюся сумму, либо только недостающее
+                        $allocate = min($remaining, $outstanding);
+                        $remaining -= $allocate;
+                        $allocated[$finance->id] += $allocate;
+
+                        $distribution[] = [
+                            'type' => 'finance',
+                            'month' => $finance->month,
+                            'required' => $required,
+                            'allocated_from_payment' => $allocate,
+                            'fully_covered' => ($allocated[$finance->id] >= $required)
+                        ];
+                    }
+                }
+                // Если текущий платеж полностью распределён, выходим из цикла по finance
+                if ($remaining <= 0) {
+                    break;
+                }
+            }
+
+            // Если после распределения осталось что-то – это депозит (переплата)
+            if ($remaining > 0) {
+                $distribution[] = [
+                    'type' => 'deposit',
+                    'amount' => $remaining
+                ];
+            }
+
+            $distributions[$payment->id] = $distribution;
+        }
+
+        return $distributions;
+    }
+
+    public function paymentsByDate()
+    {
+        // Получаем все платежи с подгрузкой проекта и сортируем по дате (от новых к старым)
+        $payments = \App\Models\Payment::with('project')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        // Группируем платежи по дате (поле date, например "2024-12-13")
+        $groupedPayments = $payments->groupBy('date');
+
+        // Можно дополнительно отсортировать группы по дате (от новых к старым)
+        $groupedPayments = $groupedPayments->sortKeysDesc();
+
+        return view('payments.paymentsbydate', compact('groupedPayments'));
+    }
     public function index()
     {
         // Получаем проекты с их финансами и платежами
@@ -262,19 +358,47 @@ class   PaymentController extends Controller
 //    }
 
     // Страница со всеми платежами по конкретному проекту
+
+
     public function projectPayments(Project $project)
     {
         $projectId = $project->id;
-        // Сколько всего нужно оплатить
+
+        // Общая сумма, которую нужно оплатить
         $needed = Finance::where('project_id', $projectId)->sum('amount');
-        // Сколько уже оплачено
+
+        // Сумма уже оплаченных платежей
         $paid = Payment::where('project_id', $projectId)->sum('amount');
 
-        // Все платежи этого проекта
-        $payments = Payment::where('project_id', $projectId)->with('finance')->get();
+        // Получаем все платежи для проекта (сортировка по дате по возрастанию)
+        $payments = Payment::where('project_id', $projectId)
+            ->orderBy('date', 'asc')
+            ->get();
 
-        return view('payments.project', compact('project', 'payments', 'needed', 'paid'));
+        // Вычисляем распределение для каждого платежа
+        $distributions = $this->calculatePaymentDistributions($project);
+
+        // Передаём переменные в шаблон (в том числе $payments)
+        return view('payments.project', compact('project', 'needed', 'paid', 'payments', 'distributions'));
     }
+
+
+//    public function projectPayments(Project $project)
+//    {
+//
+//
+//
+//        $projectId = $project->id;
+//        // Сколько всего нужно оплатить
+//        $needed = Finance::where('project_id', $projectId)->sum('amount');
+//        // Сколько уже оплачено
+//        $paid = Payment::where('project_id', $projectId)->sum('amount');
+//
+//        // Все платежи этого проекта
+//        $payments = Payment::where('project_id', $projectId)->with('finance')->get();
+//
+//        return view('payments.project', compact('project', 'payments', 'needed', 'paid'));
+//    }
 
     public function create(Finance $finance)
     {
