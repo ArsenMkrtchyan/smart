@@ -58,6 +58,15 @@
                         <li><a class="dropdown-item" href="{{route('payments.index')}}">payments</a></li>
                         <li><a class="dropdown-item" href="{{route('finances.index')}}">finances</a></li>
                         <li><a class="dropdown-item" href="{{route('projects.invoices')}}">invoices</a></li>
+                        <li><a class="dropdown-item" href="{{route('payments.bydate')}}">Payment List</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="financesMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Monitoring</span></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="sarqavorumnerMenu">
+                        <li><a class="dropdown-item" href="#">messages</a></li>
+                        <li><a class="dropdown-item" href="">Global Parameters</a></li>
+                        <li><a class="dropdown-item" href="#">Keywords</a></li>
+
                     </ul>
                 </li>
 

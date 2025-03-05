@@ -139,6 +139,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('seoroles/{id}', [SeoroleController::class, 'destroy'])
         ->name('seoroles.destroy');
     Route::get('/finances/searchProjects', [FinanceController::class, 'searchProjects'])->name('finances.searchProjects');
+    Route::get('/payments/bydate', [PaymentController::class, 'paymentsByDate'])->name('payments.bydate');
 
 });
-Route::get('/payments/bydate', [PaymentController::class, 'paymentsByDate'])->name('payments.bydate');
