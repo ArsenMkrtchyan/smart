@@ -340,60 +340,131 @@ if (empty($project->start_act)){
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
         }
 
-        // Путь к шаблону
-        $templatePath = public_path('paypamagir1.docx');
+       if($project->soc != null or  $project->andznagir != null){
+           $templatePath = public_path('paypamagirphy.docx');
 
 
-        $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
-        copy($templatePath, $tempPath);
+           $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
+           copy($templatePath, $tempPath);
 
 
-        $zip = new \ZipArchive;
-        if ($zip->open($tempPath) === true) {
+           $zip = new \ZipArchive;
+           if ($zip->open($tempPath) === true) {
 
-            $xml = $zip->getFromName('word/document.xml');
-
-
-
-            $xml = str_replace('price', $price->amount , $xml);
-            $xml = str_replace('deta', $price->detail , $xml);
-            $xml = str_replace('firm_name', $project->firm_name , $xml);
-            $xml = str_replace('17.12.2024', $dmydate , $xml);
-            $xml = str_replace('17․12․2025', $newyeardate , $xml);
-            $xml = str_replace('i_region', $i_marz->name , $xml);
-            $xml = str_replace('i_marz_id', $i_marz->district , $xml);
-            $xml = str_replace('i_address', $project->i_address, $xml);
-            $xml = str_replace('hvhh', $project->hvhh , $xml);
-            $xml = str_replace('firm_bank', $project->firm_bank , $xml);
-            $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
-            $xml = str_replace('firm_email', $project->firm_email , $xml);
-            $xml = str_replace('00000000', $project->ceo_phone , $xml);
-            $xml = str_replace('role_id', $ceo->name , $xml);
-            $xml = str_replace('ceo_name', $project->ceo_name , $xml);
-            $xml = str_replace('1001',$project->ident_id, $xml);
+               $xml = $zip->getFromName('word/document.xml');
 
 
 
+               $xml = str_replace('price', $price->amount , $xml);
+               $xml = str_replace('deta', $price->detail , $xml);
+               $xml = str_replace('firm_name', $project->firm_name , $xml);
+               $xml = str_replace('17.12.2024', $dmydate , $xml);
+               $xml = str_replace('17․12․2025', $newyeardate , $xml);
+               $xml = str_replace('i_region', $i_marz->name , $xml);
+               $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+               $xml = str_replace('i_address', $project->i_address, $xml);
+               $xml = str_replace('hvhh', $project->hvhh , $xml);
+               $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+               $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
+               $xml = str_replace('firm_email', $project->firm_email , $xml);
+               $xml = str_replace('00000000', $project->ceo_phone , $xml);
+               if ($project->name != null) {
+                   $xml = str_replace('role_id', $ceo->name , $xml);
+               }
 
-            $zip->addFromString('word/document.xml', $xml);
-            $zip->close();
-        }
+               if ($project->name != null) {
+                   $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+               }
+
+               $xml = str_replace('1001',$project->ident_id, $xml);
 
 
-        $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_paymanagir.docx');
 
 
-        rename($tempPath, $outputDocxPath);
+               $zip->addFromString('word/document.xml', $xml);
+               $zip->close();
+           }
 
 
-        $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
+           $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_paymanagir.docx');
 
 
-        $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
-        exec($command);
+           rename($tempPath, $outputDocxPath);
 
 
-        return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+           $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
+
+
+           $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
+           exec($command);
+
+
+           return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+
+       } else {
+           $templatePath = public_path('paypamagir1.docx');
+
+
+           $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
+           copy($templatePath, $tempPath);
+
+
+           $zip = new \ZipArchive;
+           if ($zip->open($tempPath) === true) {
+
+               $xml = $zip->getFromName('word/document.xml');
+
+
+
+               $xml = str_replace('price', $price->amount , $xml);
+               $xml = str_replace('deta', $price->detail , $xml);
+               $xml = str_replace('firm_name', $project->firm_name , $xml);
+               $xml = str_replace('17.12.2024', $dmydate , $xml);
+               $xml = str_replace('17․12․2025', $newyeardate , $xml);
+               $xml = str_replace('i_region', $i_marz->name , $xml);
+               $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+               $xml = str_replace('i_address', $project->i_address, $xml);
+               $xml = str_replace('hvhh', $project->hvhh , $xml);
+               $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+               $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
+               $xml = str_replace('firm_email', $project->firm_email , $xml);
+               $xml = str_replace('00000000', $project->ceo_phone , $xml);
+
+               if ($project->name != null) {
+                   $xml = str_replace('role_id', $ceo->name , $xml);
+               }
+
+               if ($project->name != null) {
+                   $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+               }
+               $xml = str_replace('1001',$project->ident_id, $xml);
+
+
+
+
+               $zip->addFromString('word/document.xml', $xml);
+               $zip->close();
+           }
+
+
+           $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_paymanagir.docx');
+
+
+           rename($tempPath, $outputDocxPath);
+
+
+           $outputPdfPath = public_path($project->firm_name . '_paymanagir.pdf');
+
+
+           $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
+           exec($command);
+
+
+           return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+       }
+
+
+
     }
 
 
