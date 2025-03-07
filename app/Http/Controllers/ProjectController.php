@@ -454,7 +454,7 @@ class ProjectController extends Controller
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
         }
 
-       if($project->soc != null or  $project->andznagir != null){
+       if($project->soc or  $project->andznagir ){
            $templatePath = public_path('paypamagirphy.docx');
 
 
@@ -491,7 +491,15 @@ class ProjectController extends Controller
                }
 
                $xml = str_replace('1001',$project->ident_id, $xml);
-
+               if ($project->andznagir || $project->soc){
+                   $xml = str_replace('passport', $project->andznagir, $xml);
+               }
+               elseif ($project->soc || $project->andznagir == null) {
+                   $xml = str_replace('passport', $project->soc, $xml);
+               }
+               elseif ($project->andznagir || $project->soc == null) {
+                   $xml = str_replace('passport', $project->andznagir, $xml);
+               }
 
 
 
