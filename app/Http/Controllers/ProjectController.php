@@ -235,7 +235,7 @@ class ProjectController extends Controller
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
         }
         if($project->soc != null or  $project->andznagir != null) {
-            $templatePath = public_path('paypamagirphy.docx');
+            $templatePath = public_path('actfiz.docx');
 
 
 
