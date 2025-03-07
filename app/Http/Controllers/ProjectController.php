@@ -394,13 +394,13 @@ class ProjectController extends Controller
                 $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
                 $xml = str_replace('firm_email', $project->firm_email , $xml);
                 $xml = str_replace('00000000', $project->ceo_phone , $xml);
-                if ($project->name != null) {
-                    $xml = str_replace('role_id', $ceo->name , $xml);
-                }
 
-                if ($project->name != null) {
+                    $xml = str_replace('role_id', $ceo->name , $xml);
+
+
+
                     $xml = str_replace('ceo_name', $project->ceo_name , $xml);
-                }
+
 
                 $xml = str_replace('1001',$project->ident_id, $xml);
                 $zip->addFromString('word/document.xml', $xml);
@@ -552,13 +552,12 @@ class ProjectController extends Controller
                $xml = str_replace('firm_email', $project->firm_email , $xml);
                $xml = str_replace('00000000', $project->ceo_phone , $xml);
 
-               if ($project->name != null) {
-                   $xml = str_replace('role_id', $ceo->name , $xml);
-               }
 
-               if ($project->name != null) {
+                   $xml = str_replace('role_id', $ceo->name , $xml);
+
+
                    $xml = str_replace('ceo_name', $project->ceo_name , $xml);
-               }
+
                $xml = str_replace('1001',$project->ident_id, $xml);
 
 
