@@ -281,7 +281,12 @@ class ProjectController extends Controller
                 $xml = str_replace('Ldsim',  $simlist_1, $xml);
                 $xml = str_replace(',idsim2',$simlist_2 , $xml);
 
-
+                if ($project->soc != null) {
+                    $xml = str_replace('PASSPORT', $project->soc, $xml);
+                }
+                if ($project->andznagir != null) {
+                    $xml = str_replace('PASSPORT', $project->andznagir, $xml);
+                }
                 $xml = str_replace('i_region', $i_marz->name , $xml);
                 $xml = str_replace('i_marz_id', $i_marz->district , $xml);
                 $xml = str_replace('i_address', $project->i_address, $xml);
@@ -369,7 +374,16 @@ class ProjectController extends Controller
                 $xml = str_replace('i_region', $i_marz->name , $xml);
                 $xml = str_replace('i_marz_id', $i_marz->district , $xml);
                 $xml = str_replace('i_address', $project->i_address, $xml);
+
+
                 $xml = str_replace('hvhh', $project->hvhh , $xml);
+                if ($project->soc != null) {
+                    $xml = str_replace('PASSPORT', $project->soc, $xml);
+                }
+                    if ($project->andznagir != null) {
+                        $xml = str_replace('PASSPORT', $project->andznagir, $xml);
+                    }
+
                 $xml = str_replace('firm_bank', $project->firm_bank , $xml);
                 $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
                 $xml = str_replace('firm_email', $project->firm_email , $xml);
