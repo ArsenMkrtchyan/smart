@@ -281,11 +281,14 @@ class ProjectController extends Controller
                 $xml = str_replace('Ldsim',  $simlist_1, $xml);
                 $xml = str_replace(',idsim2',$simlist_2 , $xml);
 
-                if ($project->soc != null) {
-                    $xml = str_replace('PASSPORT', $project->soc, $xml);
+                if ($project->andznagir || $project->soc){
+                    $xml = str_replace('passport', $project->andznagir, $xml);
                 }
-                if ($project->andznagir != null) {
-                    $xml = str_replace('PASSPORT', $project->andznagir, $xml);
+                elseif ($project->soc || $project->andznagir == null) {
+                    $xml = str_replace('passport', $project->soc, $xml);
+                }
+                elseif ($project->andznagir || $project->soc == null) {
+                    $xml = str_replace('passport', $project->andznagir, $xml);
                 }
                 $xml = str_replace('i_region', $i_marz->name , $xml);
                 $xml = str_replace('i_marz_id', $i_marz->district , $xml);
@@ -377,12 +380,15 @@ class ProjectController extends Controller
 
 
                 $xml = str_replace('hvhh', $project->hvhh , $xml);
-                if ($project->soc != null) {
-                    $xml = str_replace('PASSPORT', $project->soc, $xml);
+                if ($project->andznagir || $project->soc){
+                    $xml = str_replace('passport', $project->andznagir, $xml);
                 }
-                    if ($project->andznagir != null) {
-                        $xml = str_replace('PASSPORT', $project->andznagir, $xml);
-                    }
+                elseif ($project->soc || $project->andznagir == null) {
+                    $xml = str_replace('passport', $project->soc, $xml);
+                }
+                elseif ($project->andznagir || $project->soc == null) {
+                    $xml = str_replace('passport', $project->andznagir, $xml);
+                }
 
                 $xml = str_replace('firm_bank', $project->firm_bank , $xml);
                 $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
