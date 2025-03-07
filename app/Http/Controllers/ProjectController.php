@@ -234,84 +234,178 @@ class ProjectController extends Controller
         if (!$project->paymanagir_start) {
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
         }
-
-        // Путь к шаблону
-        $templatePath = public_path('act.docx');
-
-
-        $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
-        copy($templatePath, $tempPath);
-
-
-        $zip = new \ZipArchive;
-        if ($zip->open($tempPath) === true) {
-
-            $xml = $zip->getFromName('word/document.xml');
+        if($project->soc != null or  $project->andznagir != null) {
+            $templatePath = public_path('paypamagirphy.docx');
 
 
 
-            $xml = str_replace('price', $price->amount , $xml);
-            $xml = str_replace('pr1ice_detail', $price->detail , $xml);
-            $xml = str_replace('firm_name', $project->firm_name , $xml);
-if (empty($project->start_act)){
-    $xml = str_replace('00.10.2024', $dmydate , $xml);
-
-}else{
-    $xml = str_replace('00.10.2024', $actfinal , $xml);
-}
-
-             $xml = str_replace('17.12.2024', $dmydate , $xml);
+            $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
+            copy($templatePath, $tempPath);
 
 
-            if (empty($hardware))
-            {
-                $xml = str_replace('GSM-9N','-', $xml);
-                $xml = str_replace('serial', '', $xml);
-                $xml = str_replace('qanak', '', $xml);
+            $zip = new \ZipArchive;
+            if ($zip->open($tempPath) === true) {
+
+                $xml = $zip->getFromName('word/document.xml');
 
 
-            }else{
-                $xml = str_replace('qanak', '1', $xml);
-                $xml = str_replace('GSM-9N',$hardware->name, $xml);
-                $xml = str_replace('serial', $hardware->serial , $xml);
+
+                $xml = str_replace('price', $price->amount , $xml);
+                $xml = str_replace('pr1ice_detail', $price->detail , $xml);
+                $xml = str_replace('firm_name', $project->firm_name , $xml);
+                if (empty($project->start_act)){
+                    $xml = str_replace('00.10.2024', $dmydate , $xml);
+
+                }else{
+                    $xml = str_replace('00.10.2024', $actfinal , $xml);
+                }
+
+                $xml = str_replace('17.12.2024', $dmydate , $xml);
+
+
+                if (empty($hardware))
+                {
+                    $xml = str_replace('GSM-9N','-', $xml);
+                    $xml = str_replace('serial', '', $xml);
+                    $xml = str_replace('qanak', '', $xml);
+
+
+                }else{
+                    $xml = str_replace('qanak', '1', $xml);
+                    $xml = str_replace('GSM-9N',$hardware->name, $xml);
+                    $xml = str_replace('serial', $hardware->serial , $xml);
+                }
+
+
+
+                $xml = str_replace('Ldsim',  $simlist_1, $xml);
+                $xml = str_replace(',idsim2',$simlist_2 , $xml);
+
+
+                $xml = str_replace('i_region', $i_marz->name , $xml);
+                $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+                $xml = str_replace('i_address', $project->i_address, $xml);
+                $xml = str_replace('hvhh', $project->hvhh , $xml);
+                $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+                $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
+                $xml = str_replace('firm_email', $project->firm_email , $xml);
+                $xml = str_replace('00000000', $project->ceo_phone , $xml);
+                if ($project->name != null) {
+                    $xml = str_replace('role_id', $ceo->name , $xml);
+                }
+
+                if ($project->name != null) {
+                    $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+                }
+
+                $xml = str_replace('1001',$project->ident_id, $xml);
+                $zip->addFromString('word/document.xml', $xml);
+                $zip->close();
             }
 
 
-
-            $xml = str_replace('Ldsim',  $simlist_1, $xml);
-            $xml = str_replace(',idsim2',$simlist_2 , $xml);
+            $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_act.docx');
 
 
-            $xml = str_replace('i_region', $i_marz->name , $xml);
-            $xml = str_replace('i_marz_id', $i_marz->district , $xml);
-            $xml = str_replace('i_address', $project->i_address, $xml);
-            $xml = str_replace('hvhh', $project->hvhh , $xml);
-            $xml = str_replace('firm_bank', $project->firm_bank , $xml);
-            $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
-            $xml = str_replace('firm_email', $project->firm_email , $xml);
-            $xml = str_replace('00000000', $project->ceo_phone , $xml);
-            $xml = str_replace('role_id', $ceo->name , $xml);
-            $xml = str_replace('ceo_name', $project->ceo_name , $xml);
-            $xml = str_replace('1001',$project->ident_id, $xml);
-            $zip->addFromString('word/document.xml', $xml);
-            $zip->close();
+            rename($tempPath, $outputDocxPath);
+
+
+            $outputPdfPath = public_path($project->firm_name . '_act.pdf');
+
+
+            $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
+            exec($command);
+
+
+            return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+        }else{
+
+            $templatePath = public_path('act.docx');
+
+
+            $tempPath = storage_path('app/public/' . $project->id . '_temp.docx');
+            copy($templatePath, $tempPath);
+
+
+            $zip = new \ZipArchive;
+            if ($zip->open($tempPath) === true) {
+
+                $xml = $zip->getFromName('word/document.xml');
+
+
+
+                $xml = str_replace('price', $price->amount , $xml);
+                $xml = str_replace('pr1ice_detail', $price->detail , $xml);
+                $xml = str_replace('firm_name', $project->firm_name , $xml);
+                if (empty($project->start_act)){
+                    $xml = str_replace('00.10.2024', $dmydate , $xml);
+
+                }else{
+                    $xml = str_replace('00.10.2024', $actfinal , $xml);
+                }
+
+                $xml = str_replace('17.12.2024', $dmydate , $xml);
+
+
+                if (empty($hardware))
+                {
+                    $xml = str_replace('GSM-9N','-', $xml);
+                    $xml = str_replace('serial', '', $xml);
+                    $xml = str_replace('qanak', '', $xml);
+
+
+                }else{
+                    $xml = str_replace('qanak', '1', $xml);
+                    $xml = str_replace('GSM-9N',$hardware->name, $xml);
+                    $xml = str_replace('serial', $hardware->serial , $xml);
+                }
+
+
+
+                $xml = str_replace('Ldsim',  $simlist_1, $xml);
+                $xml = str_replace(',idsim2',$simlist_2 , $xml);
+
+
+                $xml = str_replace('i_region', $i_marz->name , $xml);
+                $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+                $xml = str_replace('i_address', $project->i_address, $xml);
+                $xml = str_replace('hvhh', $project->hvhh , $xml);
+                $xml = str_replace('firm_bank', $project->firm_bank , $xml);
+                $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
+                $xml = str_replace('firm_email', $project->firm_email , $xml);
+                $xml = str_replace('00000000', $project->ceo_phone , $xml);
+                if ($project->name != null) {
+                    $xml = str_replace('role_id', $ceo->name , $xml);
+                }
+
+                if ($project->name != null) {
+                    $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+                }
+
+                $xml = str_replace('1001',$project->ident_id, $xml);
+                $zip->addFromString('word/document.xml', $xml);
+                $zip->close();
+            }
+
+
+            $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_act.docx');
+
+
+            rename($tempPath, $outputDocxPath);
+
+
+            $outputPdfPath = public_path($project->firm_name . '_act.pdf');
+
+
+            $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
+            exec($command);
+
+
+            return response()->download($outputPdfPath)->deleteFileAfterSend(true);
+
         }
+        // Путь к шаблону
 
-
-        $outputDocxPath = storage_path('app/public/' . $project->firm_name . '_act.docx');
-
-
-        rename($tempPath, $outputDocxPath);
-
-
-        $outputPdfPath = public_path($project->firm_name . '_act.pdf');
-
-
-        $command = 'libreoffice --headless --convert-to pdf ' . escapeshellarg($outputDocxPath) . ' --outdir ' . escapeshellarg(public_path());
-        exec($command);
-
-
-        return response()->download($outputPdfPath)->deleteFileAfterSend(true);
     }
 
 
