@@ -380,13 +380,13 @@ class ProjectController extends Controller
 
 
                 $xml = str_replace('hvhh', $project->hvhh , $xml);
-                if ($project->andznagir || $project->soc){
+                if ($project->andznagir || $project->id_card){
                     $xml = str_replace('passport', $project->andznagir, $xml);
                 }
-                elseif ($project->soc || $project->andznagir == null) {
-                    $xml = str_replace('passport', $project->soc, $xml);
+                elseif ($project->id_card || $project->andznagir == null) {
+                    $xml = str_replace('passport', $project->id_card, $xml);
                 }
-                elseif ($project->andznagir || $project->soc == null) {
+                elseif ($project->andznagir || $project->id_card == null) {
                     $xml = str_replace('passport', $project->andznagir, $xml);
                 }
 
@@ -454,7 +454,7 @@ class ProjectController extends Controller
             return redirect()->back()->withErrors(['error' => 'Для этого проекта не установлена дата начала договора']);
         }
 
-       if($project->soc or  $project->andznagir ){
+       if($project->id_card or  $project->andznagir ){
            $templatePath = public_path('paypamagirphy.docx');
 
 
@@ -482,22 +482,22 @@ class ProjectController extends Controller
                $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
                $xml = str_replace('firm_email', $project->firm_email , $xml);
                $xml = str_replace('00000000', $project->ceo_phone , $xml);
-               if ($project->name != null) {
+               if ($ceo->name != null) {
                    $xml = str_replace('role_id', $ceo->name , $xml);
                }
 
-               if ($project->name != null) {
+               if ($project->ceo_name != null) {
                    $xml = str_replace('ceo_name', $project->ceo_name , $xml);
                }
 
                $xml = str_replace('1001',$project->ident_id, $xml);
-               if ($project->andznagir || $project->soc){
+               if ($project->andznagir || $project->id_card){
                    $xml = str_replace('passport', $project->andznagir, $xml);
                }
-               elseif ($project->soc || $project->andznagir == null) {
-                   $xml = str_replace('passport', $project->soc, $xml);
+               elseif ($project->id_card || $project->andznagir == null) {
+                   $xml = str_replace('passport', $project->id_card, $xml);
                }
-               elseif ($project->andznagir || $project->soc == null) {
+               elseif ($project->andznagir || $project->id_card == null) {
                    $xml = str_replace('passport', $project->andznagir, $xml);
                }
 
