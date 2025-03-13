@@ -189,6 +189,7 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         $price = Price::find($project->price_id);
         $i_marz = State::find($project->i_marz_id);
+        $w_marz = State::find($project->w_marz_id);
         $ceo = Seorole::find($project->ceorole_id);
 
 
@@ -374,9 +375,9 @@ class ProjectController extends Controller
                 $xml = str_replace(',idsim2',$simlist_2 , $xml);
 
 
-                $xml = str_replace('i_region', $i_marz->name , $xml);
-                $xml = str_replace('i_marz_id', $i_marz->district , $xml);
-                $xml = str_replace('i_address', $project->i_address, $xml);
+                $xml = str_replace('i_region', $w_marz->name , $xml);
+                $xml = str_replace('i_marz_id', $w_marz->district , $xml);
+                $xml = str_replace('i_address', $project->w_address, $xml);
 
 
                 $xml = str_replace('hvhh', $project->hvhh , $xml);
