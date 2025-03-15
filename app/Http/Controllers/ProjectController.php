@@ -291,9 +291,12 @@ class ProjectController extends Controller
                 elseif ($project->andznagir || $project->soc == null) {
                     $xml = str_replace('passport', $project->andznagir, $xml);
                 }
-                $xml = str_replace('w_region', $w_marz->name , $xml);
-                $xml = str_replace('w_marz_id', $w_marz->district , $xml);
-                $xml = str_replace('w_address', $project->w_address, $xml);
+                $xml = str_replace('fizreg', $w_marz->name , $xml);
+                $xml = str_replace('fizmar', $w_marz->district , $xml);
+                $xml = str_replace('fizhas', $project->w_address, $xml);
+                $xml = str_replace('i_region', $i_marz->name , $xml);
+                $xml = str_replace('i_marz_id', $i_marz->district , $xml);
+                $xml = str_replace('i_address', $project->i_address, $xml);
                 $xml = str_replace('hvhh', $project->hvhh , $xml);
                 $xml = str_replace('firm_bank', $project->firm_bank , $xml);
                 $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
