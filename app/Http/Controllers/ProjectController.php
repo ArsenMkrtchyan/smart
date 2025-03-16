@@ -376,7 +376,9 @@ class ProjectController extends Controller
 
                 $xml = str_replace('Ldsim',  $simlist_1, $xml);
                 $xml = str_replace(',idsim2',$simlist_2 , $xml);
-
+                $xml = str_replace('fizreg', $w_marz->name , $xml);
+                $xml = str_replace('fizmar', $w_marz->district , $xml);
+                $xml = str_replace('fizhas', $project->w_address, $xml);
 
                 $xml = str_replace('i_region', $i_marz->name , $xml);
                 $xml = str_replace('i_marz_id', $i_marz->district , $xml);
