@@ -528,8 +528,9 @@
                                             <h6 class="text-primary fw-bold m-0">start պայմանագիր/start act </h6>
                                         </div>
                                         <div class="card-body">
+                                            start
                                             <input type="date" name="paymanagir_start" id="dateInput"   min="2024-01-01">
-                                            <input type="date" name="start_act" id="dateInput"   min="2024-01-01">
+                                            act <input type="date" name="start_act" id="dateInput"   min="2024-01-01">
 
                                         </div>
                                         <div class="card-body">
@@ -556,6 +557,7 @@
                                         <label for="entity-select-1">object կարգավիճակ</label>
                                     </div>
                                 </div>
+
                                 <div class="col">
                                     <div class="mb-3 floating-label">
                                         <select class="form-select" id="entity-select-4-j" name="worker_id">
@@ -732,9 +734,9 @@
                             </div>
                             <div class="card-body">
 
-                                <input type="date" name="paymanagir_end">
+                                paymanagir_end <input style="margin-bottom: 5px" type="date" name="paymanagir_end">
                                 <div></div>
-                                <input type="date" name="end_dimum">
+                              end_dimum  <input type="date" name="end_dimum">
 
 
                             </div>
@@ -765,9 +767,12 @@
                                                     <label for="entity-select-1">Տեխնիկական կարգավիճակ</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input type="hidden" name="status_edit" value="0">
-                                                    <input class="form-check-input" type="checkbox" name="status_edit" value="1" id="formCheck-1">
-                                                    <label class="form-check-label" for="formCheck-1">թույլատրել փոխել ձեռքով</label>
+{{--                                                    <input type="hidden" name="status_edit" value="1">--}}
+{{--                                                    <input class="form-check-input" type="checkbox" name="status_edit" value="1" id="formCheck-1">--}}
+{{--                                                    <label class="form-check-label" for="formCheck-1">թույլատրել փոխել ձեռքով</label>--}}
+                                                    <input class="form-check-input" type="checkbox" name="status_edit" value="1"  id="formCheck-2" >
+                                                    <label class="form-check-label" for="formCheck-2">թույլատրել փոխել ձեռքով</label>
+
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -802,7 +807,14 @@
                                                     <label for="entity-select-1">object կարգավիճակ</label>
                                                 </div>
                                             </div>
+                                            <div class="col">
 
+                                                <input class="form-check-input" type="checkbox" name="act_enable" value="1"  id="formCheck-2" >
+                                                <label class="form-check-label" for="formCheck-2">Act Enable</label>
+
+
+
+                                            </div>
 
                                         </div>
 

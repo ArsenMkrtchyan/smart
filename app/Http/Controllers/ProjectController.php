@@ -697,7 +697,7 @@ $hardwares = Hardware::all();
             'their_hardware' => 'nullable|string',
             'connection_type' => 'nullable|string',
             'check_time' => 'nullable|string',
-
+            'act_enable' => 'nullable',
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
             'andznagir'     => 'nullable|string',
@@ -706,6 +706,7 @@ $hardwares = Hardware::all();
             'ceo_phone'     => 'nullable|string',
             'ceorole_id'     => 'nullable|integer',
             // Юр. лицо
+            'status_edit' => 'nullable',
             'firm_name'     => 'nullable|string',  // (пример)
             'hvhh'          => 'nullable|string',
             'fin_contact'   => 'nullable|string',
@@ -1019,6 +1020,7 @@ $hardwares = Hardware::all();
             'firm_bank_hh'  => 'nullable|string',
             'firm_email'    => 'nullable|string',
             'nkar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'act_enable' => 'nullable',
             // Физ. лицо
             'ceo_name'      => 'nullable|string',
             'andznagir'     => 'nullable|string',
@@ -1054,7 +1056,7 @@ $hardwares = Hardware::all();
             'tech_check' => 'nullable|string',
             'object_check' => 'nullable|string',
             'price_id' => 'nullable',
-            'status_edit' => 'nullable|boolean',
+            'status_edit' => 'nullable',
             'worker_id' => 'nullable|integer',
             // Связанные SIM-карты и Pатասxanatu
             'sim_ids'         => 'array',

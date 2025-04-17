@@ -26,6 +26,7 @@ class GenerateMonthlyInvoices extends Command
 //            ->get();
 
         $projects = Project::whereDate('paymanagir_start', '<=', $previousMonth->endOfMonth()->toDateString())
+            ->where('act_enable', 0)
             ->whereNotIn('object_check', [1, 2 ,3]) // Исключаем "սպասվող" и "Հրաժարված"
             ->get();
 

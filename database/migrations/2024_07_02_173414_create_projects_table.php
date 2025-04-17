@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('brand_name')->nullable();
             $table->string('tech_check')->nullable();
             $table->string('object_check')->nullable();
+
             $table->string('firm_name')->nullable();
             $table->boolean('firm_type')->nullable(); // 0=iravabanakan 1= fizikakan ete fizikakan a chuni i_address ev hvhh
             $table->string('hvhh')->nullable();
@@ -61,8 +62,10 @@ return new class extends Migration
             $table->date('paymanagir_end')->nullable();
 
             $table->boolean('paymanagir_received')->nullable();
-            $table->boolean('status_edit')->default(0);
+            $table->boolean('status_edit')->nullable();
             $table->string('ident_id', 4)->unique()->nullable();
+            $table->boolean('act_enable')->nullable();
+
             /**
              * obshi mitq
              * mi hat el knopka aktivacnel

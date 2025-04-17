@@ -493,7 +493,9 @@
                                         <div class="card-body">
 
                                             @if($project->firm_type == 1 && $project->hvhh != null)
+                                                start
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
+                                              act
                                                 <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
                                                 <input type="hidden" name="paymanagir_received" value="0">
                                                 <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
@@ -502,8 +504,9 @@
 
                                             @elseif($project->firm_type == 0 && ($project->soc != null || $project->andznagir != null))
 
+                                                start
                                                 <input type="date" name="paymanagir_start" value="{{ old('paymanagir_start', $project->paymanagir_start) }}">
-                                                <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
+                                                act <input type="date" name="start_act" value="{{ old('start_act', $project->start_act) }}">
                                                 <input type="hidden" name="paymanagir_received" value="0">
                                                 <input class="form-check-input" type="checkbox" name="paymanagir_received"  id="formCheck-2" {{ old('paymanagir_received', $project->paymanagir_received) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="formCheck-2">ստացել ենք</label>
@@ -796,10 +799,9 @@
                                 <h6 class="text-primary fw-bold m-0">Լուծարել պայմանագիրը</h6>
                             </div>
                             <div class="card-body">
-
-                                <input type="date" name="paymanagir_end" value="{{ old('paymanagir_end', $project->paymanagir_end) }}">
+                                paymanagir end <input style="margin-bottom: 5px" type="date" name="paymanagir_end" value="{{ old('paymanagir_end', $project->paymanagir_end) }}">
                                 <div></div>
-                                <input type="date" name="end_dimum" value="{{ old('end_dimum', $project->end_dimum) }}">
+                                 end dimum <input type="date" name="end_dimum" value="{{ old('end_dimum', $project->end_dimum) }}">
                             </div>
                         </div>
                     </div>
@@ -862,7 +864,14 @@
                                                     <label for="entity-select-2">Object կարգավիճակ</label>
                                                 </div>
                                             </div>
+                                            <div class="col">
+                                                <input type="hidden" name="act_enable" value="0">
+                                                <input class="form-check-input" type="checkbox" name="act_enable" value="1" id="formCheck-1" {{ old('act_enable', $project->act_enable) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="formCheck-2">Act Enable</label>
 
+
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

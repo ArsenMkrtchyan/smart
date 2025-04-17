@@ -1,12 +1,24 @@
-<table class="table my-0">
-    <thead>
+@php
+    // Читаем человеко‑читаемые подписи статусов once
+    $statusLabels = [
+        1 => 'սպասվող',
+        2 => 'Հրաժարված',
+        3 => 'Պայմանագիրը լուծարված',
+        4 => 'Պայմանագրի ընդացք',
+        5 => 'կարգավորման ընդացք',
+        6 => '911-ին միացված',
+    ];
+@endphp
+
+<table class="table table-hover align-middle">
+    <thead class="table-light">
     <tr>
-        <th><strong>Օբ․ ID</strong></th>
-        <th><strong>Ident</strong></th>
-        <th><strong>ֆիզ/իրավ</strong></th>
-        <th><strong>Անվանում</strong></th>
-        <th><strong>օբ.Հասցե</strong></th>
-        <th><strong>Տնօրեն</strong></th>
+        <th>Օբ․ ID</th>
+        <th>Ident</th>
+        <th>ֆիզ/իրավ</th>
+        <th>Անվանում</th>
+        <th>օբ. Հասցե</th>
+        <th>Տնօրեն</th>
         <th>Հեռախոս</th>
         <th>Տեսակ</th>
         <th>Կարգավիճակ</th>
@@ -15,110 +27,94 @@
         <th>act</th>
     </tr>
     </thead>
-    <style>
 
-       td {
-            background-color: #971313;
-        }
-    </style>
     <tbody>
     @foreach ($projects as $project)
-        <tr>
 
+        @php
+            /* -------------------------------------------------------------
+             * 1) «Красный» (= table‑danger) если чего‑то важного нет
+             * -----------------------------------------------------------*/
+            $isIncomplete = empty($project->ident_id)
+                         || empty($project->paymanagir_start)
+                         || empty($project->price_id)
+                         || empty($project->x_gps)
+                         || empty($project->y_gps)
+                         || empty($project->nkar);
 
+            /* -------------------------------------------------------------
+             * 2) «Жёлтый» (= table‑warning) если object_check == 5
+             *    ИЛИ type_id == 1, но только если НЕ красный
+             * -----------------------------------------------------------*/
+            $isWarning = !$isIncomplete && (
+                            $project->object_check == 1
 
+                         );
+
+            $rowClass = $isIncomplete ? 'table-danger'
+                      : ($isWarning   ? 'table-warning' : 'table-success');
+        @endphp
+
+        <tr class="{{ $rowClass }}">
+
+            {{-- === ID + фото/карта === --}}
             <td>
                 @if($project->x_gps && $project->y_gps)
                     <a href="https://www.google.com/maps?q={{ $project->y_gps }},{{ $project->x_gps }}" target="_blank">
-                        <img class="rounded-circle me-2"
-                             width="30" height="30"
-                             src="/image/{{ $project->nkar }}">
+                        <img class="rounded-circle me-2" width="30" height="30"
+                             src="/image/{{ $project->nkar ?? 'nophoto.png' }}">
                     </a>
                 @else
-
-                    @if($project->nkar)
-                        <img class="rounded-circle me-2"
-                             width="30" height="30"
-                             src="/image/{{ $project->nkar }}">
-                    @else
-                        <img class="rounded-circle me-2"
-                             width="30" height="30"
-                             src="/image/nophoto.png">
-
-                        @endif
-
-
+                    <img class="rounded-circle me-2" width="30" height="30"
+                         src="/image/{{ $project->nkar ?? 'nophoto.png' }}">
                 @endif
-                &nbsp;{{ $project->id }}
+                {{ $project->id }}
             </td>
 
-
-            <td >{{$project->ident_id}}</td>
-            @if($project->hvhh == null)
-                <td>ֆիզ</td>
-            @else
-                <td>իրավ</td>
-            @endif
-            <td>{{$project->firm_name}}</td>
-            {{-- $project->state->name - $project->state->district - $project->w_address --}}
+            {{-- Остальные колонки --}}
+            <td>{{ $project->ident_id ?? '—' }}</td>
+            <td>{{ $project->hvhh ? 'իրավ' : 'ֆիզ' }}</td>
+            <td>{{ $project->firm_name }}</td>
             <td>
                 @if($project->w_marz_id)
-                    {{ $project->wMarz->name }} - {{ $project->wMarz->district }} - {{ $project->w_address }}
+                    {{ $project->wMarz->name }} – {{ $project->wMarz->district }} – {{ $project->w_address }}
                 @else
                     {{ $project->w_address }}
                 @endif
             </td>
-
             <td>{{ $project->ceo_name }}</td>
             <td>{{ $project->ceo_phone }}</td>
-            @if($project->type_id == null)
-              <td>-</td>
-            @else
-                <td>{{ $project->object_type->name }}</td>
+            <td>{{ $project->object_type->name ?? '—' }}</td>
+            <td>{{ $statusLabels[$project->object_check] ?? '—' }}</td>
 
-            @endif
-
-
-
-            @if($project->object_check == 1)
-                <td>սպասվող</td>
-                @elseif($project->object_check == 2)
-                    <td>Հրաժարված</td>
-                    @elseif($project->object_check == 3)
-                        <td>այմանագիրը լուծարված<</td>
-                        @elseif($project->object_check == 4)
-                            <td>Պայմանագրի ընդացք</td>
-                            @elseif($project->object_check == 5)
-                                <td>կարգավորման ընդացք</td>
-                                @elseif($project->object_check == 6)
-                                    <td>911-ին միացված</td>
-            @endif
-
-
-            <td>   <a href="{{ route('projects.edit', $project->id) }}">
-                    <button class="btn btn-warning">Edit</button>
-                </a></td>
+            {{-- ==== действия ==== --}}
             <td>
-                @if($project->paymanagir_start)
-                    <form action="{{ route('projects.export', $project->id) }}" method="POST">
-                        @csrf
-                        <button class="btn btn-secondary">Export</button>
-                    </form>
-                @else
-                    <button class="btn btn-secondary" disabled>Export</button>
-                @endif
+                <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
             </td>
+
+            {{-- paymanagir export --}}
             <td>
                 @if($project->paymanagir_start)
-                    <form action="{{ route('projects.exportact', $project->id) }}" method="POST">
+                    <form action="{{ route('projects.export', $project) }}" method="POST" class="d-inline">
                         @csrf
-                        <button class="btn btn-secondary">Export</button>
+                        <button class="btn btn-secondary btn-sm">Export</button>
                     </form>
                 @else
-                    <button class="btn btn-secondary" disabled>Export</button>
+                    <button class="btn btn-secondary btn-sm" disabled>Export</button>
                 @endif
             </td>
 
+            {{-- act export (если разрешён) --}}
+            <td>
+                @if($project->act_enable && $project->paymanagir_start)
+                    <form action="{{ route('projects.exportact', $project) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button class="btn btn-secondary btn-sm">Export</button>
+                    </form>
+                @else
+                    <button class="btn btn-secondary btn-sm" disabled>Export</button>
+                @endif
+            </td>
         </tr>
     @endforeach
     </tbody>

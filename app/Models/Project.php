@@ -10,7 +10,7 @@ class   Project extends Model
     use HasFactory;
 
     protected $fillable = [
-
+'act_enable',
          'building_id',
         'check_time',
         'brand_name',
@@ -56,7 +56,8 @@ class   Project extends Model
         'tech_check',
         'id_card',
         'choosed_type',
-        'start_act'
+        'start_act',
+
     ];
 
     public function price()
@@ -106,5 +107,9 @@ class   Project extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function uniques()
+    {
+        return $this->hasMany(Unique::class);
     }
 }

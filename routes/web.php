@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ObjectTypeController;
 use App\Http\Controllers\SeoroleController;
-
+use App\Http\Controllers\UniqueController;
 
 Route::get('/', function () {
     return redirect('projects');
@@ -142,3 +142,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/payments/bydate', [PaymentController::class, 'paymentsByDate'])->name('payments.bydate');
 
 });
+Route::resource('uniques', UniqueController::class);         // теперь полный CRUD
+Route::get('uniques/{unique}/export', [UniqueController::class,'export'])
+    ->name('uniques.export');
