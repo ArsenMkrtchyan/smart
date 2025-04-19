@@ -140,7 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
         ->name('seoroles.destroy');
     Route::get('/finances/searchProjects', [FinanceController::class, 'searchProjects'])->name('finances.searchProjects');
     Route::get('/payments/bydate', [PaymentController::class, 'paymentsByDate'])->name('payments.bydate');
-    Route::resource('uniques', UniqueController::class)->name('uniques');         // теперь полный CRUD
+    Route::resource('uniques', UniqueController::class);      // теперь полный CRUD
     Route::get('uniques/{unique}/export', [UniqueController::class,'export'])
         ->name('uniques.export');
 
