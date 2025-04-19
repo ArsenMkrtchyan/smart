@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
@@ -10,7 +10,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ObjectTypeController;
 use App\Http\Controllers\SeoroleController;
 use App\Http\Controllers\UniqueController;
-
+use App\Http\Controllers\StatsController;
 Route::get('/', function () {
     return redirect('projects');
 });
@@ -145,3 +145,17 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resource('uniques', UniqueController::class);         // теперь полный CRUD
 Route::get('uniques/{unique}/export', [UniqueController::class,'export'])
     ->name('uniques.export');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
+
+Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])
+    ->name('dashboard.chartData');
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// API для динамических графиков
+Route::get('/api/years',     [DashboardController::class, 'apiYears']);
+Route::get('/api/payments-by-month', [DashboardController::class, 'apiMonthlyStats']);
+Route::get('/api/payments-by-day',   [DashboardController::class, 'apiDailyStats']);
