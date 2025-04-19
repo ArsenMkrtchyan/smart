@@ -106,7 +106,7 @@
 
             {{-- act export (если разрешён) --}}
             <td>
-                @if($project->act_enable && $project->paymanagir_start)
+                @if($project->paymanagir_start)
                     <form action="{{ route('projects.exportact', $project) }}" method="POST" class="d-inline">
                         @csrf
                         <button class="btn btn-secondary btn-sm">Export</button>

@@ -140,22 +140,22 @@ Route::group(['middleware' => ['auth']], function () {
         ->name('seoroles.destroy');
     Route::get('/finances/searchProjects', [FinanceController::class, 'searchProjects'])->name('finances.searchProjects');
     Route::get('/payments/bydate', [PaymentController::class, 'paymentsByDate'])->name('payments.bydate');
+    Route::resource('uniques', UniqueController::class)->name('uniques');         // теперь полный CRUD
+    Route::get('uniques/{unique}/export', [UniqueController::class,'export'])
+        ->name('uniques.export');
 
-});
-Route::resource('uniques', UniqueController::class);         // теперь полный CRUD
-Route::get('uniques/{unique}/export', [UniqueController::class,'export'])
-    ->name('uniques.export');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
-
-Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])
-    ->name('dashboard.chartData');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])
+        ->name('dashboard.chartData');
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // API для динамических графиков
-Route::get('/api/years',     [DashboardController::class, 'apiYears']);
-Route::get('/api/payments-by-month', [DashboardController::class, 'apiMonthlyStats']);
-Route::get('/api/payments-by-day',   [DashboardController::class, 'apiDailyStats']);
+    Route::get('/api/years',     [DashboardController::class, 'apiYears']);
+    Route::get('/api/payments-by-month', [DashboardController::class, 'apiMonthlyStats']);
+    Route::get('/api/payments-by-day',   [DashboardController::class, 'apiDailyStats']);
+
+});

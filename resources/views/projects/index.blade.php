@@ -219,50 +219,60 @@
     </div>
 
     {{-- jQuery + скрипт --}}
-    @push('scripts')
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-                integrity="sha256-3fpdpIvT0YIShZj7OVz1Q0Jt08Jc9N1SOeJoXxNumwA="
-                crossorigin="anonymous"></script>
 
-        <script>
-            (() => {
-                const $objectCheck = $('#objectCheckSelect'),
-                    $perPage     = $('#perPage'),
-                    $search      = $('#search'),
-                    $filterNull  = $('#filterIdentNull');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function() {
 
-                // debounce — 0.4 сек.
-                const debounce = (fn, ms = 400) => {
-                    let timer;
-                    return (...args) => {
-                        clearTimeout(timer);
-                        timer = setTimeout(() => fn.apply(this, args), ms);
-                    };
-                };
+            // При смене objectCheckSelect:
+            $('#objectCheckSelect').on('change', function(){
+                fetchData();
+            });
 
-                function fetchData() {
-                    $.get({
-                        url: '{{ route('projects.index') }}',
-                        data: {
-                            object_check      : $objectCheck.val(),
-                            per_page          : $perPage.val(),
-                            search            : $search.val(),
-                            filter_ident_null : $filterNull.is(':checked')
-                        },
-                        dataType: 'json',
-                        success(resp) {
-                            $('#tableData').html(resp.html);
-                            $('#objectCountSpan').text(resp.count);
-                        },
-                        error: err => console.error('AJAX error →', err)
-                    });
-                }
+            // При смене perPage:
+            $('#perPage').on('change', function(){
+                fetchData();
+            });
 
-                $objectCheck.on('change', fetchData);
-                $perPage.on('change',    fetchData);
-                $filterNull.on('change', fetchData);
-                $search.on('input', debounce(fetchData));
-            })();
-        </script>
-    @endpush
+            // При вводе в search:
+            // (добавим задержку - debounce - если хотим)
+            $('#search').on('keyup', function(){
+                // Можно поставить setTimeout, но для примера просто так
+                fetchData();
+            });
+            $('#filterIdentNull').on('change', function() {
+                fetchData();
+            });
+
+            function fetchData() {
+                let objectCheckVal = $('#objectCheckSelect').val();
+                let perPageVal = $('#perPage').val();
+                let searchVal = $('#search').val();
+                let filterIdentNull = $('#filterIdentNull').is(':checked'); // Проверяем, установлен ли чекбокс
+
+                $.ajax({
+                    url: '{{ route('projects.index') }}',
+                    type: 'GET',
+                    data: {
+                        object_check: objectCheckVal,
+                        per_page: perPageVal,
+                        search: searchVal,
+                        filter_ident_null: filterIdentNull,
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        // Обновим HTML таблицы
+                        $('#tableData').html(response.html);
+                        // Обновим счётчик
+                        $('#objectCountSpan').text(response.count);
+                    },
+                    error: function(err){
+                        console.log('Ошибка AJAX:', err);
+                    }
+                });
+            }
+
+        });
+    </script>
+
 @endsection

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Profile - Brand</title>
+    <title>SmartSec</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
 <link rel="stylesheet" href="{{ asset('smart/assets/css/styles.min.css') }}">
     <link rel="stylesheet" href="{{ asset('smart/assets/css/styles.min.css') }}">
@@ -46,11 +46,11 @@
     <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
         <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                 <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+                <div class="sidebar-brand-text mx-3"><span>SmartSec</span></div>
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('dashboard')}}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('projects.index')}}"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
 
                 <li class="nav-item"><a class="nav-link nav-link active dropdown-toggle" href="#" id="financesMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i><span><span style="font-weight: normal !important;">Ֆինանսական</span></span></a>
@@ -58,6 +58,7 @@
                         <li><a class="dropdown-item" href="{{route('payments.index')}}">payments</a></li>
                         <li><a class="dropdown-item" href="{{route('finances.index')}}">finances</a></li>
                         <li><a class="dropdown-item" href="{{route('projects.invoices')}}">invoices</a></li>
+                        <li><a class="dropdown-item" href="{{route('uniques.index')}}">Uniques</a></li>
                         <li><a class="dropdown-item" href="{{route('payments.bydate')}}">Payment List</a></li>
                     </ul>
                 </li>
@@ -180,7 +181,7 @@
         </div>
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2024</span></div>
+                <div class="text-center my-auto copyright"><span>Copyright © SmartSec 2024</span></div>
             </div>
         </footer>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
