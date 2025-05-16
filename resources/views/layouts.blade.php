@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
-
+@php $role = auth()->user()->role_id; @endphp
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -50,6 +50,10 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
+                @if($role == 5)
+                    <li class="nav-item"><a class="nav-link nav-link" href="#"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>
+
+                @else
                 <li class="nav-item"><a class="nav-link" href="{{route('dashboard')}}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="{{route('projects.index')}}"><i class="fas fa-table"></i><span><span style="color: rgba(255, 255, 255, 0.8);">Օբեկտների ցանկ</span></span></a></li>
 
@@ -108,6 +112,7 @@
                 </li>
 
                 <li class="nav-item"><a class="nav-link nav-link" href="#"><i class="fas fa-user-circle"></i><span>Մոնիթորինգ</span></a></li>
+           @endif
             </ul>
             <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
         </div>

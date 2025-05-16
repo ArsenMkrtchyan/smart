@@ -1,6 +1,11 @@
 @extends('layouts')
 @section('content')
-
+    @php
+        // true, если объект “911-к подключён” (object_check == 6)
+        // и у пользователя роль 3
+        $isReadOnly = $project->object_check == 6
+                      && auth()->user()->role_id == 3;
+    @endphp
     <div class="container-fluid">
         <h3 class="text-dark mb-4">Edit Project</h3>
 
@@ -19,7 +24,7 @@
                 <input type="radio" autocomplete="off" class="btn-check" id="btnradio2-1" name="btnradio" {{ $currentSection === 'adminTechnical' ? 'checked' : '' }}>
                 <label class="form-label btn btn-outline-primary" for="btnradio2-1">ադմին տեխնիկական</label>
             </div>
-
+            <fieldset @if($isReadOnly) disabled @endif>
             {{-- Форма --}}
 
             {{-- --------------------- Գլխավոր --------------------- --}}
@@ -884,7 +889,7 @@
             <div class="mb-3">
                 <button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button>
             </div>
-
+</fieldset>
         </form>
     </div>
 

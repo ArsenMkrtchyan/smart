@@ -14,6 +14,9 @@ return Application::configure()
     )->withMiddleware(function (Middleware $middleware) {
     $middleware->alias([
         'admin' => \App\Http\Middleware\IsAdmin::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
+        'restrict5'    => \App\Http\Middleware\RestrictRoleFive::class,
+        'role5.only'   => \App\Http\Middleware\RoleFiveOnly::class,
     ]);
 })
     ->withExceptions(function (Exceptions $exceptions) {

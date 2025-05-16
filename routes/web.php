@@ -14,7 +14,8 @@ use App\Http\Controllers\StatsController;
 Route::get('/', function () {
     return redirect('projects');
 });
-Auth::routes();
+Auth::routes(['register' => false]);
+
 Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::resource('users', \App\Http\Controllers\UserController::class);
 
@@ -159,3 +160,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/api/payments-by-day',   [DashboardController::class, 'apiDailyStats']);
 
 });
+
+Route::get('/monitoring', [MonitoringController::class, 'index'])
+    ->name('monitoring.index')
+    ->middleware(['auth','role5.only']);
