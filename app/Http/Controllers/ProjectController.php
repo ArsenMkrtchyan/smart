@@ -480,6 +480,7 @@ class ProjectController extends Controller
                $xml = str_replace('firm_name', $project->firm_name , $xml);
                $xml = str_replace('17.12.2024', $dmydate , $xml);
                $xml = str_replace('17․12․2025', $newyeardate , $xml);
+
                $xml = str_replace('i_region', $i_marz->name , $xml);
                $xml = str_replace('i_marz_id', $i_marz->district , $xml);
                $xml = str_replace('i_address', $project->i_address, $xml);
@@ -488,12 +489,12 @@ class ProjectController extends Controller
                $xml = str_replace('hashiv', $project->firm_bank_hh , $xml);
                $xml = str_replace('firm_email', $project->firm_email , $xml);
                $xml = str_replace('00000000', $project->ceo_phone , $xml);
-               if ($ceo->name != null) {
-                   $xml = str_replace('role_id', $ceo->name , $xml);
-               }
+//               if ($ceo->name != null) {
+//                   $xml = str_replace('role_id', $ceo->name , $xml);
+//               }
 
                if ($project->ceo_name != null) {
-                   $xml = str_replace('ceo_name', $project->ceo_name , $xml);
+                   $xml = str_replace('ceo_name', $project->firm_name , $xml); // en vaxt ceo_name er
                }
 
                $xml = str_replace('1001',$project->ident_id, $xml);
